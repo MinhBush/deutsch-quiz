@@ -1295,7 +1295,7 @@ const CHECK=['Động từ chia ở vị trí 2 trong câu trần thuật?','Dan
 function writePage(pi){const J=ls.get('gaq_write_'+PID,{}),d=dkey(new Date());const cur=J[d];
  if(pi==null)pi=cur?cur.p:Math.floor(rngFrom('w'+d)()*PROMPTS.length);const P=PROMPTS[pi];
  const past=Object.keys(J).filter(k=>k!=d).sort().reverse().slice(0,10);
- app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề. Trang không chấm được câu tự do; bấm "Sao chép để nhờ sửa" rồi dán vào chat với Claude hoặc gửi giáo viên.</p>
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề.</p>
  <div class="card"><p class="lv">Đề hôm nay (${new Date().toLocaleDateString('de-DE')})</p><h3>${P[0]}</h3><p>${P[1]}</p><p class="lv">Từ gợi ý (sáng lên khi bạn đã dùng):</p><div class="wwords" id="ww">${P[2].map(w=>`<span>${esc(w)}</span>`).join('')}</div>
  <textarea id="jt" rows="8" placeholder="Schreib hier …">${esc(cur&&cur.p==pi?cur.text:'')}</textarea><p class="lv" id="cnt"></p>
  <details><summary>Tự kiểm tra trước khi lưu</summary>${CHECK.map(c=>`<label style="display:block"><input type="checkbox"> ${c}</label>`).join('')}</details>
