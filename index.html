@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deutsch Grammatik Quiz A1–B1</title>
+<style>
+:root{--bg:#faf8f5;--card:#fff;--ink:#1f1d1a;--mute:#6f6a62;--line:#e4dfd6;--acc:#a8326b;--acc2:#2f8f86;--ok:#1f7a4d;--okbg:#e3f4ea;--no:#b3261e;--nobg:#fbe6e4}
+@media (prefers-color-scheme:dark){:root{--bg:#191817;--card:#232220;--ink:#eeeae3;--mute:#a39d93;--line:#3a3835;--acc:#e07aa9;--acc2:#6cc5bb;--ok:#7dd3a4;--okbg:#1d3528;--no:#f2a19b;--nobg:#3d201e}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.05rem;margin:1.6em 0 .5em;color:var(--acc)}
+.sub{color:var(--mute);margin:0 0 1em}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;color:inherit;font:inherit;cursor:pointer}
+.row[disabled]{opacity:.5;cursor:default}
+.num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.row[disabled] .num{background:var(--mute)}
+.row .t{flex:1}.row .lv{font-size:.75rem;color:var(--mute)}
+.badge{font-size:.8rem;padding:2px 8px;border-radius:99px;background:var(--okbg);color:var(--ok);white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.rule table{border-collapse:collapse;margin:.5em 0}.rule td,.rule th{border:1px solid var(--line);padding:3px 10px;text-align:left}
+.rule b{color:var(--acc2)}
+.rule h3{font-size:1.05rem;margin:1.3em 0 .4em;color:var(--acc)}.rule h3:first-child{margin-top:0}
+.rule table{display:block;overflow-x:auto;max-width:100%}
+.ex{border-left:3px solid var(--acc2);padding:2px 0 2px 12px;margin:.6em 0;color:var(--mute)}.ex b{color:var(--ink)}
+.warn{background:var(--nobg);border-radius:8px;padding:10px 12px}.warn b{color:var(--no)}
+summary{cursor:pointer;color:var(--mute)}
+.paper{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;margin-top:10px}
+.ph{text-align:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}.ph b{font-size:1.15rem}
+.timer{position:sticky;top:0;background:var(--card);padding:6px 0;text-align:right;color:var(--acc);font-weight:600;font-variant-numeric:tabular-nums;z-index:1}
+.ins{margin:1.3em 0 .5em}
+.pass{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:.5em 0;line-height:2.1}
+.eq{padding:2px 0 2px 10px;border-left:3px solid transparent;margin:.6em 0}.eq p{margin:.3em 0}
+.eq.ok{border-color:var(--ok)}.eq.no{border-color:var(--no)}
+.os{display:grid;grid-template-columns:repeat(4,1fr);gap:2px 10px}.os.long{grid-template-columns:1fr}
+@media(max-width:600px){.os{grid-template-columns:repeat(2,1fr)}}
+.os label{cursor:pointer}
+input[type=text].s{width:120px;padding:3px 8px}input[type=text].w{width:100%}
+input.ok{border-color:var(--ok)}input.no{border-color:var(--no)}
+.fbx{font-size:.9rem;color:var(--mute);margin-top:2px}
+.score{font-size:1.4rem;font-weight:700;color:var(--acc)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--line)}
+.btn:disabled{opacity:.5}
+.q{font-size:1.2rem;margin:.3em 0 .8em}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:6px 0;color:inherit;font:inherit;cursor:pointer}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}.opt.no{background:var(--nobg);border-color:var(--no);color:var(--no)}
+input[type=text]{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:min(100%,260px)}
+.keys button{font:inherit;margin:6px 4px 0 0;padding:4px 11px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:inherit;cursor:pointer}
+.fb{margin-top:12px;padding:10px 12px;border-radius:8px}.fb.ok{background:var(--okbg);color:var(--ok)}.fb.no{background:var(--nobg);color:var(--no)}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin:8px 0 16px}.bar i{display:block;height:100%;background:var(--acc2)}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:.9rem}
+a.back{color:var(--acc);cursor:pointer;text-decoration:none}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* =====================================================================
+   DỮ LIỆU — sửa/ thêm bài ở đây.
+   Cấu trúc chương và tên chủ đề ngữ pháp theo mục lục "Grammatik aktiv A1–B1" (Cornelsen).
+   Phần tóm tắt quy tắc và toàn bộ câu hỏi là soạn mới, không chép từ sách.
+   Câu trắc nghiệm: {q, o:[...4 lựa chọn], a: vị trí đáp án đúng (0-3), e: giải thích}
+   Câu điền từ:     {q, a:["đáp án", "đáp án khác được chấp nhận"], e}
+   ===================================================================== */
+const GROUPS = [
+ ["Verben 1",[[1,"Personalpronomen"],[2,"Konjugation Präsens"],[3,"sein, haben und besondere Verben"],[4,"Verben mit Vokalwechsel"],[5,"Modalverben: Konjugation und Position im Satz"],[6,"Modalverben: Gebrauch"],[7,"Trennbare Verben"],[8,"Imperativ"]]],
+ ["Sätze und Fragen",[[9,"Fragen mit Fragewort"],[10,"Ja/Nein-Fragen"],[11,"Wörter im Satz 1"],[12,"Wörter im Satz 2"]]],
+ ["Pronomen, Nomen und Artikel",[[13,"Nomen: Plural"],[14,"Artikel: definit, indefinit, kein Artikel"],[15,"Negation"],[16,"Akkusativ"],[17,"Dativ"],[18,"Possessivartikel"],[19,"Artikel: interrogativ und demonstrativ"],[20,"Personalpronomen: Akkusativ und Dativ"],[21,"Verben mit Akkusativ und Dativ"],[22,"Verben mit Dativ"]]],
+ ["Verben 2",[[23,"Präteritum: sein und haben"],[24,"Perfekt mit haben"],[25,"Perfekt mit sein"],[26,"Partizip Perfekt"],[27,"Präteritum: Modalverben"],[28,"Zeitengebrauch"],[29,"Reflexive (und reziproke) Verben"]]],
+ ["Präpositionen 1",[[30,"Temporale Präpositionen"],[31,"Präpositionen mit Dativ"],[32,"Präpositionen mit Akkusativ"],[33,"Wechselpräpositionen mit Dativ"],[34,"Wechselpräpositionen mit Dativ und Akkusativ"],[35,"Lokale Präpositionen"]]],
+ ["Adjektive 1",[[36,"Adjektive: Nominativ und Akkusativ"],[37,"Adjektive: Nominativ, Akkusativ und Dativ"],[38,"Komparativ und Vergleichssätze"],[39,"Superlativ"]]],
+ ["Sätze und Satzverbindungen 1",[[40,"Hauptsätze verbinden (Position 0)"],[41,"Hauptsätze verbinden (Position 1)"],[42,"Nebensätze"],[43,"Positions- und Direktionaladverbien"],[44,"Partikeln"]]],
+ ["Wortbildung",[[45,"Komposita"],[46,"Aus Wörtern neue Wörter machen"],[47,"Zusammengesetzte Verben"],[48,"Genusregeln"]]],
+ ["Verben 3",[[49,"Präteritum"],[50,"Plusquamperfekt"],[51,"Reflexivpronomen im Dativ"],[52,"Trennbare und untrennbare Verben"],[53,"Verben mit Präpositionen"],[54,"Präpositionaladverbien und -pronomen"],[55,"Konjunktiv 2: Formen"],[56,"Konjunktiv 2: Gebrauch"],[57,"Passiv Teil 1"],[58,"Passiv Teil 2"],[59,"Vermutung und Zukunft mit Futur 1"],[60,"Funktionen von werden"],[61,"Das Verb lassen"],[62,"Positions- und Direktionsverben"]]],
+ ["Nomen 2",[[63,"Genitiv"],[64,"N-Deklination"],[65,"Adjektive für Personen als Nomen"],[66,"Adjektive als neutrale Nomen"]]],
+ ["Sätze und Satzverbindungen 2",[[67,"Indirekte Fragen"],[68,"Infinitiv mit zu"],[69,"Infinitiv ohne zu"],[70,"Relativsätze 1"],[71,"Relativsätze 2"],[72,"Temporale Nebensätze mit wenn und als"],[73,"Temporale Nebensätze"],[74,"Finalsätze"],[75,"Doppelkonnektoren"],[76,"Vergleichssätze"]]],
+ ["Präpositionen 2",[[77,"Präpositionen mit Genitiv"],[78,"Temporale Präpositionen 2"]]],
+ ["Adjektive 2",[[79,"Adjektivdeklination mit und ohne Artikel"],[80,"Partizip 1 als Adjektiv"]]]
+];
+
+const QUIZ = {
+1:{lesson:`<h3>Đại từ nhân xưng là gì?</h3>
+<p>Là từ đứng thay cho tên người hoặc vật để không phải lặp lại danh từ. Trong tiếng Đức, đại từ quyết định đuôi của động từ, nên đây là nền của mọi câu.</p>
+<table><tr><th></th><th>Số ít</th><th>Số nhiều</th></tr><tr><td>Ngôi 1</td><td><b>ich</b> (tôi)</td><td><b>wir</b> (chúng tôi)</td></tr><tr><td>Ngôi 2, thân mật</td><td><b>du</b> (bạn)</td><td><b>ihr</b> (các bạn)</td></tr><tr><td>Ngôi 2, lịch sự</td><td><b>Sie</b> (ông/bà)</td><td><b>Sie</b> (các ông/bà)</td></tr><tr><td>Ngôi 3</td><td><b>er</b> (anh ấy), <b>sie</b> (cô ấy), <b>es</b> (nó)</td><td><b>sie</b> (họ)</td></tr></table>
+<h3>du hay Sie?</h3>
+<p><b>du / ihr</b>: bạn bè, gia đình, trẻ em, sinh viên với nhau. <b>Sie</b>: người lớn chưa quen, trong công việc, ở cơ quan, cửa hàng. Sie luôn viết hoa và dùng cho cả một lẫn nhiều người.</p>
+<p class="ex"><b>Anna, woher kommst du?</b><br>Anna, bạn đến từ đâu?</p>
+<p class="ex"><b>Herr Braun, woher kommen Sie?</b><br>Ông Braun, ông đến từ đâu?</p>
+<h3>Ba chữ „sie“</h3>
+<p>Phân biệt bằng đuôi động từ và chữ hoa:</p>
+<table><tr><td>sie komm<b>t</b></td><td>cô ấy</td></tr><tr><td>sie komm<b>en</b></td><td>họ</td></tr><tr><td><b>S</b>ie komm<b>en</b></td><td>ông/bà (lịch sự)</td></tr></table>
+<h3>Đại từ cho đồ vật</h3>
+<p>Đồ vật không tự động là „es“. Đại từ đi theo giống ngữ pháp của danh từ: <b>der → er</b>, <b>die → sie</b>, <b>das → es</b>, số nhiều → <b>sie</b>.</p>
+<p class="ex"><b>Der Tisch ist neu. Er kostet 80 Euro.</b><br>Cái bàn mới. Nó giá 80 euro.</p>
+<p class="ex"><b>Die Lampe ist schön. Sie ist aus Italien.</b><br>Cái đèn đẹp. Nó là hàng Ý.</p>
+<p class="ex"><b>Das Sofa ist bequem. Es ist teuer.</b><br>Ghế sofa êm. Nó đắt.</p>
+<p class="warn"><b>Lỗi hay gặp:</b> dùng „es“ cho mọi đồ vật (do quen với „it“ trong tiếng Anh); nhầm <b>ihr</b> (các bạn) với <b>sie</b> (họ); quên viết hoa Sie lịch sự.</p>`,
+rule:`<p>Đại từ nhân xưng thay cho người hoặc vật.</p>
+<table><tr><th></th><th>Singular</th><th>Plural</th></tr><tr><td>1.</td><td>ich</td><td>wir</td></tr><tr><td>2.</td><td>du / Sie</td><td>ihr / Sie</td></tr><tr><td>3.</td><td>er, sie, es</td><td>sie</td></tr></table>
+<p>Với đồ vật, đại từ đi theo giống của danh từ: <b>der → er</b>, <b>die → sie</b>, <b>das → es</b>, số nhiều → <b>sie</b>. <b>Sie</b> (viết hoa) là ngôi lịch sự, dùng cho cả một và nhiều người.</p>`,
+qs:[
+{q:"Das ist Frau Lange. ___ ist Ärztin.",o:["Sie","Er","Es","Wir"],a:0,e:"Frau Lange là một phụ nữ → sie."},
+{q:"Das ist mein Bruder Tim. ___ wohnt in Köln.",o:["Sie","Es","Er","Ihr"],a:2,e:"Một người nam → er."},
+{q:"Der Tisch ist neu. ___ kostet 80 Euro.",o:["Es","Er","Sie","Du"],a:1,e:"der Tisch → er. Đồ vật giống đực vẫn dùng er, không phải es."},
+{q:"Die Lampe ist schön. ___ ist aus Italien.",o:["Er","Es","Ihr","Sie"],a:3,e:"die Lampe → sie."},
+{q:"Das Sofa ist bequem, aber ___ ist teuer.",o:["es","er","sie","wir"],a:0,e:"das Sofa → es."},
+{q:"Lena und ich lernen Deutsch. ___ gehen zusammen zum Kurs.",o:["Sie","Ihr","Wir","Ich"],a:2,e:"Người khác + ich = wir."},
+{q:"Herr Braun, woher kommen ___?",o:["du","ihr","er","Sie"],a:3,e:"Xưng hô lịch sự với Herr Braun → Sie."},
+{q:"Paul und Mia, wo wohnt ___?",o:["ihr","sie","du","Sie"],a:0,e:"Nói với hai người quen thân → ihr (động từ: wohnt)."},
+{q:"Die Kinder spielen im Garten. ___ sind laut.",o:["Es","Sie","Ihr","Er"],a:1,e:"Số nhiều → sie."},
+{q:"Hallo Anna, was machst ___ heute?",a:["du"],e:"Nói với một người quen thân → du (đuôi động từ -st)."}
+]},
+2:{lesson:`<h3>Dùng khi nào?</h3>
+<p>Thì hiện tại (Präsens) dùng cho việc đang xảy ra, thói quen, sự thật chung, và cả tương lai khi có từ chỉ thời gian.</p>
+<p class="ex"><b>Ich lerne Deutsch.</b><br>Tôi (đang) học tiếng Đức.</p>
+<p class="ex"><b>Morgen fahre ich nach Berlin.</b><br>Ngày mai tôi đi Berlin.</p>
+<h3>Cách chia</h3>
+<p>Tiếng Việt không chia động từ, tiếng Đức thì mỗi ngôi một đuôi. Bỏ <b>-en</b> của nguyên mẫu để lấy gốc, rồi thêm đuôi:</p>
+<table><tr><th colspan="2">kommen → gốc komm-</th></tr><tr><td>ich</td><td>komm<b>e</b></td></tr><tr><td>du</td><td>komm<b>st</b></td></tr><tr><td>er / sie / es</td><td>komm<b>t</b></td></tr><tr><td>wir</td><td>komm<b>en</b></td></tr><tr><td>ihr</td><td>komm<b>t</b></td></tr><tr><td>sie / Sie</td><td>komm<b>en</b></td></tr></table>
+<p>Mẹo nhớ: wir và sie/Sie luôn giống nguyên mẫu; er/sie/es và ihr cùng đuôi -t.</p>
+<h3>Hai trường hợp đặc biệt</h3>
+<p><b>Gốc kết thúc bằng -t hoặc -d</b> (arbeiten, antworten, reden, finden): chèn thêm <b>e</b> trước -st và -t cho dễ đọc.</p>
+<p class="ex"><b>du arbeitest, er arbeitet, ihr arbeitet</b></p>
+<p><b>Gốc kết thúc bằng -s, -ß, -z</b> (heißen, tanzen, reisen): ngôi du chỉ thêm <b>-t</b>, vì đã có âm s.</p>
+<p class="ex"><b>du heißt, du tanzt, du reist</b></p>
+<h3>Vị trí trong câu</h3>
+<p>Trong câu trần thuật, động từ đã chia luôn ở vị trí thứ hai.</p>
+<p class="ex"><b>Ich wohne in Frankfurt.</b> · <b>Heute arbeite ich nicht.</b></p>
+<p class="warn"><b>Lỗi hay gặp:</b> để nguyên mẫu không chia („Er kommen aus Japan“); viết „du arbeitst“; viết „du heißst“.</p>`,
+rule:`<p>Thì hiện tại: gốc động từ + đuôi.</p>
+<table><tr><td>ich</td><td>komm<b>e</b></td><td>wir</td><td>komm<b>en</b></td></tr><tr><td>du</td><td>komm<b>st</b></td><td>ihr</td><td>komm<b>t</b></td></tr><tr><td>er/sie/es</td><td>komm<b>t</b></td><td>sie/Sie</td><td>komm<b>en</b></td></tr></table>
+<p>Gốc kết thúc bằng <b>-t / -d</b> (arbeiten, reden, antworten): thêm <b>e</b> trước -st và -t → du arbeit<b>e</b>st, er arbeit<b>e</b>t. Gốc kết thúc bằng <b>-s / -ß / -z</b> (heißen, tanzen): ngôi du chỉ thêm <b>-t</b> → du heißt.</p>`,
+qs:[
+{q:"Woher ___ du? (kommen)",a:["kommst"],e:"du → -st."},
+{q:"Ich ___ in Frankfurt. (wohnen)",a:["wohne"],e:"ich → -e."},
+{q:"Er ___ bei einer Bank. (arbeiten)",a:["arbeitet"],e:"Gốc arbeit- kết thúc bằng -t → thêm e: arbeitet."},
+{q:"Wir ___ Deutsch. (lernen)",a:["lernen"],e:"wir → -en, giống nguyên mẫu."},
+{q:"___ ihr aus Vietnam? (kommen)",a:["kommt"],e:"ihr → -t."},
+{q:"Du ___ sehr gut. (tanzen)",a:["tanzt"],e:"Gốc tanz- kết thúc bằng -z → du chỉ thêm -t."},
+{q:"Wie ___ du? (heißen)",a:["heißt","heisst"],e:"Gốc heiß- kết thúc bằng -ß → du heißt."},
+{q:"Ihr ___ viel. (arbeiten)",a:["arbeitet"],e:"ihr + gốc kết thúc -t → arbeitet."},
+{q:"Frau Sato, wo ___ Sie?",o:["wohnst","wohnen","wohnt","wohne"],a:1,e:"Sie (lịch sự) → -en."},
+{q:"Maria ___ nicht.",o:["antwortt","antwortest","antwortet","antworten"],a:2,e:"sie (Maria) + gốc kết thúc -t → antwortet."}
+]},
+3:{lesson:`<h3>sein (là, thì, ở)</h3>
+<p>Dùng để nói tên, nghề nghiệp, quốc tịch, tính chất, tuổi và nơi đang ở.</p>
+<table><tr><td>ich <b>bin</b></td><td>wir <b>sind</b></td></tr><tr><td>du <b>bist</b></td><td>ihr <b>seid</b></td></tr><tr><td>er/sie/es <b>ist</b></td><td>sie/Sie <b>sind</b></td></tr></table>
+<p class="ex"><b>Ich bin Student.</b><br>Tôi là sinh viên. (nghề nghiệp không có mạo từ)</p>
+<p class="ex"><b>Sie ist 25 Jahre alt.</b><br>Cô ấy 25 tuổi. (tuổi dùng sein)</p>
+<p class="ex"><b>Wir sind in Frankfurt.</b><br>Chúng tôi đang ở Frankfurt.</p>
+<h3>haben (có)</h3>
+<p>Dùng để nói sở hữu, và trong nhiều cụm cố định: Zeit haben (có thời gian), Hunger / Durst haben (đói / khát), Angst haben (sợ).</p>
+<table><tr><td>ich <b>habe</b></td><td>wir <b>haben</b></td></tr><tr><td>du <b>hast</b></td><td>ihr <b>habt</b></td></tr><tr><td>er/sie/es <b>hat</b></td><td>sie/Sie <b>haben</b></td></tr></table>
+<p class="ex"><b>Hast du Zeit?</b><br>Bạn có thời gian không?</p>
+<p class="ex"><b>Er hat zwei Kinder.</b><br>Anh ấy có hai con.</p>
+<h3>möchten (muốn, lịch sự)</h3>
+<p>Dùng khi gọi món, đề nghị, nói mong muốn. Đi với danh từ, hoặc với một động từ nguyên mẫu ở cuối câu.</p>
+<table><tr><td>ich <b>möchte</b></td><td>wir <b>möchten</b></td></tr><tr><td>du <b>möchtest</b></td><td>ihr <b>möchtet</b></td></tr><tr><td>er/sie/es <b>möchte</b></td><td>sie/Sie <b>möchten</b></td></tr></table>
+<p class="ex"><b>Ich möchte einen Kaffee.</b><br>Tôi muốn một ly cà phê.</p>
+<p class="ex"><b>Sie möchte Deutsch lernen.</b><br>Cô ấy muốn học tiếng Đức.</p>
+<p class="warn"><b>Lỗi hay gặp:</b> „Ich habe 25 Jahre“ (đúng: Ich bin 25 Jahre alt); „Ich bin ein Student“ (đúng: Ich bin Student); „er möchtet“ (đúng: er möchte); nhầm <b>seid</b> (ihr seid) với <b>seit</b> (từ khi).</p>`,
+rule:`<p><b>sein</b> và <b>haben</b> chia bất quy tắc, phải thuộc.</p>
+<table><tr><th></th><th>sein</th><th>haben</th><th>möchten</th></tr><tr><td>ich</td><td>bin</td><td>habe</td><td>möchte</td></tr><tr><td>du</td><td>bist</td><td>hast</td><td>möchtest</td></tr><tr><td>er/sie/es</td><td>ist</td><td>hat</td><td>möchte</td></tr><tr><td>wir</td><td>sind</td><td>haben</td><td>möchten</td></tr><tr><td>ihr</td><td>seid</td><td>habt</td><td>möchtet</td></tr><tr><td>sie/Sie</td><td>sind</td><td>haben</td><td>möchten</td></tr></table>
+<p>Lưu ý: <b>möchten</b> ở ngôi er/sie/es không có đuôi -t (er möchte).</p>`,
+qs:[
+{q:"Ich ___ Student. (sein)",a:["bin"],e:"ich bin."},
+{q:"___ du Zeit? (haben)",a:["hast"],e:"du hast (mất chữ b)."},
+{q:"Wir ___ aus Hanoi. (sein)",a:["sind"],e:"wir sind."},
+{q:"Er ___ einen Kaffee. (möchten)",a:["möchte"],e:"er möchte, không thêm -t."},
+{q:"Ihr ___ müde. (sein)",a:["seid"],e:"ihr seid (viết với d, khác với giới từ seit)."},
+{q:"Anna ___ zwei Kinder. (haben)",a:["hat"],e:"sie hat."},
+{q:"Du ___ sehr nett. (sein)",a:["bist"],e:"du bist."},
+{q:"___ ihr Hunger? (haben)",a:["habt"],e:"ihr habt."},
+{q:"Ich ___ ein Wasser, bitte.",o:["möchtet","möchte","möchtest","möchten"],a:1,e:"ich möchte."},
+{q:"Das ___ meine Eltern.",o:["ist","seid","sind","bin"],a:2,e:"Eltern là số nhiều → Das sind …"}
+]},
+4:{lesson:`<h3>Hiện tượng gì?</h3>
+<p>Một nhóm động từ thông dụng đổi nguyên âm trong gốc khi chia ở thì hiện tại. Việc đổi này <b>chỉ xảy ra ở hai ngôi: du và er/sie/es</b>. Đuôi động từ vẫn như bình thường.</p>
+<table><tr><th></th><th>sprechen (e → i)</th><th>lesen (e → ie)</th><th>fahren (a → ä)</th></tr><tr><td>ich</td><td>spreche</td><td>lese</td><td>fahre</td></tr><tr><td>du</td><td>spr<b>i</b>chst</td><td>l<b>ie</b>st</td><td>f<b>ä</b>hrst</td></tr><tr><td>er/sie/es</td><td>spr<b>i</b>cht</td><td>l<b>ie</b>st</td><td>f<b>ä</b>hrt</td></tr><tr><td>wir</td><td>sprechen</td><td>lesen</td><td>fahren</td></tr><tr><td>ihr</td><td>sprecht</td><td>lest</td><td>fahrt</td></tr><tr><td>sie/Sie</td><td>sprechen</td><td>lesen</td><td>fahren</td></tr></table>
+<h3>Các động từ cần thuộc</h3>
+<table><tr><td><b>e → i</b></td><td>sprechen, essen, helfen, geben, treffen, vergessen, nehmen</td></tr><tr><td><b>e → ie</b></td><td>lesen, sehen, empfehlen</td></tr><tr><td><b>a → ä</b></td><td>fahren, schlafen, tragen, waschen, gefallen</td></tr><tr><td><b>au → äu</b></td><td>laufen</td></tr></table>
+<p>Không có quy tắc để đoán động từ nào đổi; phải học từng từ. Khi học từ mới, nên ghi kèm ngôi thứ ba: <b>fahren, er fährt</b>.</p>
+<h3>Mấy dạng dễ sai</h3>
+<p class="ex"><b>nehmen → du nimmst, er nimmt</b><br>đổi cả phụ âm: h biến mất, m gấp đôi</p>
+<p class="ex"><b>essen → du isst, er isst</b> · <b>lesen → du liest, er liest</b><br>gốc kết thúc bằng -s nên ngôi du và er giống nhau</p>
+<p class="ex"><b>Er spricht Deutsch, aber ihr sprecht Englisch.</b><br>Anh ấy nói tiếng Đức, còn các bạn nói tiếng Anh. (ihr không đổi)</p>
+<p class="warn"><b>Lỗi hay gặp:</b> đổi nguyên âm ở cả ngôi ich hoặc ihr („ich spriche“, „ihr fährt“); quên đổi ở ngôi er („er fahrt“, „er lest“).</p>`,
+rule:`<p>Một số động từ đổi nguyên âm gốc, <b>chỉ ở ngôi du và er/sie/es</b>.</p>
+<table><tr><td>e → i</td><td>sprechen: du spr<b>i</b>chst, er spr<b>i</b>cht · essen, helfen, geben, nehmen (du n<b>imm</b>st)</td></tr><tr><td>e → ie</td><td>lesen: du l<b>ie</b>st, er l<b>ie</b>st · sehen</td></tr><tr><td>a → ä</td><td>fahren: du f<b>ä</b>hrst, er f<b>ä</b>hrt · schlafen, laufen (l<b>äu</b>ft)</td></tr></table>
+<p>Các ngôi ich, wir, ihr, sie/Sie không đổi: ich spreche, ihr sprecht.</p>`,
+qs:[
+{q:"Du ___ sehr schnell. (sprechen)",a:["sprichst"],e:"e → i ở ngôi du."},
+{q:"Er ___ gern Pizza. (essen)",a:["isst","ißt"],e:"e → i: er isst."},
+{q:"___ du gern Krimis? (lesen)",a:["liest"],e:"e → ie; gốc kết thúc -s nên du chỉ thêm -t: liest."},
+{q:"Lena ___ nach Berlin. (fahren)",a:["fährt"],e:"a → ä ở ngôi er/sie/es."},
+{q:"Mein Sohn ___ bis zehn Uhr. (schlafen)",a:["schläft"],e:"a → ä."},
+{q:"Du ___ einen Film. (sehen)",a:["siehst"],e:"e → ie."},
+{q:"Er ___ den Bus. (nehmen)",a:["nimmt"],e:"nehmen bất quy tắc: nimmst, nimmt."},
+{q:"Ihr ___ gut Deutsch. (sprechen)",a:["sprecht"],e:"Ngôi ihr không đổi nguyên âm."},
+{q:"___ du mir? (helfen)",a:["hilfst"],e:"e → i."},
+{q:"Tom ___ jeden Morgen im Park.",o:["lauft","läufst","laufen","läuft"],a:3,e:"laufen: au → äu ở ngôi er."}
+]},
+5:{lesson:`<h3>Modalverb là gì?</h3>
+<p>Là động từ khuyết thiếu: können, müssen, wollen, dürfen, sollen (và möchten). Chúng không nói hành động, mà nói thái độ với hành động: có thể, phải, muốn, được phép, nên. Vì vậy chúng gần như luôn đi kèm một động từ thứ hai.</p>
+<h3>Cách chia</h3>
+<p>Hai điểm khác động từ thường: ngôi <b>ich</b> và <b>er/sie/es</b> giống nhau và <b>không có đuôi</b>; ở số ít, nguyên âm thường đổi.</p>
+<table><tr><th></th><th>können</th><th>müssen</th><th>wollen</th><th>dürfen</th><th>sollen</th></tr><tr><td>ich</td><td>kann</td><td>muss</td><td>will</td><td>darf</td><td>soll</td></tr><tr><td>du</td><td>kannst</td><td>musst</td><td>willst</td><td>darfst</td><td>sollst</td></tr><tr><td>er/sie/es</td><td>kann</td><td>muss</td><td>will</td><td>darf</td><td>soll</td></tr><tr><td>wir</td><td>können</td><td>müssen</td><td>wollen</td><td>dürfen</td><td>sollen</td></tr><tr><td>ihr</td><td>könnt</td><td>müsst</td><td>wollt</td><td>dürft</td><td>sollt</td></tr><tr><td>sie/Sie</td><td>können</td><td>müssen</td><td>wollen</td><td>dürfen</td><td>sollen</td></tr></table>
+<h3>Vị trí trong câu: khung câu</h3>
+<p>Modalverb đã chia đứng ở <b>vị trí 2</b>, động từ chính ở dạng <b>nguyên mẫu, cuối câu</b>. Mọi thông tin khác nằm giữa hai động từ.</p>
+<p class="ex"><b>Ich <u>kann</u> heute nicht <u>kommen</u>.</b><br>Hôm nay tôi không đến được.</p>
+<p class="ex"><b>Morgen <u>muss</u> ich früh <u>aufstehen</u>.</b><br>Ngày mai tôi phải dậy sớm.</p>
+<p>Trong câu hỏi, Modalverb chuyển lên đầu (câu hỏi có/không) hoặc đứng sau từ hỏi; nguyên mẫu vẫn ở cuối.</p>
+<p class="ex"><b><u>Kannst</u> du <u>schwimmen</u>?</b><br>Bạn biết bơi không?</p>
+<p class="ex"><b>Wann <u>musst</u> du <u>arbeiten</u>?</b><br>Khi nào bạn phải làm việc?</p>
+<p class="warn"><b>Lỗi hay gặp:</b> đặt nguyên mẫu ngay sau Modalverb như tiếng Việt và tiếng Anh („Ich kann kommen heute“); thêm đuôi ở ngôi thứ ba („er kannt“, „sie musst“); thêm „zu“ („Ich muss zu arbeiten“).</p>`,
+rule:`<p>Động từ khuyết thiếu: ngôi <b>ich</b> và <b>er/sie/es</b> giống nhau và <b>không có đuôi</b>; số ít thường đổi nguyên âm.</p>
+<table><tr><th></th><th>können</th><th>müssen</th><th>wollen</th><th>dürfen</th><th>sollen</th></tr><tr><td>ich / er</td><td>kann</td><td>muss</td><td>will</td><td>darf</td><td>soll</td></tr><tr><td>du</td><td>kannst</td><td>musst</td><td>willst</td><td>darfst</td><td>sollst</td></tr><tr><td>wir / sie</td><td>können</td><td>müssen</td><td>wollen</td><td>dürfen</td><td>sollen</td></tr><tr><td>ihr</td><td>könnt</td><td>müsst</td><td>wollt</td><td>dürft</td><td>sollt</td></tr></table>
+<p>Vị trí: động từ khuyết thiếu ở <b>vị trí 2</b>, động từ chính ở dạng nguyên mẫu <b>cuối câu</b>: Ich <b>kann</b> heute nicht <b>kommen</b>.</p>`,
+qs:[
+{q:"Ich ___ heute arbeiten. (müssen)",a:["muss","muß"],e:"ich muss, không có đuôi."},
+{q:"___ du schwimmen? (können)",a:["kannst"],e:"du kannst."},
+{q:"Er ___ nach Hause gehen. (wollen)",a:["will"],e:"er will, không thêm -t."},
+{q:"Wir ___ hier nicht parken. (dürfen)",a:["dürfen"],e:"Số nhiều giữ ü: wir dürfen."},
+{q:"Ihr ___ leise sein. (müssen)",a:["müsst","müßt"],e:"ihr müsst."},
+{q:"Mia ___ gut kochen. (können)",a:["kann"],e:"sie kann."},
+{q:"Du ___ hier nicht rauchen. (dürfen)",a:["darfst"],e:"Số ít đổi ü → a: du darfst."},
+{q:"Câu nào đúng trật tự từ?",o:["Ich kann kommen heute nicht.","Ich kann heute nicht kommen.","Ich heute kann nicht kommen.","Ich kommen kann heute nicht."],a:1,e:"Modalverb ở vị trí 2, nguyên mẫu cuối câu."},
+{q:"Morgen ___ ich früh aufstehen.",o:["musst","müssen","muss","müsst"],a:2,e:"Chủ ngữ là ich → muss. Morgen đứng đầu nên động từ vẫn ở vị trí 2."},
+{q:"Câu nào đúng trật tự từ?",o:["Wir wollen am Samstag ins Kino gehen.","Wir wollen gehen am Samstag ins Kino.","Wir am Samstag wollen ins Kino gehen.","Wir gehen wollen am Samstag ins Kino."],a:0,e:"wollen ở vị trí 2, gehen cuối câu."}
+]},
+6:{lesson:`<h3>Mỗi Modalverb một nghĩa</h3>
+<p><b>können</b>: khả năng, kỹ năng, hoặc điều kiện cho phép.</p>
+<p class="ex"><b>Sie kann sehr gut kochen.</b><br>Cô ấy nấu ăn rất giỏi.</p>
+<p><b>müssen</b>: bắt buộc, cần thiết, không có lựa chọn khác.</p>
+<p class="ex"><b>Ich muss morgen arbeiten.</b><br>Ngày mai tôi phải đi làm.</p>
+<p><b>dürfen</b>: được phép.</p>
+<p class="ex"><b>Darf ich hier fotografieren?</b><br>Tôi được chụp ảnh ở đây không?</p>
+<p><b>wollen</b>: ý muốn mạnh, kế hoạch đã quyết.</p>
+<p class="ex"><b>Ich will Architekt werden.</b><br>Tôi muốn trở thành kiến trúc sư.</p>
+<p><b>möchten</b>: mong muốn, nói lịch sự.</p>
+<p class="ex"><b>Ich möchte bitte einen Tee.</b><br>Cho tôi một tách trà.</p>
+<p><b>sollen</b>: người khác yêu cầu hoặc khuyên; mình chỉ truyền lại.</p>
+<p class="ex"><b>Der Arzt sagt, ich soll mehr schlafen.</b><br>Bác sĩ bảo tôi nên ngủ nhiều hơn.</p>
+<h3>Các cặp dễ nhầm</h3>
+<table><tr><td><b>müssen</b> / <b>sollen</b></td><td>müssen: tự mình thấy cần, hoặc hoàn cảnh bắt buộc. sollen: có người khác bảo.</td></tr><tr><td><b>wollen</b> / <b>möchten</b></td><td>Cùng là muốn, nhưng với người lạ, trong quán, ở cơ quan thì dùng möchten.</td></tr><tr><td><b>nicht müssen</b> / <b>nicht dürfen</b></td><td>nicht müssen = không cần (vẫn được làm). nicht dürfen = bị cấm.</td></tr></table>
+<p class="ex"><b>Du musst nicht kommen.</b><br>Bạn không cần đến.</p>
+<p class="ex"><b>Du darfst nicht kommen.</b><br>Bạn không được đến.</p>
+<p class="warn"><b>Lỗi hay gặp:</b> dịch „không được“ thành „nicht müssen“ theo kiểu „must not“ của tiếng Anh. Trong tiếng Đức, cấm là <b>nicht dürfen</b>.</p>`,
+rule:`<table><tr><td><b>können</b></td><td>khả năng, có thể làm được</td></tr><tr><td><b>müssen</b></td><td>bắt buộc, cần thiết · <b>nicht müssen</b> = không cần</td></tr><tr><td><b>dürfen</b></td><td>được phép · <b>nicht dürfen</b> = bị cấm</td></tr><tr><td><b>wollen</b></td><td>ý muốn, kế hoạch (mạnh)</td></tr><tr><td><b>möchten</b></td><td>mong muốn, lịch sự</td></tr><tr><td><b>sollen</b></td><td>người khác yêu cầu, lời khuyên được truyền lại</td></tr></table>`,
+qs:[
+{q:"Hier ___ man nicht parken. Das ist verboten.",o:["muss","will","darf","möchte"],a:2,e:"nicht dürfen = bị cấm."},
+{q:"Der Arzt hat gesagt: „Trinken Sie mehr Wasser!“ → Ich ___ mehr Wasser trinken.",o:["soll","darf","will","möchte"],a:0,e:"Truyền lại yêu cầu của người khác → sollen."},
+{q:"Ich habe kein Geld. Ich ___ das Auto nicht kaufen.",o:["muss","kann","soll","möchte"],a:1,e:"Không có khả năng (vì thiếu tiền) → nicht können."},
+{q:"Morgen habe ich eine Prüfung. Ich ___ heute lernen.",o:["darf","wollt","könnt","muss"],a:3,e:"Cần thiết → müssen."},
+{q:"Das ist mein Plan: Ich ___ Architekt werden.",o:["will","muss","darf","soll"],a:0,e:"Ý muốn, kế hoạch của bản thân → wollen."},
+{q:"Im Restaurant: „Ich ___ bitte einen Tee.“",o:["will","muss","möchte","darf"],a:2,e:"Gọi món lịch sự → möchte. „Ich will“ nghe thiếu lịch sự."},
+{q:"„___ ich hier fotografieren?“ – „Ja, das ist erlaubt.“",o:["Muss","Darf","Will","Soll"],a:1,e:"Hỏi xin phép → dürfen."},
+{q:"Sie ___ sehr gut Klavier spielen. Sie hat zehn Jahre geübt.",o:["darf","muss","soll","kann"],a:3,e:"Khả năng, kỹ năng → können."},
+{q:"Kinder unter 16 ___ keinen Alkohol kaufen.",o:["dürfen","müssen","wollen","möchten"],a:0,e:"Quy định cấm → (nicht/kein) dürfen."},
+{q:"„Du musst nicht kommen“ nghĩa là gì?",o:["Bạn không được đến","Bạn không thể đến","Bạn không cần đến","Bạn không muốn đến"],a:2,e:"nicht müssen = không cần. „Không được“ là nicht dürfen."}
+]},
+7:{lesson:`<h3>Động từ tách là gì?</h3>
+<p>Nhiều động từ tiếng Đức gồm một tiền tố ghép với động từ gốc, và tiền tố làm đổi nghĩa: kommen (đến) → <b>an</b>kommen (đến nơi), <b>mit</b>kommen (đi cùng), <b>zurück</b>kommen (quay lại). Khi chia trong câu, tiền tố tách ra và chạy xuống <b>cuối câu</b>.</p>
+<h3>Vị trí trong câu</h3>
+<p>Phần động từ chia theo chủ ngữ ở vị trí 2, tiền tố ở cuối. Giống khung câu của Modalverb.</p>
+<p class="ex"><b>einkaufen → Ich <u>kaufe</u> im Supermarkt <u>ein</u>.</b><br>Tôi mua đồ ở siêu thị.</p>
+<p class="ex"><b>aufstehen → Wann <u>stehst</u> du <u>auf</u>?</b><br>Khi nào bạn thức dậy?</p>
+<p class="ex"><b>anrufen → <u>Rufst</u> du mich morgen <u>an</u>?</b><br>Mai bạn gọi cho tôi nhé?</p>
+<p>Khi có Modalverb, động từ tách trở về dạng nguyên mẫu viết liền ở cuối câu:</p>
+<p class="ex"><b>Ich muss heute <u>einkaufen</u>.</b><br>Hôm nay tôi phải đi mua đồ.</p>
+<h3>Tiền tố tách được thường gặp</h3>
+<table><tr><td><b>an-</b></td><td>anrufen, ankommen, anfangen</td></tr><tr><td><b>auf-</b></td><td>aufstehen, aufmachen, aufräumen</td></tr><tr><td><b>aus-</b></td><td>ausgehen, aussteigen</td></tr><tr><td><b>ein-</b></td><td>einkaufen, einsteigen, einladen</td></tr><tr><td><b>ab-, mit-, zu-, zurück-, fern-, vor-</b></td><td>abfahren, mitkommen, zumachen, zurückkommen, fernsehen, vorbereiten</td></tr></table>
+<h3>Tiền tố không bao giờ tách</h3>
+<p><b>be-, ge-, er-, ver-, zer-, ent-, emp-, miss-</b>: bekommen, verstehen, erzählen, gefallen.</p>
+<p class="ex"><b>Ich bekomme einen Brief.</b> · <b>Ich verstehe das nicht.</b></p>
+<p>Mẹo nghe: tiền tố tách được mang trọng âm (<b>EIN</b>kaufen), tiền tố không tách thì trọng âm rơi vào gốc (be<b>KOM</b>men).</p>
+<p class="warn"><b>Lỗi hay gặp:</b> không tách („Ich einkaufe heute“); để tiền tố ngay sau động từ („Ich rufe an dich“); quên đổi nguyên âm ở phần gốc („Der Zug fahrt ab“, đúng: fährt ab).</p>`,
+rule:`<p>Động từ tách: tiền tố (an-, auf-, ab-, ein-, mit-, zu-, fern-, zurück- …) tách ra và đứng <b>cuối câu</b>; phần động từ chia ở vị trí 2.</p>
+<p>einkaufen → Ich <b>kaufe</b> im Supermarkt <b>ein</b>.</p>
+<p>Với Modalverb, động từ không tách và đứng cuối câu ở dạng nguyên mẫu: Ich muss früh <b>aufstehen</b>.</p>
+<p>Tiền tố <b>be-, ge-, er-, ver-, zer-, ent-, emp-, miss-</b> không bao giờ tách: bekommen → Ich bekomme …</p>`,
+qs:[
+{q:"Der Zug ___ um 8 Uhr ab. (abfahren)",a:["fährt"],e:"Phần động từ chia theo er, và fahren đổi a → ä."},
+{q:"Ich stehe um sechs Uhr ___. (aufstehen)",a:["auf"],e:"Tiền tố auf đứng cuối câu."},
+{q:"Wann fängt der Kurs ___? (anfangen)",a:["an"],e:"Trong câu hỏi, tiền tố vẫn ở cuối."},
+{q:"Er ___ seine Mutter an. (anrufen)",a:["ruft"],e:"er ruft … an."},
+{q:"Wir kaufen heute ___. (einkaufen)",a:["ein"],e:"einkaufen → kaufen … ein."},
+{q:"Sie sieht am Abend ___. (fernsehen)",a:["fern"],e:"fernsehen → sieht … fern."},
+{q:"Kommst du heute Abend ___? (mitkommen)",a:["mit"],e:"mitkommen → kommst … mit."},
+{q:"Câu nào đúng?",o:["Ich anrufe dich morgen.","Ich rufe an dich morgen.","Ich rufe dich morgen an.","Ich an rufe dich morgen."],a:2,e:"Động từ ở vị trí 2, tiền tố cuối câu."},
+{q:"Câu nào đúng?",o:["Ich muss morgen früh stehen auf.","Ich muss morgen früh aufstehen.","Ich muss auf morgen früh stehen.","Ich stehe muss morgen früh auf."],a:1,e:"Có Modalverb → nguyên mẫu viết liền, cuối câu."},
+{q:"Động từ nào KHÔNG tách?",o:["ankommen","mitkommen","zurückkommen","bekommen"],a:3,e:"Tiền tố be- không tách."}
+]},
+8:{lesson:`<h3>Dùng khi nào?</h3>
+<p>Imperativ là thể mệnh lệnh: yêu cầu, hướng dẫn, khuyên, mời. Thêm <b>bitte</b> để lịch sự hơn. Động từ luôn đứng đầu câu.</p>
+<h3>Ba dạng, theo người nghe</h3>
+<table><tr><th>Nói với</th><th>Cách tạo</th><th>kommen</th><th>warten</th></tr><tr><td><b>Sie</b></td><td>nguyên mẫu + Sie</td><td>Kommen Sie!</td><td>Warten Sie!</td></tr><tr><td><b>ihr</b></td><td>dạng ihr, bỏ chữ ihr</td><td>Kommt!</td><td>Wartet!</td></tr><tr><td><b>du</b></td><td>dạng du, bỏ đuôi -st và bỏ chữ du</td><td>Komm!</td><td>Warte!</td></tr></table>
+<p>Ngôi du: gốc kết thúc bằng -t, -d, -ig thì thêm <b>-e</b>: Warte! Arbeite! Entschuldige!</p>
+<h3>Động từ đổi nguyên âm</h3>
+<p><b>e → i / ie</b>: giữ nguyên thay đổi.</p>
+<p class="ex"><b>du sprichst → Sprich!</b> · <b>du liest → Lies!</b> · <b>du hilfst → Hilf!</b> · <b>du nimmst → Nimm!</b></p>
+<p><b>a → ä</b>: bỏ umlaut, quay về a.</p>
+<p class="ex"><b>du fährst → Fahr!</b> · <b>du schläfst → Schlaf!</b></p>
+<h3>sein và haben</h3>
+<table><tr><th></th><th>du</th><th>ihr</th><th>Sie</th></tr><tr><td>sein</td><td>Sei!</td><td>Seid!</td><td>Seien Sie!</td></tr><tr><td>haben</td><td>Hab!</td><td>Habt!</td><td>Haben Sie!</td></tr></table>
+<p class="ex"><b>Sei bitte leise!</b><br>Làm ơn giữ yên lặng!</p>
+<h3>Động từ tách</h3>
+<p>Tiền tố vẫn ra cuối câu.</p>
+<p class="ex"><b>Steh auf!</b> · <b>Macht bitte die Tür zu!</b> · <b>Rufen Sie mich an!</b></p>
+<p class="warn"><b>Lỗi hay gặp:</b> giữ đuôi -st ở ngôi du („Sprichst langsam!“); giữ umlaut („Fähr!“); quên chữ Sie ở dạng lịch sự („Kommen bitte!“).</p>`,
+rule:`<table><tr><td><b>Sie</b></td><td>nguyên mẫu + Sie</td><td>Kommen Sie!</td></tr><tr><td><b>ihr</b></td><td>dạng ihr, bỏ chủ ngữ</td><td>Kommt!</td></tr><tr><td><b>du</b></td><td>dạng du, bỏ -st và bỏ du</td><td>Komm!</td></tr></table>
+<p>Ngôi du: động từ đổi <b>e → i/ie</b> giữ nguyên thay đổi (sprich, lies, hilf, nimm), nhưng <b>a → ä</b> thì bỏ umlaut (fahr, schlaf). <b>sein</b>: Sei! / Seid! / Seien Sie! Động từ tách: Steh auf!</p>`,
+qs:[
+{q:"___ Sie bitte herein! (kommen, Sie)",a:["kommen"],e:"Ngôi Sie: nguyên mẫu + Sie."},
+{q:"___ bitte langsam! (sprechen, du)",a:["sprich"],e:"du sprichst → bỏ -st → sprich."},
+{q:"___ mir bitte! (helfen, du)",a:["hilf"],e:"du hilfst → hilf."},
+{q:"___ bitte leise! (sein, ihr)",a:["seid"],e:"sein, ngôi ihr → Seid!"},
+{q:"___ das Buch! (lesen, du)",a:["lies"],e:"du liest → lies."},
+{q:"___ die Tür zu! (zumachen, ihr)",a:["macht"],e:"Dạng ihr, tiền tố zu ở cuối."},
+{q:"___ Sie bitte Platz! (nehmen, Sie)",a:["nehmen"],e:"Ngôi Sie không đổi nguyên âm."},
+{q:"___ nicht so schnell! (fahren, du)",a:["fahr","fahre"],e:"a → ä không áp dụng trong Imperativ: fahr, không phải fähr."},
+{q:"___ bitte ruhig! (sein, du)",o:["Bist","Seid","Sei","Sein"],a:2,e:"sein, ngôi du → Sei!"},
+{q:"Imperativ (du) của „aufstehen“ là gì?",o:["Aufsteh!","Steh auf!","Stehst auf!","Auf steh!"],a:1,e:"Động từ tách: tiền tố ra cuối."}
+]}
+};
+
+/* ============================ ỨNG DỤNG ============================ */
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(){try{return JSON.parse(localStorage.getItem('gaq')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('gaq',JSON.stringify(v))}catch(e){}}};
+let best=store.get();
+const title=k=>{for(const g of GROUPS)for(const c of g[1])if(c[0]==k)return c[1];return''};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>s.trim().toLowerCase().replace(/[.!?,]+$/,'').replace(/ß/g,'ss');
+let tm;
+function go(k,de){const u=new URL(location.href);u.searchParams.delete('k');u.searchParams.delete('de');if(k)u.searchParams.set('k',k);if(de)u.searchParams.set('de',de);try{history.pushState(null,'',u)}catch(e){}show(k,de)}
+function route(){const s=new URL(location.href).searchParams;show(s.get('k'),s.get('de'))}
+function show(k,de){clearInterval(tm);if(de&&EXAMS[de])exam(de);else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0)}
+onpopstate=()=>route();
+
+function home(){
+ let h='<h1>Deutsch Grammatik Quiz</h1><p class="sub">Luyện theo thứ tự chương của Grammatik aktiv A1–B1. Câu hỏi soạn mới, không trùng với sách.</p>';
+ h+='<h2>Đề ôn tập</h2>';
+ for(const id in EXAMS){const E=EXAMS[id],b=best['de'+id];h+=`<button class="row" data-de="${id}"><span class="num">Đ${id}</span><span class="t">${E.title}<br><span class="lv">${E.sub} · ${E.time} phút</span></span>${b!=null?`<span class="badge">${b}/10</span>`:''}</button>`}
+ for(const [g,cs] of GROUPS){h+=`<h2>${esc(g)}</h2>`;
+  for(const [k,t] of cs){const on=!!QUIZ[k],b=best[k];
+   h+=`<button class="row" ${on?`data-k="${k}"`:'disabled'}><span class="num">${k}</span><span class="t">${esc(t)}${on?'':'<br><span class="lv">chưa soạn</span>'}</span>${b!=null?`<span class="badge">${b}/${QUIZ[k].qs.length}</span>`:''}</button>`}}
+ app.innerHTML=h;
+ app.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>go(b.dataset.k));
+ app.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>go(null,b.dataset.de));
+}
+function chapter(k){
+ const c=QUIZ[k];
+ app.innerHTML=`<a class="back">← Tất cả các chương</a><h1>${k}. ${esc(title(k))}</h1>
+ <p class="sub">Bài giảng · đọc xong rồi làm bài tập ở cuối trang</p>
+ <div class="card rule lesson">${c.lesson||c.rule}</div>
+ <div class="card rule"><h3>Tóm tắt</h3>${c.rule}</div>
+ <div class="acts"><button class="btn" id="s">Làm bài tập (${c.qs.length} câu)</button></div>`;
+ app.querySelector('.back').onclick=()=>go(null);
+ app.querySelector('#s').onclick=()=>run(k,c.qs,true);
+}
+function run(k,list,full){
+ const qs=shuffle(list);let i=0,score=0;const wrong=[];
+ function show(){
+  const q=qs[i];
+  let h=`<div class="top"><a class="back">← ${k}. ${esc(title(k))}</a><span>${i+1} / ${qs.length}</span></div>
+  <div class="bar"><i style="width:${i/qs.length*100}%"></i></div><div class="card"><p class="q">${esc(q.q)}</p>`;
+  if(q.o){const order=shuffle(q.o.map((_,n)=>n));h+=order.map(n=>`<button class="opt" data-n="${n}">${esc(q.o[n])}</button>`).join('')}
+  else h+=`<form><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Điền từ còn thiếu"> <button class="btn">Kiểm tra</button>
+   <div class="keys">${['ä','ö','ü','ß'].map(c=>`<button type="button">${c}</button>`).join('')}</div></form>`;
+  h+=`<div id="fb"></div></div><details class="card rule"><summary>Xem lại tóm tắt</summary>${QUIZ[k].rule}</details>`;app.innerHTML=h;
+  app.querySelector('.back').onclick=()=>go(k);
+  if(q.o)app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+   const ok=+b.dataset.n===q.a;
+   app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.n===q.a)x.classList.add('ok')});
+   if(!ok)b.classList.add('no');done(ok,q.o[q.a])});
+  else{const f=app.querySelector('form'),inp=f.querySelector('input');inp.focus();
+   f.querySelectorAll('.keys button').forEach(b=>b.onclick=()=>{inp.value+=b.textContent;inp.focus()});
+   f.onsubmit=e=>{e.preventDefault();if(!inp.value.trim())return;
+    const ok=q.a.map(norm).includes(norm(inp.value));inp.disabled=true;f.querySelector('.btn').disabled=true;done(ok,q.a[0])}}
+ }
+ function done(ok,ans){
+  const q=qs[i];if(ok)score++;else wrong.push(q);
+  const fb=app.querySelector('#fb');
+  fb.innerHTML=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'Đúng.':'Chưa đúng.'}</b> ${ok?'':'Đáp án: <b>'+esc(ans)+'</b>. '}${esc(q.e)}</div>
+  <div class="acts"><button class="btn" id="n">${i+1<qs.length?'Câu tiếp':'Xem kết quả'}</button></div>`;
+  const n=fb.querySelector('#n');n.focus();n.onclick=()=>{i++;i<qs.length?show():end()};
+ }
+ function end(){
+  if(full&&(best[k]==null||score>best[k])){best[k]=score;store.set(best)}
+  app.innerHTML=`<a class="back">← Tất cả các chương</a><h1>${k}. ${esc(title(k))}</h1>
+  <div class="card"><p class="q">Kết quả: ${score} / ${qs.length}</p>
+  ${wrong.length?'<p>Câu sai:</p><ul>'+wrong.map(w=>`<li>${esc(w.q)} → <b>${esc(w.o?w.o[w.a]:w.a[0])}</b></li>`).join('')+'</ul>':'<p>Không sai câu nào.</p>'}
+  <div class="acts">${wrong.length?'<button class="btn" id="w">Làm lại câu sai</button>':''}<button class="btn ghost" id="r">Làm lại cả bài</button>${QUIZ[k+1]?'<button class="btn ghost" id="x">Chương tiếp</button>':''}</div></div>`;
+  app.querySelector('.back').onclick=()=>go(null);
+  const $=s=>app.querySelector(s);
+  if($('#w'))$('#w').onclick=()=>run(k,wrong,false);
+  $('#r').onclick=()=>run(k,QUIZ[k].qs,true);
+  if($('#x'))$('#x').onclick=()=>go(k+1);
+ }
+ show();
+}
+/* =====================================================================
+   ĐỀ ÔN TẬP — dạng đề thi: làm hết cả đề rồi nộp bài, chấm thang 10.
+   Dạng bài (type): mc = chọn A/B/C/D · err = tìm lỗi sai trong 4 phần gạch chân {A|...}
+   fill = điền vào ___ · write = viết lại câu · item có text chứa {1},{2}... = đục lỗ đoạn văn
+   ===================================================================== */
+const EXAMS={
+1:{title:"ĐỀ ÔN TẬP SỐ 1",sub:"Verben 1 · Kapitel 1–8",code:"101",time:60,secs:[
+ {name:"PHẦN A. TRẮC NGHIỆM",items:[
+  {h:"Chọn đáp án đúng (A, B, C hoặc D) để hoàn thành mỗi câu sau — từ vựng.",s:"Từ vựng",pts:1.2,type:'mc',qs:[
+   {q:"Ich _____ jeden Morgen einen Kaffee.",o:["esse","trinke","lese","höre"],a:1,e:"trinken = uống."},
+   {q:"Sie ist Ärztin. Sie _____ im Krankenhaus.",o:["arbeitet","studiert","spielt","kocht"],a:0,e:"arbeiten = làm việc."},
+   {q:"Der Film _____ um 20 Uhr an.",o:["ruft","fängt","steht","kauft"],a:1,e:"anfangen = bắt đầu → fängt … an."},
+   {q:"Es ist kalt. _____ bitte das Fenster zu!",o:["Mach","Steh","Ruf","Kauf"],a:0,e:"zumachen = đóng lại."},
+   {q:"Am Abend _____ wir gern fern.",o:["hören","sehen","lesen","sprechen"],a:1,e:"fernsehen = xem tivi."},
+   {q:"„Wie _____ du?“ ~ „Ich bin Linh.“",o:["bist","heißt","kommst","wohnst"],a:1,e:"Wie heißt du? = Bạn tên gì?"},
+   {q:"Ich habe Hunger. Ich _____ etwas essen.",o:["möchte","heiße","habe","bin"],a:0,e:"möchten + nguyên mẫu = muốn làm gì."},
+   {q:"Kannst du mir bitte _____? Die Tasche ist sehr schwer.",o:["helfen","sprechen","schlafen","fahren"],a:0,e:"helfen = giúp."}]},
+  {h:"Chọn đáp án đúng (A, B, C hoặc D) để hoàn thành mỗi câu sau — ngữ pháp.",s:"Ngữ pháp",pts:1.8,type:'mc',qs:[
+   {q:"Das ist meine Schwester. _____ studiert in Darmstadt.",o:["Er","Sie","Es","Ihr"],a:1,e:"Một người nữ → sie."},
+   {q:"„Wo ist der Schlüssel?“ ~ „_____ liegt auf dem Tisch.“",o:["Es","Sie","Er","Ihr"],a:2,e:"der Schlüssel → er."},
+   {q:"Frau Weber, _____ Sie Kaffee oder Tee?",o:["möchtest","möchte","möchtet","möchten"],a:3,e:"Sie (lịch sự) → möchten."},
+   {q:"Meine Freunde _____ aus Vietnam.",o:["kommt","kommen","kommst","komme"],a:1,e:"Chủ ngữ số nhiều → kommen."},
+   {q:"_____ ihr heute Abend Zeit?",o:["Hast","Haben","Habt","Hat"],a:2,e:"ihr habt."},
+   {q:"Mein Bruder _____ jeden Tag die Zeitung.",o:["lest","liest","lesen","lese"],a:1,e:"lesen: e → ie ở ngôi er."},
+   {q:"Im Museum _____ man nicht laut sprechen.",o:["darf","muss","möchte","will"],a:0,e:"Điều bị cấm → nicht dürfen."},
+   {q:"Am Sonntag _____.",o:["ich kann lange schlafen","kann ich lange schlafen","kann ich schlafen lange","ich lange schlafen kann"],a:1,e:"Am Sonntag ở vị trí 1 → động từ chia ở vị trí 2, chủ ngữ theo sau, nguyên mẫu cuối câu."},
+   {q:"Der Unterricht _____ um neun Uhr _____.",o:["anfängt … –","fängt … an","fangt … an","fängt … auf"],a:1,e:"anfangen: tách tiền tố an, và a → ä ở ngôi er."},
+   {q:"„_____ bitte das Fenster zu, Kinder!“",o:["Mach","Macht","Machen","Machst"],a:1,e:"Nói với nhiều người thân mật (ihr) → Macht!"},
+   {q:"Du _____ nicht kommen, aber du kannst, wenn du willst.",o:["darfst","sollst","musst","willst"],a:2,e:"nicht müssen = không cần, nhưng vẫn được."},
+   {q:"„_____ du Deutsch?“ ~ „Ja, ein bisschen.“",o:["Sprecht","Sprichst","Sprechst","Spricht"],a:1,e:"sprechen: e → i ở ngôi du."}]},
+  {h:"Đọc đoạn văn và chọn từ đúng (A, B, C hoặc D) cho mỗi chỗ trống.",s:"Điền từ vào đoạn văn",pts:.9,type:'mc',
+   text:"Hallo! Ich {1} Linh und ich bin Studentin. Ich wohne in Frankfurt, aber meine Eltern {2} in Hanoi. Mein Bruder heißt Nam. {3} ist 16 Jahre alt und geht noch zur Schule. Am Wochenende {4} ich nicht lernen, dann habe ich frei. Ich stehe spät {5} und frühstücke lange. Am Abend rufe ich meine Familie an. Wir {6} viel Zeit zum Reden.",qs:[
+   {o:["heiße","heißt","heißen","heißst"],a:0,e:"ich heiße."},
+   {o:["wohnt","wohnst","wohnen","wohne"],a:2,e:"meine Eltern = số nhiều → wohnen."},
+   {o:["Sie","Er","Es","Ihr"],a:1,e:"Mein Bruder → er."},
+   {o:["muss","musst","müssen","müsst"],a:0,e:"ich muss."},
+   {o:["an","ein","zu","auf"],a:3,e:"aufstehen → stehe … auf."},
+   {o:["hat","habt","haben","hast"],a:2,e:"wir haben."}]},
+  {h:"Đọc đoạn văn và chọn đáp án đúng (A, B, C hoặc D) cho mỗi câu hỏi.",s:"Đọc hiểu",pts:.6,type:'mc',
+   text:"Tim ist 24 Jahre alt und kommt aus Köln. Jetzt wohnt er in München und arbeitet als Koch in einem Restaurant. Er muss jeden Tag um fünf Uhr aufstehen, denn das Restaurant macht schon um sieben Uhr auf. Am Montag hat er frei. Dann schläft er lange, kauft ein und ruft seine Eltern an. Tim kann sehr gut kochen, aber zu Hause isst er oft nur Brot. Am Wochenende möchte er gern Fußball spielen, aber er hat keine Zeit.",qs:[
+   {q:"Was ist Tim von Beruf?",o:["Kellner","Koch","Student","Fußballspieler"],a:1,e:"„… arbeitet als Koch“."},
+   {q:"Wann muss Tim an Arbeitstagen aufstehen?",o:["Um fünf Uhr","Um sieben Uhr","Um neun Uhr","Um zwölf Uhr"],a:0,e:"Bảy giờ là lúc nhà hàng mở cửa."},
+   {q:"Was macht Tim am Montag NICHT?",o:["lange schlafen","einkaufen","arbeiten","die Eltern anrufen"],a:2,e:"„Am Montag hat er frei.“"},
+   {q:"Warum spielt Tim am Wochenende nicht Fußball?",o:["Er kann nicht Fußball spielen.","Er möchte nicht.","Er hat keine Zeit.","Er darf nicht."],a:2,e:"„… aber er hat keine Zeit.“"}]},
+  {h:"Chọn phần gạch chân (A, B, C hoặc D) cần sửa trong mỗi câu sau.",s:"Tìm lỗi sai",pts:.75,type:'err',qs:[
+   {q:"{A|Meine Schwester} {B|wohnen} {C|in} Berlin {D|und} studiert Medizin.",a:1,fix:"wohnt",e:"Chủ ngữ số ít ngôi 3."},
+   {q:"Ich {A|kann} {B|sprechen} sehr gut {C|Englisch} und {D|ein bisschen} Deutsch.",a:1,fix:"sprechen phải đứng cuối câu",e:"Với Modalverb, nguyên mẫu ở cuối câu."},
+   {q:"{A|Der} Tisch ist {B|schön}, aber {C|es} ist {D|zu teuer}.",a:2,fix:"er",e:"der Tisch → er."},
+   {q:"Peter, {A|sprichst} bitte {B|langsam}! Ich {C|verstehe} dich {D|nicht}.",a:0,fix:"sprich",e:"Imperativ ngôi du bỏ đuôi -st."},
+   {q:"Ich {A|aufstehe} {B|jeden Tag} um sechs Uhr {C|und} {D|frühstücke} dann.",a:0,fix:"stehe … auf",e:"Động từ tách: tiền tố xuống cuối mệnh đề."}]},
+  {h:"Chọn câu (A, B, C hoặc D) gần nghĩa nhất với câu đã cho.",s:"Câu gần nghĩa",pts:.75,type:'mc',qs:[
+   {q:"Hier ist Parken verboten.",o:["Man muss hier parken.","Man darf hier nicht parken.","Man kann hier gut parken.","Man möchte hier parken."],a:1,e:"verboten (bị cấm) = nicht dürfen."},
+   {q:"Kochen ist heute nicht nötig.",o:["Du darfst heute nicht kochen.","Du musst heute nicht kochen.","Du kannst heute nicht kochen.","Du willst heute nicht kochen."],a:1,e:"nicht nötig (không cần thiết) = nicht müssen."},
+   {q:"Mein Plan für den Sommer: eine Reise nach Italien.",o:["Ich muss im Sommer nach Italien reisen.","Ich will im Sommer nach Italien reisen.","Ich darf im Sommer nach Italien reisen.","Ich soll im Sommer nach Italien reisen."],a:1,e:"Kế hoạch, ý muốn của bản thân = wollen."},
+   {q:"Sprechen Sie bitte langsam!",o:["Sie sprechen langsam.","Können Sie bitte langsam sprechen?","Sprechen Sie langsam?","Sie dürfen nicht sprechen."],a:1,e:"Imperativ lịch sự tương đương lời đề nghị với können."},
+   {q:"Anna schwimmt sehr gut.",o:["Anna will schwimmen.","Anna muss schwimmen.","Anna kann sehr gut schwimmen.","Anna darf schwimmen."],a:2,e:"Khả năng, kỹ năng = können."}]}]},
+ {name:"PHẦN B. TỰ LUẬN",items:[
+  {h:"Chia động từ trong ngoặc ở dạng đúng.",s:"Chia động từ",pts:1,type:'fill',qs:[
+   {q:"Wohin ___ (fahren) ihr am Wochenende?",a:["fahrt"],e:"Ngôi ihr không đổi nguyên âm."},
+   {q:"Mein Vater ___ (arbeiten) bei Siemens.",a:["arbeitet"],e:"Gốc kết thúc -t → thêm e."},
+   {q:"___ (sein) ihr schon fertig?",a:["seid"],e:"ihr seid."},
+   {q:"Lisa ___ (nehmen) immer den Bus.",a:["nimmt"],e:"nehmen → er/sie nimmt."},
+   {q:"Wir ___ (wollen) im Sommer nach Italien fahren.",a:["wollen"],e:"Số nhiều giữ nguyên âm o."},
+   {q:"Das Kind ___ (dürfen) heute fernsehen.",a:["darf"],e:"er/sie/es darf, không có đuôi."},
+   {q:"___ (geben) mir bitte das Buch, Tom!",a:["gib"],e:"Imperativ ngôi du, e → i: Gib!"},
+   {q:"Ich ___ (einladen) meine Freunde ein.",a:["lade"],e:"Động từ tách: lade … ein."}]},
+  {h:"Viết lại câu, bắt đầu bằng từ cho sẵn, sao cho nghĩa không đổi hoặc theo gợi ý trong ngoặc.",s:"Viết lại câu",pts:1.5,type:'write',qs:[
+   {q:"Ich stehe um sechs Uhr auf. (müssen)",start:"Ich muss",a:["Ich muss um sechs Uhr aufstehen"],e:"Modalverb vị trí 2, aufstehen viết liền ở cuối câu."},
+   {q:"Kannst du bitte langsam sprechen?",start:"Sprich",a:["Sprich bitte langsam","Sprich langsam bitte","Sprich langsam"],e:"Imperativ ngôi du của sprechen."},
+   {q:"Wir kaufen heute ein.",start:"Heute",a:["Heute kaufen wir ein"],e:"Heute ở vị trí 1 → động từ vị trí 2, chủ ngữ theo sau."},
+   {q:"Rauchen ist hier verboten.",start:"Man",a:["Man darf hier nicht rauchen"],e:"Bị cấm = nicht dürfen."},
+   {q:"Er ruft seine Mutter an. (wollen)",start:"Er will",a:["Er will seine Mutter anrufen"],e:"Có Modalverb → anrufen không tách, đứng cuối câu."},
+   {q:"Können Sie bitte das Fenster aufmachen?",start:"Machen",a:["Machen Sie bitte das Fenster auf","Machen Sie das Fenster bitte auf","Machen Sie das Fenster auf"],e:"Imperativ ngôi Sie: nguyên mẫu + Sie, tiền tố auf cuối câu."}]},
+  {h:"Dùng các từ gợi ý để viết thành câu hoàn chỉnh (chia động từ, sắp xếp đúng trật tự).",s:"Viết câu từ gợi ý",pts:1.5,type:'write',qs:[
+   {q:"ich / heute / einkaufen / müssen",a:["Ich muss heute einkaufen","Heute muss ich einkaufen"],e:"Modalverb chia ở vị trí 2, einkaufen cuối câu."},
+   {q:"der Zug / um acht Uhr / abfahren",a:["Der Zug fährt um acht Uhr ab","Um acht Uhr fährt der Zug ab"],e:"abfahren tách, và a → ä ở ngôi er."},
+   {q:"du / gern / Bücher / lesen / ?",a:["Liest du gern Bücher"],e:"Câu hỏi có/không: động từ đứng đầu; lesen → du liest."},
+   {q:"wir / am Samstag / ins Kino / gehen / wollen",a:["Wir wollen am Samstag ins Kino gehen","Am Samstag wollen wir ins Kino gehen"],e:"wollen ở vị trí 2, gehen cuối câu."}]}]}
+]}
+};
+const fmt=s=>s.replace(/\{([A-D])\|([^}]*)\}/g,'<u>$2</u><sub><b>$1</b></sub>');
+const norm2=s=>s.toLowerCase().replace(/ß/g,'ss').replace(/[.,!?;:„“"”]/g,' ').replace(/\s+/g,' ').trim();
+function exam(id){
+ const E=EXAMS[id],all=[];let ci=0,no=0;
+ let h=`<a class="back">← Trang chính</a><div class="paper"><div class="ph"><b>${E.title}</b><br>${E.sub}${E.code?' · Mã đề '+E.code:''}<br><span class="lv">Thời gian làm bài: ${E.time} phút · Thang điểm 10</span></div><div class="timer" id="tm"></div><div id="res"></div>`;
+ E.secs.forEach(s=>{h+=`<h2>${s.name}</h2>`;s.items.forEach(it=>{it.n=0;it.ci=ci++;
+  h+=`<p class="ins"><b>${it.h}</b> (${it.pts} điểm)</p>`;
+  if(it.text)h+=`<div class="pass">${it.text.replace(/\{(\d+)\}/g,(m,i)=>{if(!it.a)return `<b>(${no+ +i})</b> _____`;no++;all.push({it,a:it.a[i-1],type:'fill',lab:'('+i+')'});it.n++;return `<b>(${i})</b> <input type="text" class="s" data-i="${all.length-1}" autocomplete="off" autocapitalize="off" spellcheck="false">`})}</div><div class="fbx" id="c${it.ci}"></div>`;
+  (it.qs||[]).forEach((q,j)=>{const i=all.length,N=++no;all.push(Object.assign({it,type:it.type},q));it.n++;
+   const inp=(c,v)=>`<input type="text" class="${c}" data-i="${i}" value="${v||''}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+   h+=`<div class="eq" id="e${i}">`;
+   if(it.type=='mc'||it.type=='err'){const o=q.o||['','','',''];
+    h+=`<p><b>Câu ${N}:</b> ${fmt(q.q||'')}</p><div class="os${o.some(t=>t.replace(/<[^>]+>/g,'').length>16)?' long':''}">${o.map((t,x)=>`<label><input type="radio" name="q${i}" value="${x}"> <b>${'ABCD'[x]}${t?'.':''}</b> ${t}</label>`).join('')}</div>`}
+   else if(it.type=='fill')h+=`<p><b>Câu ${N}:</b> ${q.q.replace('___',inp('s'))}</p>`;
+   else h+=`<p><b>Câu ${N}:</b> ${q.q}</p>${inp('w',q.start?q.start+' ':'')}`;
+   h+='<div class="fbx"></div></div>'})})});
+ h+='<div class="acts"><button class="btn" id="sub">Nộp bài</button></div></div>';
+ app.innerHTML=h;exam.all=all;
+ app.querySelector('.back').onclick=()=>go(null);
+ let left=E.time*60;const T=app.querySelector('#tm');
+ const tick=()=>{T.textContent=left>0?'Còn lại '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0'):'Hết giờ';left--};
+ tick();tm=setInterval(tick,1000);
+ app.querySelector('#sub').onclick=()=>{
+  clearInterval(tm);T.textContent='';E.secs.forEach(s=>s.items.forEach(it=>it.ok=0));
+  all.forEach((q,i)=>{let ok,ans;
+   if(q.type=='mc'||q.type=='err'){const c=app.querySelector(`input[name=q${i}]:checked`);ok=!!c&&+c.value===q.a;ans='ABCD'[q.a]+(q.fix?' → '+q.fix:'')}
+   else{const el=app.querySelector(`[data-i="${i}"]`);ok=q.a.map(norm2).includes(norm2(el.value));ans=q.a[0];el.classList.add(ok?'ok':'no')}
+   if(ok)q.it.ok++;
+   const box=app.querySelector('#e'+i);
+   if(box){box.classList.add(ok?'ok':'no');box.querySelector('.fbx').innerHTML=(ok?'✓ Đúng. ':'✗ Đáp án: <b>'+ans+'</b>. ')+(q.e||'')}
+   else app.querySelector('#c'+q.it.ci).innerHTML+=`<div>${q.lab} ${ok?'✓':'✗'} <b>${q.a.slice(0,3).join(' / ')}</b></div>`});
+  app.querySelectorAll('.paper input').forEach(x=>x.disabled=true);
+  let total=0,rows='';
+  E.secs.forEach(s=>s.items.forEach(it=>{const p=it.pts*it.ok/it.n;total+=p;rows+=`<tr><td>${it.s}</td><td>${it.ok}/${it.n}</td><td>${(Math.round(p*100)/100)} / ${it.pts}</td></tr>`}));
+  total=Math.round(total*100)/100;
+  if(best['de'+id]==null||total>best['de'+id]){best['de'+id]=total;store.set(best)}
+  app.querySelector('#res').innerHTML=`<div class="card rule"><p class="score">Điểm: ${total} / 10</p><table><tr><th>Phần</th><th>Số câu đúng</th><th>Điểm</th></tr>${rows}</table><p class="lv">Đáp án và giải thích hiện dưới từng câu.</p><div class="acts"><button class="btn ghost" id="re">Làm lại đề</button></div></div>`;
+  app.querySelector('#re').onclick=()=>show(null,id);
+  app.querySelector('#sub').remove();scrollTo(0,0)};
+}
+route();
+</script>
+</body>
+</html>
