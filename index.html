@@ -1302,7 +1302,7 @@ const CHECK=['Động từ chia ở vị trí 2 trong câu trần thuật?','Dan
 function writePage(pi){const J=ls.get('gaq_write_'+PID,{}),d=dkey(new Date());const cur=J[d];
  if(pi==null)pi=cur?cur.p:Math.floor(rngFrom('w'+d)()*PROMPTS.length);const P=PROMPTS[pi];
  const past=Object.keys(J).filter(k=>k!=d).sort().reverse().slice(0,10);
- app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề. Trang không chấm được câu tự do; bấm "Sao chép để nhờ sửa" rồi dán vào chat với Claude hoặc gửi giáo viên.</p>
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề.</p>
  <div class="card"><p class="lv">Đề hôm nay (${new Date().toLocaleDateString('de-DE')})</p><h3>${P[0]}</h3><p>${P[1]}</p><p class="lv">Từ gợi ý (sáng lên khi bạn đã dùng):</p><div class="wwords" id="ww">${P[2].map(w=>`<span>${esc(w)}</span>`).join('')}</div>
  <textarea id="jt" rows="8" placeholder="Schreib hier …">${esc(cur&&cur.p==pi?cur.text:'')}</textarea><p class="lv" id="cnt"></p>
  <details><summary>Tự kiểm tra trước khi lưu</summary>${CHECK.map(c=>`<label style="display:block"><input type="checkbox"> ${c}</label>`).join('')}</details>
@@ -1328,7 +1328,7 @@ const SOUNDS=[["ü và u","Môi tròn như khi nói „u“, nhưng lưỡi đ�
 ["z, ei, ie","„z“ đọc như „ts“. „ei“ đọc như „ai“, còn „ie“ đọc như „i“ dài.",[["Wein","Wien"],["Zeit","Zug"],["vier","Feier"],["Bein","Biene"]],"Zwei Freunde trinken Wein in Wien."]];
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function speakPage(tab){tab=tab||'laut';
- app.innerHTML=`<a class="back">← Trang chính</a><h1>Phát âm</h1><p class="sub">Nghe mẫu, tự đọc và ghi âm để so sánh. Nút "Kiểm tra" dùng nhận dạng giọng nói của trình duyệt (chỉ Chrome/Edge; âm thanh được gửi lên máy chủ Google để nhận dạng). Micro cần mở trang bằng link trực tiếp, có thể không chạy trong khung Notion.</p>${voiceNote()}
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Phát âm</h1><p class="sub">Nghe mẫu, tự đọc và ghi âm để so sánh.</p>${voiceNote()}
  <div class="tabs"><button data-t="laut" class="${tab=='laut'?'on':''}">Âm khó</button><button data-t="satz" class="${tab=='satz'?'on':''}">Đọc câu</button></div><div id="pz"></div>`;
  app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>speakPage(b.dataset.t));const Z=app.querySelector('#pz');
  const items=tab=='laut'?SOUNDS.map(s=>({title:s[0],tip:s[1],pairs:s[2],target:s[3]})):shuffle(sentBank()).slice(0,6).map(x=>({title:'Câu: '+x.de.slice(0,40),target:x.de,vi:x.vi}));
