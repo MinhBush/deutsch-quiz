@@ -43,7 +43,30 @@ h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.05rem;margin:1.6em 0 .5em;color
 .ex{border-left:3px solid var(--acc2);padding:2px 0 2px 12px;margin:.6em 0;color:var(--mute)}.ex b{color:var(--ink)}
 .warn{background:var(--nobg);border-radius:8px;padding:10px 12px}.warn b{color:var(--no)}
 summary{cursor:pointer;color:var(--mute)}
+.praise{font-size:1.6rem;font-weight:800;text-align:center;padding:14px 10px;border-radius:12px;margin:0 0 12px;animation:pop .45s ease-out}
+.praise.p1{background:var(--okbg);color:var(--ok)}.praise.p2{background:var(--cb2);color:#9a6b00}.praise.p3{background:var(--nobg);color:var(--no)}
+@media (prefers-color-scheme:dark){.praise.p2{color:#f2c46b}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.praise{animation:none}}
+.gbar{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:.9rem;margin:6px 0 10px}
+.wg{position:relative;display:grid;gap:6px;max-width:420px;margin:12px auto;touch-action:manipulation}
+.wc{aspect-ratio:1;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font:inherit;font-weight:700;font-size:clamp(1rem,4.5vw,1.45rem);cursor:pointer;position:relative;z-index:1;padding:0}
+.wc.sel{background:var(--acc);color:#fff;border-color:var(--acc)}.wc.fd{color:#1f1d1a;border-color:transparent;cursor:default}
+.wc.hint{box-shadow:0 0 0 3px var(--acc2)}
+.wg svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.wcur{text-align:center;font-weight:700;letter-spacing:.15em;min-height:1.6em;font-size:1.2rem}
+.gmsg{text-align:center;min-height:1.4em;color:var(--mute);font-size:.92rem}
+.flist{list-style:none;padding:0;margin:8px 0;display:flex;flex-wrap:wrap;gap:6px}.flist li{border-radius:99px;padding:3px 10px;font-size:.88rem;color:#1f1d1a}
+.lad{max-width:520px;margin:10px auto}.lr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0;background:var(--card)}
+.lr .cl{font-size:.88rem;color:var(--mute);grid-column:1/-1}.lr.lock{opacity:.6}.lr.ok{border-color:var(--ok)}
+.lr input{font:inherit;font-weight:700;letter-spacing:.3em;text-transform:uppercase;width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.lr input.no{border-color:var(--no)}.lr .wd2{font-weight:700;letter-spacing:.3em}
+.mv button{background:none;border:1px solid var(--line);border-radius:6px;color:var(--acc);font:inherit;padding:2px 9px;cursor:pointer;margin-left:2px}
+.pp{display:grid;gap:8px;max-width:440px;margin:10px auto}.pc2{border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;font-weight:700;background:var(--card);min-height:1.5em}
+.pc2.hid{color:var(--mute);font-weight:400;background:var(--bg);border-style:dashed}
+.ghist{list-style:none;padding:0;margin:6px 0;color:var(--no);font-size:.9rem}
 .lv{font-size:.82rem;color:var(--mute)}
+a.row.doc{text-decoration:none;margin:0 0 12px}
 .lah{color:var(--ink);margin:0 0 12px;font-size:1.2rem}
 .la-top{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:12px}
 .la-units{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
@@ -641,8 +664,9 @@ const title=k=>{for(const g of GROUPS)for(const c of g[1])if(c[0]==k)return c[1]
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const norm=s=>s.trim().toLowerCase().replace(/[.!?,]+$/,'').replace(/ß/g,'ss');
 let tm;
-function go(k,de){const u=new URL(location.href);u.searchParams.delete('k');u.searchParams.delete('de');if(k)u.searchParams.set('k',k);if(de)u.searchParams.set('de',de);try{history.pushState(null,'',u)}catch(e){}show(k,de)}
-function route(){const s=new URL(location.href).searchParams;show(s.get('k'),s.get('de'))}
+const praise=(w,n)=>{const r=n?w/n:1;const [c,t]=r<=.05?['p1','Quá dữ luôn ní ơi 🔥']:r<=.10?['p2','Ngonnnnnn! 😋']:['p3','Ồ heo nooooo! 🐷'];return `<div class="praise ${c}">${t}<div class="lv">Sai ${w}/${n} câu (${Math.round(r*100)}%)</div></div>`};
+function go(k,de,g){const u=new URL(location.href);['k','de','g'].forEach(x=>u.searchParams.delete(x));if(k)u.searchParams.set('k',k);if(de)u.searchParams.set('de',de);if(g)u.searchParams.set('g',g);try{history.pushState(null,'',u)}catch(e){}show(k,de,g)}
+function route(){const s=new URL(location.href).searchParams;show(s.get('k'),s.get('de'),s.get('g'))}
 let secure=false,leaves=0,lastLeave=0;
 const unlocked=E=>!E.req||E.req.every(id=>best['w'+id]!=null&&best['w'+id]<=2);
 ['copy','cut','contextmenu','dragstart','selectstart'].forEach(t=>document.addEventListener(t,e=>{if(secure&&!(t=='selectstart'&&e.target.tagName=='INPUT'))e.preventDefault()}));
@@ -654,23 +678,26 @@ function lockPage(id){const E=EXAMS[id];
  let rows=E.req.map(r=>{const w=best['w'+r];return `<tr><td>${EXAMS[r].title}</td><td>${w==null?'chưa làm':w+' câu'}</td><td>${w!=null&&w<=2?'<span class="pass-ok">Đạt</span>':'<span class="pass-no">Chưa đạt</span>'}</td><td><button class="btn ghost" data-de="${r}">Làm đề</button></td></tr>`}).join('');
  app.innerHTML=`<a class="back">← Trang chính</a><h1>🔒 ${E.title}</h1><p class="sub">${E.sub}</p><div class="card rule"><p>Bài kiểm tra mở khóa khi <b>tất cả</b> đề ôn dưới đây có lần làm sai <b>không quá 2 câu</b>.</p><table><tr><th>Đề</th><th>Số câu sai ít nhất</th><th>Trạng thái</th><th></th></tr>${rows}</table></div>`;
  app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>go(null,b.dataset.de))}
-function show(k,de){clearInterval(tm);secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
+function show(k,de,g){clearInterval(tm);secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(g&&GAMES[g])game(g);else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
 onpopstate=()=>route();
 
 function home(){
  let h='<h1>Deutsch Grammatik Quiz</h1><p class="sub">Luyện theo thứ tự chương của Grammatik aktiv A1–B1. Câu hỏi soạn mới, không trùng với sách.</p>';
+ h+=`<a class="row doc" href="https://drive.google.com/drive/folders/1AXXCBCfNUnJg6VMvDhZSGgbQZEqkgZ08?usp=sharing" target="_blank" rel="noopener"><span class="num"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="t">Kho tài liệu<br><span class="lv">Thư mục Google Drive · mở trong tab mới</span></span><span class="lv">↗</span></a>`;
  h+=analytics()+recentBox();
  h+='<h2>Đề ôn tập</h2>';
  for(const id in EXAMS){const E=EXAMS[id],b=best['de'+id],w=best['w'+id];if(E.test)continue;h+=`<button class="row" data-de="${id}"><span class="num">Đ${id}</span><span class="t">${E.title}<br><span class="lv">${E.sub} · ${E.time} phút</span></span>${b!=null?`<span class="badge">${b}/10${w!=null?' · sai '+w:''}</span>`:''}</button>`}
  h+='<h2>Kiểm tra năng lực</h2>';
  for(const id in EXAMS){const E=EXAMS[id];if(!E.test)continue;const ok=E.req.filter(r=>best['w'+r]!=null&&best['w'+r]<=2).length,un=ok==E.req.length,b=best['de'+id];
   h+=`<button class="row${un?'':' lock'}" data-de="${id}"><span class="num">${un?'KT':'🔒'}</span><span class="t">${E.title}<br><span class="lv">${E.sub} · ${E.n} câu · ${E.time} phút${un?'':` · đã đạt điều kiện ${ok}/${E.req.length} đề ôn`}</span></span>${b!=null?`<span class="badge">${b}/10</span>`:''}</button>`}
+ h+=gamesBox();
  for(const [g,cs] of GROUPS){h+=`<h2>${esc(g)}</h2>`;
   for(const [k,t] of cs){const on=!!QUIZ[k],b=best[k];
    h+=`<button class="row" ${on?`data-k="${k}"`:'disabled'}><span class="num">${lab(k)}</span><span class="t">${esc(t)}${on?'':'<br><span class="lv">chưa soạn</span>'}</span>${b!=null?`<span class="badge">${b}/${QUIZ[k].qs.length}</span>`:''}</button>`}}
  app.innerHTML=h;
  app.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>go(b.dataset.k));
  app.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>go(null,b.dataset.de));
+ app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>go(null,null,b.dataset.g));
  app.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>app.querySelector('.rscroll').scrollBy({left:+b.dataset.sc*220,behavior:'smooth'}));
 }
 function chapter(k){
@@ -714,7 +741,7 @@ function run(k,list,full){
   if(full&&(best[k]==null||score>best[k])){best[k]=score;store.set(best)}
   logAct({type:'quiz',k,score,total:qs.length,full});
   app.innerHTML=`<a class="back">← Tất cả các chương</a><h1>${lab(k)}. ${esc(title(k))}</h1>
-  <div class="card"><p class="q">Kết quả: ${score} / ${qs.length}</p>
+  <div class="card">${praise(qs.length-score,qs.length)}<p class="q">Kết quả: ${score} / ${qs.length}</p>
   ${wrong.length?'<p>Câu sai:</p><ul>'+wrong.map(w=>`<li>${esc(w.q)} → <b>${esc(w.o?w.o[w.a]:w.a[0])}</b></li>`).join('')+'</ul>':'<p>Không sai câu nào.</p>'}
   <div class="acts">${wrong.length?'<button class="btn" id="w">Làm lại câu sai</button>':''}<button class="btn ghost" id="r">Làm lại cả bài</button>${QUIZ[k+1]?'<button class="btn ghost" id="x">Chương tiếp</button>':''}</div></div>`;
   app.querySelector('.back').onclick=()=>go(null);
@@ -852,7 +879,7 @@ function exam(id){
   store.set(best);logAct({type:'exam',id,score:total,wrong,n:all.length,test:!!E.test,pass:E.test?total>=E.pass:null,leaves:E.test?leaves:0,secs:E.secs.flatMap(s=>s.items.map(it=>({s:it.s,ok:it.ok,n:it.n})))});
   rows+=`<tr><td><b>Số câu sai</b></td><td colspan="2"><b>${wrong} / ${all.length}</b>${E.test?'':(wrong<=2?' · <span class="pass-ok">đạt điều kiện mở khóa</span>':' · cần sai ≤ 2 câu để tính vào điều kiện mở khóa')}</td></tr>`;
   if(E.test)rows+=`<tr><td><b>Kết quả</b></td><td colspan="2">${total>=E.pass?'<span class="pass-ok">ĐẠT</span>':'<span class="pass-no">CHƯA ĐẠT</span>'} (ngưỡng ${E.pass}/10) · rời khỏi bài thi ${leaves} lần</td></tr>`;
-  app.querySelector('#res').innerHTML=`<div class="card rule"><p class="score">Điểm: ${total} / 10</p><table><tr><th>Phần</th><th>Số câu đúng</th><th>Điểm</th></tr>${rows}</table><p class="lv">Đáp án và giải thích hiện dưới từng câu.</p><div class="acts"><button class="btn ghost" id="re">Làm lại đề</button></div></div>`;
+  app.querySelector('#res').innerHTML=`<div class="card rule">${praise(wrong,all.length)}<p class="score">Điểm: ${total} / 10</p><table><tr><th>Phần</th><th>Số câu đúng</th><th>Điểm</th></tr>${rows}</table><p class="lv">Đáp án và giải thích hiện dưới từng câu.</p><div class="acts"><button class="btn ghost" id="re">Làm lại đề</button></div></div>`;
   app.querySelector('#re').onclick=()=>show(null,id);
   app.querySelector('#sub').remove();scrollTo(0,0)};
  app.querySelector('#sub').onclick=sub;
@@ -869,6 +896,7 @@ const VN=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ 
 const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 function desc(e){const t=e.k?`${lab(e.k)}. ${esc(title(e.k))}`:'';
  if(e.type=='lesson')return `Đọc bài giảng · ${t}`;
+ if(e.type=='game')return `Trò chơi ${GAMES[e.g].name} (${DIFF[e.diff]}, lượt ${e.n}): ${e.won?'<b>hoàn thành</b>':'chưa giải được'} · ${mmss(e.time)}${e.hints?' · '+e.hints+' gợi ý':''}`;
  if(e.type=='quiz')return `${e.full?'Làm bài tập':'Làm lại câu sai'} · ${t}: <b>${e.score}/${e.total}</b>`;
  const E=EXAMS[e.id];return `${E?E.title+(E.test?'':' ('+E.sub.split(' · ')[0]+')'):'Đề '+e.id}: <b>${e.score}/10</b> · sai ${e.wrong}/${e.n}${e.test?' · '+(e.pass?'ĐẠT':'CHƯA ĐẠT')+(e.leaves?' · rời bài '+e.leaves+' lần':''):''}`}
 function side(){const S=document.getElementById('side');if(!S)return;S.style.display=secure||!PID?'none':'';document.querySelector('.wrap').classList.toggle('solo',!!(secure||!PID));if(secure||!PID)return;const P=PROFILES[PID];
@@ -943,6 +971,182 @@ function recentBox(){const R=ls.get('gaq_recent_'+PID,[]).filter(x=>x.key[0]=='k
  const cards=R.map(x=>{if(x.key[0]=='k'){const k=+x.key.slice(1);return `<button class="rc ${k>100?'t-vocab':'t-gram'}" data-k="${k}"><span class="rimg"></span><span class="rt">${lab(k)}. ${esc(title(k))}</span><span class="lv">${esc(grp(k))}${best[k]!=null?' · '+best[k]+'/'+QUIZ[k].qs.length:''}<br>${fmtT(x.t)}</span></button>`}
   const id=x.key.slice(2),E=EXAMS[id];return `<button class="rc ${E.test?'t-test':'t-exam'}" data-de="${id}"><span class="rimg"></span><span class="rt">${E.title}</span><span class="lv">${E.sub}${best['de'+id]!=null?' · '+best['de'+id]+'/10':''}<br>${fmtT(x.t)}</span></button>`}).join('');
  return `<div class="card"><div class="rh"><h2 class="lah">Truy cập gần đây</h2>${R.length>2?'<span><button class="nav" data-sc="-1" aria-label="Trước">‹</button><button class="nav" data-sc="1" aria-label="Sau">›</button></span>':''}</div>${R.length?`<div class="rscroll">${cards}</div>`:'<p class="lv">Chưa truy cập mục nào. Mở một chương hoặc một đề để bắt đầu.</p>'}</div>`}
+
+
+/* ===================== TRÒ CHƠI ===================== */
+const GAMES={wend:{name:'Wend',vi:'Nối chữ tìm từ',ic:'W',desc:'Nối các chữ cái liền kề (cả đường chéo) để tìm các từ ẩn theo chủ đề. Mỗi chữ cái dùng đúng một lần.'},
+ climb:{name:'Crossclimb',vi:'Thang chữ',ic:'C',desc:'Giải nghĩa các từ, sắp chúng thành chiếc thang mà hai từ liền nhau chỉ khác đúng một chữ cái, rồi mở khóa từ đầu và từ cuối.'},
+ pin:{name:'Pinpoint',vi:'Đoán chủ đề',ic:'P',desc:'Các từ lộ dần từng cái. Đoán xem chúng thuộc chủ đề gì (gõ tiếng Đức hoặc tiếng Việt). Có 5 lượt đoán.'}};
+const DIFF={easy:'Dễ',medium:'Trung bình',hard:'Khó'};
+const mmss=t=>{t=Math.round((t||0)/1000);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
+function rngFrom(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}let a=h>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const shf=(a,r)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pickDiff=r=>{const x=r();return x<1/3?'easy':x<2/3?'medium':'hard'};
+const nrm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[đĐ]/g,'d').toLowerCase().replace(/ß/g,'ss').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+const gAll=()=>ls.get('gaq_games_'+PID,{});
+const gToday=g=>{const S=gAll(),d=dkey(new Date());return(S[d]&&S[d][g])||[]};
+function gSave(g,plays){const S=gAll(),d=dkey(new Date());(S[d]=S[d]||{})[g]=plays;const cut=dkey(new Date(Date.now()-90*864e5));for(const k in S)if(k<cut)delete S[k];ls.set('gaq_games_'+PID,S)}
+function gamesBox(){let h='<h2>Trò chơi</h2><p class="lv">Mỗi trò 3 lượt mỗi ngày, nội dung đổi theo từng lượt và từng ngày, độ khó ngẫu nhiên. Lượt chơi mở lại lúc 0:00.</p>';
+ for(const g in GAMES){const G=GAMES[g],P=gToday(g),left=3-P.filter(x=>x.done).length,run=P.find(x=>!x.done);
+  h+=`<button class="row${left<=0?' lock':''}" data-g="${g}"><span class="num">${G.ic}</span><span class="t">${G.name} · ${G.vi}<br><span class="lv">${run?'Đang chơi dở lượt '+(run.n+1)+' · ':''}Còn ${left}/3 lượt hôm nay</span></span>${P.filter(x=>x.done).map(x=>`<span class="badge">${x.won?'✓':'✗'} ${DIFF[x.diff]}</span>`).join(' ')}</button>`}
+ return h}
+function game(g){const G=GAMES[g],plays=gToday(g);let cur=plays.find(x=>!x.done);
+ if(!cur){if(plays.length>=3)return gameLocked(g);cur={n:plays.length,done:false};plays.push(cur);gSave(g,plays)}
+ const day=dkey(new Date()),r=rngFrom(day+'|'+g+'|'+cur.n),diff=pickDiff(r);cur.diff=diff;gSave(g,plays);
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>${G.name} <span class="badge">${DIFF[diff]}</span></h1><p class="sub">${G.vi} · lượt ${cur.n+1}/3 hôm nay. ${G.desc}</p><div class="gbar"><span id="gt">0:00</span><span id="gh">Gợi ý: 0</span></div><div id="gm"></div>`;
+ app.querySelector('.back').onclick=()=>go(null);
+ const t0=Date.now(),T=app.querySelector('#gt');let hints=0,over=false;tm=setInterval(()=>T.textContent=mmss(Date.now()-t0),1000);
+ const ctx={r,diff,hint(){hints++;app.querySelector('#gh').textContent='Gợi ý: '+hints},
+  finish(won,summary){if(over)return;over=true;clearInterval(tm);const time=Date.now()-t0;const P=gToday(g),c=P.find(x=>x.n==cur.n)||cur;Object.assign(c,{done:true,won,time,hints,diff});gSave(g,P);
+   logAct({type:'game',g,diff,won,time,hints,n:cur.n+1});const left=3-P.filter(x=>x.done).length;
+   const box=document.createElement('div');box.className='card rule';box.innerHTML=`<p class="score">${won?'Hoàn thành!':'Chưa giải được'}</p><p>Thời gian ${mmss(time)} · ${hints} gợi ý</p>${summary||''}<div class="acts">${left>0?`<button class="btn" id="nx">Chơi lượt ${4-left}/3</button>`:'<span class="lv">Đã hết 3 lượt hôm nay. Quay lại vào ngày mai nhé.</span>'}<button class="btn ghost" id="hm">Trang chính</button></div>`;
+   app.querySelector('#gm').appendChild(box);box.scrollIntoView({behavior:'smooth',block:'nearest'});
+   const nx=box.querySelector('#nx');if(nx)nx.onclick=()=>show(null,null,g);box.querySelector('#hm').onclick=()=>go(null)}};
+ ({wend:wendGame,climb:climbGame,pin:pinGame})[g](app.querySelector('#gm'),ctx)}
+function gameLocked(g){const G=GAMES[g],P=gToday(g);
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>${G.name}</h1><div class="card rule"><p>Bạn đã chơi hết <b>3 lượt</b> hôm nay. Lượt mới mở lúc 0:00 ngày mai.</p><table><tr><th>Lượt</th><th>Độ khó</th><th>Kết quả</th><th>Thời gian</th><th>Gợi ý</th></tr>${P.map(x=>`<tr><td>${x.n+1}</td><td>${DIFF[x.diff]||''}</td><td>${x.won?'✓ hoàn thành':'✗ chưa giải'}</td><td>${mmss(x.time)}</td><td>${x.hints||0}</td></tr>`).join('')}</table></div>`;
+ app.querySelector('.back').onclick=()=>go(null)}
+
+/* ---------- Wend ---------- */
+const WEND=[
+{t:'In der Küche',vi:'Trong bếp',w:[['HERD','der','bếp nấu'],['TOPF','der','nồi'],['PFANNE','die','chảo'],['MESSER','das','dao'],['GABEL','die','nĩa'],['LÖFFEL','der','thìa'],['TELLER','der','đĩa'],['TASSE','die','tách'],['GLAS','das','ly'],['OFEN','der','lò'],['SCHÜSSEL','die','bát tô']]},
+{t:'Obst und Gemüse',vi:'Trái cây và rau',w:[['APFEL','der','táo'],['BANANE','die','chuối'],['BIRNE','die','lê'],['TRAUBE','die','nho'],['ZITRONE','die','chanh'],['GURKE','die','dưa leo'],['TOMATE','die','cà chua'],['ZWIEBEL','die','hành tây'],['KARTOFFEL','die','khoai tây'],['SALAT','der','xà lách'],['KIWI','die','kiwi'],['ERDBEERE','die','dâu tây']]},
+{t:'Frühstück und Getränke',vi:'Bữa sáng và đồ uống',w:[['TEE','der','trà'],['SAFT','der','nước ép'],['MILCH','die','sữa'],['KAFFEE','der','cà phê'],['WASSER','das','nước'],['BROT','das','bánh mì'],['HONIG','der','mật ong'],['BUTTER','die','bơ'],['KÄSE','der','phô mai'],['WURST','die','xúc xích'],['MÜSLI','das','ngũ cốc'],['EIER','die (Pl.)','trứng']]},
+{t:'Die Wohnung',vi:'Căn hộ',w:[['BAD','das','phòng tắm'],['FLUR','der','hành lang'],['KÜCHE','die','bếp'],['KELLER','der','tầng hầm'],['BALKON','der','ban công'],['ZIMMER','das','phòng'],['GARTEN','der','vườn'],['TREPPE','die','cầu thang'],['DACH','das','mái nhà'],['FENSTER','das','cửa sổ'],['TÜR','die','cửa'],['MIETE','die','tiền thuê']]},
+{t:'Möbel',vi:'Đồ nội thất',w:[['BETT','das','giường'],['TISCH','der','bàn'],['STUHL','der','ghế'],['SOFA','das','sofa'],['SESSEL','der','ghế bành'],['SCHRANK','der','tủ'],['REGAL','das','kệ'],['LAMPE','die','đèn'],['SPIEGEL','der','gương'],['TEPPICH','der','thảm']]},
+{t:'Familie',vi:'Gia đình',w:[['MUTTER','die','mẹ'],['VATER','der','bố'],['BRUDER','der','anh/em trai'],['SCHWESTER','die','chị/em gái'],['OMA','die','bà'],['OPA','der','ông'],['TANTE','die','cô, dì'],['ONKEL','der','chú, bác'],['SOHN','der','con trai'],['TOCHTER','die','con gái'],['KIND','das','đứa trẻ'],['ELTERN','die (Pl.)','bố mẹ']]},
+{t:'Der Körper',vi:'Cơ thể',w:[['KOPF','der','đầu'],['HAND','die','bàn tay'],['BEIN','das','chân'],['ARM','der','cánh tay'],['MUND','der','miệng'],['NASE','die','mũi'],['AUGE','das','mắt'],['OHR','das','tai'],['HALS','der','cổ'],['BAUCH','der','bụng'],['FINGER','der','ngón tay'],['RÜCKEN','der','lưng'],['ZAHN','der','răng'],['HAUT','die','da']]},
+{t:'Verben aus Kapitel 1–8',vi:'Động từ chương 1–8',w:[['KOMMEN','','đến'],['GEHEN','','đi'],['ESSEN','','ăn'],['LESEN','','đọc'],['FAHREN','','đi (xe)'],['HELFEN','','giúp'],['NEHMEN','','lấy'],['SEHEN','','nhìn'],['SCHLAFEN','','ngủ'],['KÖNNEN','','có thể'],['MÜSSEN','','phải'],['WOLLEN','','muốn'],['DÜRFEN','','được phép'],['SPIELEN','','chơi'],['LERNEN','','học'],['WOHNEN','','sống, ở']]},
+{t:'Trennbare Verben',vi:'Động từ tách',w:[['ANRUFEN','','gọi điện'],['AUFSTEHEN','','thức dậy'],['EINKAUFEN','','mua sắm'],['MITKOMMEN','','đi cùng'],['ABFAHREN','','khởi hành'],['ANFANGEN','','bắt đầu'],['ZUMACHEN','','đóng'],['EINLADEN','','mời'],['AUFMACHEN','','mở'],['FERNSEHEN','','xem tivi'],['ANKOMMEN','','đến nơi'],['AUSGEHEN','','đi chơi']]},
+{t:'Länder und Sprachen',vi:'Nước và ngôn ngữ',w:[['JAPAN','','Nhật Bản'],['CHINA','','Trung Quốc'],['POLEN','','Ba Lan'],['SPANIEN','','Tây Ban Nha'],['ITALIEN','','Ý'],['VIETNAM','','Việt Nam'],['DEUTSCH','','tiếng Đức'],['ENGLISCH','','tiếng Anh'],['KOREA','','Hàn Quốc'],['TÜRKEI','die','Thổ Nhĩ Kỳ'],['SCHWEIZ','die','Thụy Sĩ']]},
+{t:'Berufe',vi:'Nghề nghiệp',w:[['ARZT','der','bác sĩ'],['KOCH','der','đầu bếp'],['LEHRER','der','giáo viên'],['KELLNER','der','phục vụ'],['PILOT','der','phi công'],['BÄCKER','der','thợ làm bánh'],['FRISEUR','der','thợ cắt tóc'],['MALER','der','họa sĩ, thợ sơn'],['ARCHITEKT','der','kiến trúc sư'],['INGENIEUR','der','kỹ sư']]},
+{t:'Im Restaurant',vi:'Ở nhà hàng',w:[['KARTE','die','thực đơn'],['RECHNUNG','die','hóa đơn'],['KELLNER','der','phục vụ'],['SUPPE','die','súp'],['NUDELN','die (Pl.)','mì'],['PIZZA','die','pizza'],['SALAT','der','xà lách'],['DESSERT','das','tráng miệng'],['TRINKGELD','das','tiền boa'],['BESTELLEN','','gọi món'],['REIS','der','cơm'],['FISCH','der','cá']]},
+{t:'Die Zeit',vi:'Thời gian',w:[['MORGEN','der','buổi sáng'],['ABEND','der','buổi tối'],['NACHT','die','đêm'],['MITTAG','der','buổi trưa'],['WOCHE','die','tuần'],['MONAT','der','tháng'],['JAHR','das','năm'],['HEUTE','','hôm nay'],['MONTAG','der','thứ Hai'],['FREITAG','der','thứ Sáu'],['SAMSTAG','der','thứ Bảy'],['SONNTAG','der','Chủ Nhật'],['TAG','der','ngày']]},
+{t:'Farben',vi:'Màu sắc',w:[['ROT','','đỏ'],['BLAU','','xanh dương'],['GRÜN','','xanh lá'],['GELB','','vàng'],['SCHWARZ','','đen'],['BRAUN','','nâu'],['GRAU','','xám'],['LILA','','tím'],['ROSA','','hồng'],['ORANGE','','cam'],['BUNT','','sặc sỡ']]},
+{t:'Hausarbeit',vi:'Việc nhà',w:[['PUTZEN','','lau chùi'],['KOCHEN','','nấu ăn'],['SPÜLEN','','rửa bát'],['BÜGELN','','ủi đồ'],['WASCHEN','','giặt'],['AUFRÄUMEN','','dọn dẹp'],['MÜLL','der','rác'],['WÄSCHE','die','đồ giặt'],['STAUB','der','bụi'],['BESEN','der','chổi']]}];
+const WCOL=['#f6c9a8','#bfe3c6','#c9d8f5','#f3c6dc','#e9dca6','#d6ccf2','#bfe6e6','#f2d0b4'];
+function wendBuild(r,diff){const S={easy:4,medium:5,hard:6}[diff],N=S*S;
+ for(let at=0;at<300;at++){const th=WEND[Math.floor(r()*WEND.length)];const list=shf(th.w.filter(x=>x[0].length<=N-3||x[0].length==N),r);
+  let res=null,it=0;const dfs=(i,sum,acc)=>{if(res||it++>5000)return;if(sum==N){if(acc.length>=2)res=acc.slice();return}if(i>=list.length||sum>N||acc.length>=7)return;acc.push(list[i]);dfs(i+1,sum+list[i][0].length,acc);acc.pop();dfs(i+1,sum,acc)};dfs(0,0,[]);
+  if(!res)continue;const pl=wendPlace(res.map(x=>x[0]),S,r);if(pl)return{th,words:res,S,...pl}}
+ return null}
+function wendPlace(words,S,r){const N=S*S,g=new Array(N).fill(-1),paths=[];let budget=60000;
+ const nb=i=>{const y=Math.floor(i/S),x=i%S,o=[];for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dy&&!dx)continue;const yy=y+dy,xx=x+dx;if(yy>=0&&yy<S&&xx>=0&&xx<S)o.push(yy*S+xx)}return o};
+ const fr=i=>nb(i).filter(j=>g[j]<0).length;
+ const comps=minL=>{const seen=new Array(N).fill(false);for(let i=0;i<N;i++){if(g[i]>=0||seen[i])continue;const st=[i];let sz=0;seen[i]=true;while(st.length){const c=st.pop();sz++;for(const j of nb(c))if(g[j]<0&&!seen[j]){seen[j]=true;st.push(j)}}if(sz<minL)return false}return true};
+ const put=k=>{if(k==words.length)return true;if(--budget<0)return false;const L=words[k].length,rest=words.slice(k+1).map(w=>w.length),minL=rest.length?Math.min(...rest):0;
+  const em=[];for(let i=0;i<N;i++)if(g[i]<0)em.push(i);const mf=Math.min(...em.map(fr));
+  for(const s0 of shf(em.filter(i=>fr(i)==mf),r).slice(0,3)){const path=[s0];g[s0]=k;
+   const ext=()=>{if(--budget<0)return false;if(path.length==L)return(!rest.length||comps(minL))&&put(k+1);
+    const cand=shf(nb(path[path.length-1]).filter(j=>g[j]<0),r).sort((a,b)=>fr(a)-fr(b));
+    for(const j of cand){g[j]=k;path.push(j);if(ext())return true;path.pop();g[j]=-1}return false};
+   if(ext()){paths[k]=path.slice();return true}g[s0]=-1}return false};
+ for(let tries=0;tries<6;tries++){g.fill(-1);budget=60000;const order=shf(words.map((w,i)=>i),r);const ws=order.map(i=>words[i]);words=ws;if(put(0)){const letters=new Array(N);paths.forEach((p,k)=>p.forEach((c,i)=>letters[c]=words[k][i]));return{letters,paths,order:words}}}
+ return null}
+function wendGame(el,ctx){const B=wendBuild(ctx.r,ctx.diff);if(!B){el.innerHTML='<p>Không tạo được câu đố, hãy tải lại trang.</p>';return}
+ const words=B.order.map(w=>B.words.find(x=>x[0]==w)),S=B.S,found=new Map();let sel=[],hintCells=new Set();
+ const adj=(a,b)=>Math.abs(Math.floor(a/S)-Math.floor(b/S))<=1&&Math.abs(a%S-b%S)<=1&&a!=b;
+ const owner=i=>{for(const [k] of found)if(B.paths[k].includes(i))return k;return -1};
+ const line=(p,col,w)=>`<polyline points="${p.map(i=>`${i%S+.5},${Math.floor(i/S)+.5}`).join(' ')}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const draw=(msg)=>{const fc=[...found.keys()];
+  el.innerHTML=`<p style="text-align:center"><b>Chủ đề: ${B.th.t}</b> <span class="lv">(${B.th.vi})</span> · đã tìm ${found.size}/${words.length} từ</p>
+  <div class="wcur">${sel.map(i=>B.letters[i]).join('')}</div>
+  <div class="wg" style="grid-template-columns:repeat(${S},1fr)">${B.letters.map((ch,i)=>{const o=owner(i);return `<button class="wc${sel.includes(i)?' sel':''}${o>=0?' fd':''}${hintCells.has(i)&&o<0?' hint':''}" data-i="${i}" style="${o>=0?'background:'+WCOL[fc.indexOf(o)%WCOL.length]:''}">${ch}</button>`}).join('')}
+  <svg viewBox="0 0 ${S} ${S}" preserveAspectRatio="none">${fc.map((k,x)=>line(B.paths[k],'rgba(0,0,0,.18)',.12)).join('')}${sel.length>1?line(sel,'var(--acc)',.16):''}</svg></div>
+  <p class="gmsg">${msg||'Chạm lần lượt vào các chữ liền kề. Chạm lại chữ cuối để bỏ chọn.'}</p>
+  <ul class="flist">${fc.map((k,x)=>`<li style="background:${WCOL[x%WCOL.length]}">${words[k][1]?words[k][1]+' ':''}${words[k][0][0]+words[k][0].slice(1).toLowerCase()} · ${words[k][2]}</li>`).join('')}</ul>
+  ${found.size<words.length?'<div class="acts"><button class="btn ghost" id="clr">Xóa chọn</button><button class="btn ghost" id="hn">Gợi ý</button><button class="btn ghost" id="gv">Xem đáp án</button></div>':''}`;
+  el.querySelectorAll('.wc').forEach(b=>b.onclick=()=>tap(+b.dataset.i));
+  const q=x=>el.querySelector(x);if(q('#clr')){q('#clr').onclick=()=>{sel=[];draw()};
+   q('#hn').onclick=()=>{const k=words.findIndex((w,k)=>!found.has(k)&&!B.paths[k].every(c=>hintCells.has(c)));if(k<0)return;const n=B.paths[k].filter(c=>hintCells.has(c)).length;hintCells.add(B.paths[k][n]);ctx.hint();draw(`Gợi ý: có một từ nghĩa là „${words[k][2]}“ — chữ được đánh dấu là chữ thứ ${n+1} của nó.`)};
+   q('#gv').onclick=()=>{words.forEach((w,k)=>{if(!found.has(k))found.set(k,1)});sel=[];draw('Đáp án đã được hiện.');ctx.finish(false,'')}}};
+ const tap=i=>{if(owner(i)>=0)return;const at=sel.indexOf(i);
+  if(at>=0)sel=sel.slice(0,at==sel.length-1?at:at+1);else if(!sel.length||adj(sel[sel.length-1],i))sel.push(i);else sel=[i];
+  const w=sel.map(c=>B.letters[c]).join('');let msg='';
+  const k=words.findIndex((x,k)=>!found.has(k)&&x[0]==w);
+  if(k>=0){if(B.paths[k].join()==sel.join()){found.set(k,1);sel=[];msg=`Đúng: ${w}!`}else msg=`Đúng từ „${w}“ nhưng đường nối khác — thử nối các chữ khác.`}
+  draw(msg);if(found.size==words.length)ctx.finish(true,'')};
+ draw()}
+
+/* ---------- Crossclimb ---------- */
+const LADDERS=[['SALZ','SATZ','SATT','SAFT'],['TEIL','SEIL','SEIN','BEIN'],['WAND','WIND','KIND','KINO'],['NASE','HASE','HOSE','ROSE'],
+ ['BEIN','WEIN','WEIT','ZEIT','ZELT'],['MEER','MEHR','SEHR','SEHE','GEHE'],['KALT','HALT','HALS','HAUS','MAUS'],['BALL','BALD','BAND','HAND','HUND'],
+ ['KAUF','LAUF','LAUT','HAUT','HAUS','MAUS'],['MANN','WANN','WAND','HAND','HUND','MUND']];
+const CLUE={KAUF:['Das Kaufen (Nomen): Der ___ eines Autos ist teuer.','việc mua'],LAUF:['Das Laufen (Nomen): ein 10-Kilometer-___','cuộc chạy'],LAUT:['Gegenteil von „leise“','ồn, to'],HAUT:['Das größte Organ des Körpers, außen','da'],HAUS:['Hier wohnt eine Familie.','ngôi nhà'],MAUS:['Kleines Tier – oder ein Teil am Computer','con chuột'],
+ MANN:['Gegenteil von „Frau“','đàn ông'],WANN:['Fragewort für die Zeit','khi nào'],WAND:['Ein Bild hängt an der ___.','bức tường'],HAND:['Sie hat fünf Finger.','bàn tay'],HUND:['Er sagt „Wau!“.','con chó'],MUND:['Damit isst und spricht man.','miệng'],
+ BEIN:['Man hat zwei davon und läuft damit.','chân'],WEIN:['Getränk aus Trauben','rượu vang'],WEIT:['Gegenteil von „nah“','xa'],ZEIT:['„Hast du heute ___?“ – „Ja, ich habe frei.“','thời gian'],ZELT:['Beim Camping schläft man darin.','lều'],
+ MEER:['Nordsee und Ostsee','biển'],MEHR:['Gegenteil von „weniger“','nhiều hơn'],SEHR:['„Danke ___!“','rất'],SEHE:['ich ___ (sehen)','tôi nhìn thấy'],GEHE:['ich ___ (gehen)','tôi đi'],
+ KALT:['Gegenteil von „warm“','lạnh'],HALT:['Stopp! Nicht weiter!','dừng lại'],HALS:['Zwischen Kopf und Körper','cổ'],
+ SALZ:['Steht neben dem Pfeffer auf dem Tisch.','muối'],SATZ:['Er hat ein Subjekt und ein Verb.','câu'],SATT:['Ich habe genug gegessen, ich bin ___.','no'],SAFT:['Orangen___ zum Frühstück','nước ép'],
+ TEIL:['Ein Stück von einem Ganzen','phần'],SEIL:['Ein dickes, langes Band zum Klettern','dây thừng'],SEIN:['ich bin, du bist … (Infinitiv)','là, thì'],
+ BALL:['Damit spielt man Fußball.','quả bóng'],BALD:['„Bis ___!“ – nicht jetzt, aber in kurzer Zeit','sớm, chẳng bao lâu'],BAND:['Eine Gruppe, die Musik macht','ban nhạc'],
+ WIND:['Bewegte Luft draußen','gió'],KIND:['Ein junger Mensch, zum Beispiel sechs Jahre alt','đứa trẻ'],KINO:['Dort sieht man Filme auf einer großen Leinwand.','rạp chiếu phim'],
+ NASE:['Damit riecht man.','mũi'],HASE:['Ein Tier mit langen Ohren – zu Ostern!','con thỏ'],HOSE:['Man trägt sie an den Beinen, z. B. eine Jeans.','cái quần'],ROSE:['Eine rote Blume, Symbol der Liebe','hoa hồng']};
+function climbGame(el,ctx){const r=ctx.r,want={easy:4,medium:5,hard:6}[ctx.diff];let pool=LADDERS.filter(l=>l.length==want);if(!pool.length)pool=LADDERS;
+ let lad=pool[Math.floor(r()*pool.length)].slice();if(r()<.5)lad.reverse();const L=lad[0].length,midSol=lad.slice(1,-1);
+ let mid=shf(midSol,r);for(let i=0;i<5&&(mid.join()==midSol.join()||mid.join()==midSol.slice().reverse().join());i++)mid=shf(midSol,r);
+ const rows=mid.map(w=>({w,ok:false,rev:0}));let phase=1,ends=null,showVi=ctx.diff!='hard',msg='Giải nghĩa từng từ (mỗi từ '+L+' chữ cái).';
+ const clueTxt=w=>`${CLUE[w][0]}${showVi?' <span class="lv">('+CLUE[w][1]+')</span>':''}`;
+ const rowHtml=(o,i,kind)=>`<div class="lr${o.ok?' ok':''}">${o.ok?`<span class="wd2">${o.w}</span>`:`<input maxlength="${L}" data-k="${kind}" data-i="${i}" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${o.w.slice(0,o.rev)}">`}${kind=='m'&&phase==2?`<span class="mv"><button data-u="${i}" aria-label="Lên">↑</button><button data-d="${i}" aria-label="Xuống">↓</button></span>`:'<span></span>'}<span class="cl">${clueTxt(o.w)}</span></div>`;
+ const lockRow=t=>`<div class="lr lock"><span>🔒 ${t}</span><span></span></div>`;
+ const draw=()=>{el.innerHTML=`<p class="gmsg">${msg}</p><div class="lad">${ends?rowHtml(ends[0],0,'t'):lockRow('Từ đầu thang')}${rows.map((o,i)=>rowHtml(o,i,'m')).join('')}${ends?rowHtml(ends[1],1,'b'):lockRow('Từ cuối thang')}</div>
+  ${phase<4?'<div class="acts"><button class="btn ghost" id="hn">Gợi ý</button><button class="btn ghost" id="gv">Xem đáp án</button></div>':''}`;
+  el.querySelectorAll('input').forEach(inp=>inp.oninput=()=>{const o=inp.dataset.k=='m'?rows[+inp.dataset.i]:ends[+inp.dataset.i];const v=inp.value.toUpperCase();if(v.length<L){inp.classList.remove('no');return}
+   if(nrm(v)==nrm(o.w)){o.ok=true;check()}else inp.classList.add('no')});
+  el.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>move(+b.dataset.u,-1));el.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>move(+b.dataset.d,1));
+  const q=x=>el.querySelector(x);if(q('#hn')){q('#hn').onclick=()=>{ctx.hint();if(!showVi){showVi=true;msg='Đã hiện nghĩa tiếng Việt.';return draw()}
+   if(phase==2){const i=rows.findIndex((o,i)=>o.w!=midSol[i]&&o.w!=midSol[midSol.length-1-i]);msg=`Gợi ý: từ đầu tiên trong thang (sau từ khóa trên cùng) là ${midSol[0]} hoặc ${midSol[midSol.length-1]}.`;return draw()}
+   const list=phase==1?rows:ends;const o=list.find(o=>!o.ok);if(o){o.rev=Math.min(L-1,o.rev+1);msg='Đã mở thêm một chữ cái.'}draw()};
+   q('#gv').onclick=()=>{rows.forEach((o,i)=>{o.w=midSol[i];o.ok=true});ends=[{w:lad[0],ok:true},{w:lad[lad.length-1],ok:true}];phase=4;msg='Đáp án: '+lad.join(' → ');draw();ctx.finish(false,'')}}
+  const first=el.querySelector('input');if(first&&document.activeElement===document.body)first.focus()};
+ const ordered=()=>{const m=rows.map(o=>o.w).join();return m==midSol.join()?1:m==midSol.slice().reverse().join()?-1:0};
+ const move=(i,d)=>{const j=i+d;if(j<0||j>=rows.length)return;[rows[i],rows[j]]=[rows[j],rows[i]];check()};
+ const check=()=>{if(phase==1&&rows.every(o=>o.ok)){phase=2;msg='Giờ sắp xếp lại bằng ↑ ↓ để hai từ liền nhau chỉ khác đúng một chữ cái.'}
+  if(phase==2){const o=ordered();if(o){phase=3;const top=o==1?lad[0]:lad[lad.length-1],bot=o==1?lad[lad.length-1]:lad[0];ends=[{w:top,ok:false,rev:0},{w:bot,ok:false,rev:0}];msg='Đúng thứ tự! Từ đầu và từ cuối đã mở khóa.'}}
+  if(phase==3&&ends.every(o=>o.ok)){phase=4;msg='Hoàn thành thang chữ: '+[ends[0].w,...rows.map(o=>o.w),ends[1].w].join(' → ');draw();return ctx.finish(true,'')}
+  draw()};
+ draw()}
+
+/* ---------- Pinpoint ---------- */
+const PIN=[['Obst','Trái cây',['obst','trai cay','hoa qua','frucht','fruchte'],[['Traube','nho'],['Zitrone','chanh'],['Erdbeere','dâu tây'],['Banane','chuối'],['Apfel','táo']]],
+['Gemüse','Rau củ',['gemuse','rau'],[['Zwiebel','hành tây'],['Gurke','dưa leo'],['Karotte','cà rốt'],['Kartoffel','khoai tây'],['Tomate','cà chua']]],
+['Getränke','Đồ uống',['getrank','do uong','thuc uong','nuoc uong','trinken'],[['Saft','nước ép'],['Tee','trà'],['Wein','rượu vang'],['Kaffee','cà phê'],['Wasser','nước']]],
+['Möbel','Đồ nội thất',['mobel','noi that','do dac','do go'],[['Regal','kệ'],['Sessel','ghế bành'],['Schrank','tủ'],['Bett','giường'],['Tisch','bàn']]],
+['Räume in der Wohnung','Các phòng trong nhà',['raum','raume','zimmer','phong','wohnung','can ho'],[['Flur','hành lang'],['Keller','tầng hầm'],['Bad','phòng tắm'],['Küche','bếp'],['Schlafzimmer','phòng ngủ']]],
+['Modalverben','Động từ khuyết thiếu',['modal','khuyet thieu','khiem khuyet','dong tu khuyet'],[['sollen','nên'],['dürfen','được phép'],['wollen','muốn'],['müssen','phải'],['können','có thể']]],
+['Trennbare Verben','Động từ tách',['trennbar','dong tu tach','tach'],[['fernsehen','xem tivi'],['einladen','mời'],['mitkommen','đi cùng'],['anrufen','gọi điện'],['aufstehen','thức dậy']]],
+['Verben mit Vokalwechsel e → i','Động từ đổi nguyên âm e → i',['vokalwechsel','vokal','doi nguyen am','nguyen am','e i','e zu i'],[['helfen','giúp'],['nehmen','lấy'],['essen','ăn'],['geben','đưa'],['sprechen','nói']]],
+['Personalpronomen','Đại từ nhân xưng',['pronomen','dai tu','nhan xung'],[['ihr','các bạn'],['es','nó'],['wir','chúng tôi'],['sie','cô ấy / họ'],['ich','tôi']]],
+['Länder','Quốc gia',['land','lander','quoc gia','nuoc','dat nuoc','staat'],[['Österreich','Áo'],['Frankreich','Pháp'],['Japan','Nhật Bản'],['Vietnam','Việt Nam'],['Deutschland','Đức']]],
+['Sprachen','Ngôn ngữ',['sprache','ngon ngu','tieng'],[['Französisch','tiếng Pháp'],['Japanisch','tiếng Nhật'],['Englisch','tiếng Anh'],['Vietnamesisch','tiếng Việt'],['Deutsch','tiếng Đức']]],
+['Begrüßung und Abschied','Chào hỏi và tạm biệt',['gruss','begrussung','abschied','chao','gruessen'],[['Grüß Gott','xin chào (Nam Đức)'],['Tschüss','tạm biệt'],['Guten Abend','chào buổi tối'],['Hallo','xin chào'],['Guten Tag','chào (ban ngày)']]],
+['Hausarbeit','Việc nhà',['hausarbeit','haushalt','viec nha','lam viec nha','don dep'],[['bügeln','ủi đồ'],['staubsaugen','hút bụi'],['spülen','rửa bát'],['putzen','lau chùi'],['aufräumen','dọn dẹp']]],
+['Müll trennen','Phân loại rác',['mull','rac','abfall','phan loai'],[['gelber Sack','bao bì nhựa'],['Restmüll','rác còn lại'],['Altglas','thủy tinh'],['Biomüll','rác hữu cơ'],['Altpapier','giấy cũ']]],
+['Geschirr und Besteck','Bát đĩa và dao nĩa',['geschirr','besteck','dung cu','bat dia','dao nia','do dung nha bep','kuche'],[['Pfanne','chảo'],['Teller','đĩa'],['Löffel','thìa'],['Gabel','nĩa'],['Messer','dao']]],
+['Geschmack','Mùi vị',['geschmack','vi','mui vi','schmecken'],[['bitter','đắng'],['scharf','cay'],['sauer','chua'],['salzig','mặn'],['süß','ngọt']]],
+['Frühstück','Bữa sáng',['fruhstuck','bua sang','an sang'],[['Müsli','ngũ cốc'],['Honig','mật ong'],['Marmelade','mứt'],['Brötchen','bánh mì nhỏ'],['Kaffee','cà phê']]],
+['Körperteile','Bộ phận cơ thể',['korper','co the','bo phan'],[['Hals','cổ'],['Haut','da'],['Bein','chân'],['Mund','miệng'],['Hand','bàn tay']]],
+['Wochentage','Các ngày trong tuần',['wochentag','tag','ngay trong tuan','thu','ngay'],[['Mittwoch','thứ Tư'],['Donnerstag','thứ Năm'],['Samstag','thứ Bảy'],['Freitag','thứ Sáu'],['Montag','thứ Hai']]],
+['Familie','Gia đình',['familie','gia dinh','nguoi than','ho hang','verwandt'],[['Geschwister','anh chị em'],['Tante','cô, dì'],['Oma','bà'],['Bruder','anh/em trai'],['Mutter','mẹ']]],
+['Berufe','Nghề nghiệp',['beruf','nghe'],[['Ingenieur','kỹ sư'],['Krankenschwester','y tá'],['Koch','đầu bếp'],['Lehrerin','cô giáo'],['Arzt','bác sĩ']]],
+['Im Restaurant','Ở nhà hàng',['restaurant','nha hang','quan an'],[['Trinkgeld','tiền boa'],['Rechnung','hóa đơn'],['Speisekarte','thực đơn'],['Kellner','phục vụ'],['bestellen','gọi món']]],
+['Formular / Angaben zur Person','Mẫu đơn / thông tin cá nhân',['formular','mau don','thong tin','personalien','angaben','ca nhan','to khai'],[['Staatsangehörigkeit','quốc tịch'],['Familienstand','tình trạng hôn nhân'],['Geburtsdatum','ngày sinh'],['Vorname','tên'],['Nachname','họ']]],
+['Wohnung mieten','Thuê nhà',['miete','mieten','thue nha','thue','wohnung'],[['Kaution','tiền cọc'],['Nebenkosten','phí phụ'],['Vermieter','chủ nhà'],['Miete','tiền thuê'],['Wohnung','căn hộ']]],
+['Fragewörter','Từ để hỏi',['frage','tu de hoi','cau hoi','w wort','w frage'],[['wieso','tại sao'],['woher','từ đâu'],['wann','khi nào'],['wo','ở đâu'],['was','cái gì']]],
+['Farben','Màu sắc',['farbe','mau'],[['lila','tím'],['grau','xám'],['grün','xanh lá'],['blau','xanh dương'],['rot','đỏ']]],
+['Zahlen','Các con số',['zahl','so','con so'],[['zwölf','mười hai'],['neun','chín'],['sieben','bảy'],['drei','ba'],['eins','một']]]];
+function pinGame(el,ctx){const r=ctx.r,C=PIN[Math.floor(r()*PIN.length)],words=C[3];let shown={easy:3,medium:2,hard:1}[ctx.diff],guesses=[],done=false,msg='Đoán chủ đề chung của các từ.';
+ const draw=()=>{el.innerHTML=`<p class="gmsg">${msg}</p><div class="pp">${words.map((w,i)=>`<div class="pc2${i<shown||done?'':' hid'}">${i<shown||done?w[0]+(done?' <span class="lv">· '+w[1]+'</span>':''):'Từ '+(i+1)}</div>`).join('')}</div>
+  <ul class="ghist">${guesses.map(g=>`<li>✗ ${esc(g)}</li>`).join('')}</ul>
+  ${done?`<p style="text-align:center">Chủ đề: <b>${C[0]}</b> · ${C[1]}</p>`:`<form class="acts" style="justify-content:center"><input type="text" id="pg" placeholder="Chủ đề là…" autocomplete="off" style="width:min(100%,280px)"><button class="btn">Đoán (${5-guesses.length} lượt)</button></form><div class="acts" style="justify-content:center"><button class="btn ghost" id="gv">Xem đáp án</button></div>`}`;
+  if(done)return;const f=el.querySelector('form'),inp=el.querySelector('#pg');inp.focus();
+  f.onsubmit=e=>{e.preventDefault();const g=nrm(inp.value);if(!g)return;
+   const ok=C[2].some(a=>{a=nrm(a);return g.includes(a)||(g.length>=4&&a.includes(g))})||g==nrm(C[0])||g==nrm(C[1]);
+   if(ok){done=true;shown=5;msg=`Chính xác! Bạn đoán đúng sau ${guesses.length+1} lượt.`;draw();return ctx.finish(true,'')}
+   guesses.push(inp.value);if(guesses.length>=5){done=true;msg='Hết lượt đoán.';draw();return ctx.finish(false,'')}
+   shown=Math.min(5,shown+1);msg='Chưa đúng — thêm một từ nữa đã lộ.';draw()};
+  el.querySelector('#gv').onclick=()=>{done=true;msg='Đáp án đã được hiện.';draw();ctx.finish(false,'')}};
+ draw()}
 
 /* ===================== HỒ SƠ NGƯỜI HỌC ===================== */
 const PROFILES={bush:{name:'Bush',g:'m'},xiu:{name:'Xíu',g:'f'}};
