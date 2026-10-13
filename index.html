@@ -1406,7 +1406,7 @@ const CHECK=['Động từ chia ở vị trí 2 trong câu trần thuật?','Dan
 function writePage(pi){const J=ls.get('gaq_write_'+PID,{}),d=dkey(new Date());const cur=J[d];
  if(pi==null)pi=cur?cur.p:Math.floor(rngFrom('w'+d)()*PROMPTS.length);const P=PROMPTS[pi];
  const past=Object.keys(J).filter(k=>k!=d).sort().reverse().slice(0,10);
- app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề. Trang không chấm được câu tự do; bấm "Sao chép để nhờ sửa" rồi dán vào chat với Claude hoặc gửi giáo viên.</p>
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Nhật ký viết</h1><p class="sub">Mỗi ngày viết 3–6 câu theo đề. Trang không chấm được câu tự do.</p>
  <div class="card"><p class="lv">Đề hôm nay (${new Date().toLocaleDateString('de-DE')})</p><h3>${P[0]}</h3><p>${P[1]}</p><p class="lv">Từ gợi ý (sáng lên khi bạn đã dùng):</p><div class="wwords" id="ww">${P[2].map(w=>`<span>${esc(w)}</span>`).join('')}</div>
  <textarea id="jt" rows="8" placeholder="Schreib hier …">${esc(cur&&cur.p==pi?cur.text:'')}</textarea><p class="lv" id="cnt"></p>
  <details><summary>Tự kiểm tra trước khi lưu</summary>${CHECK.map(c=>`<label style="display:block"><input type="checkbox"> ${c}</label>`).join('')}</details>
@@ -1582,8 +1582,8 @@ function footer(){const F=document.getElementById('foot');if(!F)return;if(secure
   <div class="about" id="fab"></div>
   <div class="cr"><span class="logo">DQ</span><p>© ${Y} <b>Lê Minh Hưng</b>. Bảo lưu mọi quyền. Deutsch Quiz là trang tự học tiếng Đức cá nhân, dùng cho Bush và Xíu.<br>Bài giảng, câu hỏi, đề ôn và truyện do trang tự soạn theo chủ đề của giáo trình; tên sách và trang web được nêu chỉ để tham khảo, trang không liên kết với các đơn vị này.</p></div></div>`;
  const T={about:'<p><b>Deutsch Quiz</b> đi theo thứ tự chương của Grammatik aktiv A1–B1: đọc bài giảng trước, làm bài tập sau, rồi làm đề ôn và đề kiểm tra năng lực. Ngoài ra có thẻ từ, nghe, nói, viết, đọc truyện và trò chơi hằng ngày.</p>',
-  data:'<p>Điểm, tiến độ, nhật ký, ghi chú và thời gian học được lưu <b>trong trình duyệt bạn đang dùng</b> (localStorage), riêng cho từng hồ sơ Bush/Xíu. Trang không gửi dữ liệu đi đâu. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất tiến độ, nên thỉnh thoảng bấm <b>Xuất dữ liệu</b> để giữ bản sao.</p>',
-  copy:'<p>Câu hỏi và truyện trong trang là nội dung tự soạn, không chép từ sách hay trang web khác. Văn bản bạn tự dán vào mục „Truyện của bạn“ và bộ thẻ bạn tự nhập chỉ nằm trong trình duyệt của bạn, không đưa lên GitHub.</p>'};
+  data:'<p>Điểm, tiến độ, nhật ký, ghi chú và thời gian học được lưu <b>trong trình duyệt bạn đang dùng</b>Trang không gửi dữ liệu đi đâu. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất tiến độ, nên thỉnh thoảng bấm <b>Xuất dữ liệu</b> để giữ bản sao.</p>',
+  copy:'<p>Câu hỏi và truyện trong trang là nội dung tự soạn, không chép từ sách hay trang web khác. Văn bản bạn tự dán vào mục „Truyện của bạn“ và bộ thẻ bạn tự nhập chỉ nằm trong trình duyệt của bạn.</p>'};
  F.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f,A=F.querySelector('#fab');
   if(f=='home')return go(null);if(f=='top')return scrollTo({top:0,behavior:'smooth'});
   if(f=='exp'){const x=document.getElementById('exp');if(x){x.click();return}return}
