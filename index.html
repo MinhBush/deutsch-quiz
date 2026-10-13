@@ -1582,7 +1582,7 @@ function footer(){const F=document.getElementById('foot');if(!F)return;if(secure
   <div class="about" id="fab"></div>
   <div class="cr"><span class="logo">DQ</span><p>© ${Y} <b>Lê Minh Hưng</b>. Bảo lưu mọi quyền. Deutsch Quiz là trang tự học tiếng Đức cá nhân, dùng cho Bush và Xíu.<br>Bài giảng, câu hỏi, đề ôn và truyện do trang tự soạn theo chủ đề của giáo trình; tên sách và trang web được nêu chỉ để tham khảo, trang không liên kết với các đơn vị này.</p></div></div>`;
  const T={about:'<p><b>Deutsch Quiz</b> đi theo thứ tự chương của Grammatik aktiv A1–B1: đọc bài giảng trước, làm bài tập sau, rồi làm đề ôn và đề kiểm tra năng lực. Ngoài ra có thẻ từ, nghe, nói, viết, đọc truyện và trò chơi hằng ngày.</p>',
-  data:'<p>Điểm, tiến độ, nhật ký, ghi chú và thời gian học được lưu <b>trong trình duyệt bạn đang dùng</b>Trang không gửi dữ liệu đi đâu. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất tiến độ, nên thỉnh thoảng bấm <b>Xuất dữ liệu</b> để giữ bản sao.</p>',
+  data:'<p>Điểm, tiến độ, nhật ký, ghi chú và thời gian học được lưu <b>trong trình duyệt bạn đang dùng.</b> Trang không gửi dữ liệu đi đâu. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất tiến độ, nên thỉnh thoảng bấm <b>Xuất dữ liệu</b> để giữ bản sao.</p>',
   copy:'<p>Câu hỏi và truyện trong trang là nội dung tự soạn, không chép từ sách hay trang web khác. Văn bản bạn tự dán vào mục „Truyện của bạn“ và bộ thẻ bạn tự nhập chỉ nằm trong trình duyệt của bạn.</p>'};
  F.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f,A=F.querySelector('#fab');
   if(f=='home')return go(null);if(f=='top')return scrollTo({top:0,behavior:'smooth'});
