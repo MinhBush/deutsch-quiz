@@ -243,6 +243,15 @@ h3.gh{font-size:.95rem;margin:1.2em 0 .4em;color:var(--mute);text-transform:uppe
 .lkf{max-width:440px;margin:0 auto}.lkf label{display:block;margin:.7em 0 .2em;font-weight:600}.lkf input{width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
 .lkf input.pin{letter-spacing:.4em;font-size:1.3rem;text-align:center}
 .dev{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.dev:last-child{border-bottom:0}.dev .t{flex:1}
+/* ===== giới thiệu đề & cảnh báo thoát ===== */
+.exintro h3{font-size:1rem;margin:1.2em 0 .4em;color:var(--acc)}.exintro ul{margin:.2em 0;padding-left:1.2em}.exintro li{margin:.25em 0}
+.exg{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:12px 0}.exg div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}.exg b{display:block;font-size:1.5rem;color:var(--acc)}.exg span{font-size:.8rem;color:var(--mute)}
+#lvm{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:grid;place-items:center;padding:16px}
+#lvm .lvbox{background:var(--card);color:var(--ink);border-radius:14px;padding:20px 22px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3)}#lvm h3{margin:0 0 .5em}
+.praise.pl{background:color-mix(in srgb,#e0a100 14%,var(--card));color:#a86b00}
+body.expause .paper{filter:blur(8px);pointer-events:none;user-select:none}.wcd{color:var(--no)}
+.ctl{display:flex;align-items:center;justify-content:flex-start;gap:6px;flex-wrap:wrap;margin:6px 0 2px}.ctl button{flex:none;margin:0;font:inherit;font-size:1.05rem;width:44px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer}.ctl button:hover{border-color:var(--acc)}.ctl .pp{background:var(--acc);color:#fff;border-color:var(--acc);width:52px}
+.shs p{cursor:pointer}.shs p:hover{background:color-mix(in srgb,var(--acc) 8%,transparent)}.shs .no{color:var(--mute);font-size:.8rem;margin-right:6px;font-variant-numeric:tabular-nums}
 /* ===== chân trang ===== */
 #foot{background:color-mix(in srgb,var(--line) 45%,var(--bg));border-top:1px solid var(--line);color:var(--mute);font-size:.88rem;margin-top:20px}
 #foot[hidden]{display:none}
@@ -836,7 +845,9 @@ function progBar(key,total){const p=getP(key),n=cnt(key),d=p?Math.min(p.n,total)
  return `<span class="pg"><span class="ubar${p?' run':''}"><i style="width:${pct}%"></i></span><span class="pgl">${t} · <b>Hoàn thành ${n} lần</b></span></span>`}
 const norm=s=>s.trim().toLowerCase().replace(/[.!?,]+$/,'').replace(/ß/g,'ss');
 let tm;
-const praise=(w,n)=>{const r=n?w/n:1;const [c,t]=r<=.05?['p1','Quá dữ luôn ní ơi 🔥']:r<=.10?['p2','Ngonnnnnn! 😋']:['p3','Ồ heo nooooo! 🐷'];return `<div class="praise ${c}">${t}<div class="lv">Sai ${w}/${n} câu (${Math.round(r*100)}%)</div></div>`};
+const PR_L=[['Xuất sắc! Nhớ rất chắc 🌟','Hoàn hảo, cứ thế phát huy nhé! ✨','Tuyệt vời, gần như không sai câu nào! 🎉'],['Rất tốt! Chỉ còn chút xíu nữa thôi 💪','Giỏi lắm! Ôn lại vài câu là chắc luôn 👏','Làm tốt lắm, tiến bộ rõ rệt! 🚀'],['Đang tiến bộ, tiếp tục nhé! 🌱','Khá lắm! Mỗi lần ôn là nhớ thêm một chút 📈','Ổn rồi đó, xem lại câu sai là lên tay ngay 🙌'],['Không sao cả — sai là để nhớ lâu hơn 🌱','Bước đầu luôn khó, cứ ôn đều là sẽ quen 💛','Mỗi câu sai là một điều mới học được. Làm lại nhé! 📚']];
+const praise=(w,n)=>{const r=n?w/n:1,lvl=r<=.05?0:r<=.10?1:r<=.30?2:3,P=PR_L[lvl],t=P[Math.floor(Math.random()*P.length)];return `<div class="praise ${['p1','p2','pl','pl'][lvl]}">${t}<div class="lv">Đúng ${n-w}/${n} câu${w?` · ôn thêm ${w} câu`:''}</div></div>`};
+const praiseExam=(w,n)=>{const r=n?w/n:1;const [c,t]=r<=.05?['p1','Quá dữ luôn ní ơi 🔥']:r<=.10?['p2','Ngonnnnnn! 😋']:['p3','Ồ heo nooooo! 🐷'];return `<div class="praise ${c}">${t}<div class="lv">Sai ${w}/${n} câu (${Math.round(r*100)}%)</div></div>`};
 function go(k,de,g,sk){const u=new URL(location.href);['k','de','g','s'].forEach(x=>u.searchParams.delete(x));if(k)u.searchParams.set('k',k);if(de)u.searchParams.set('de',de);if(g)u.searchParams.set('g',g);if(sk)u.searchParams.set('s',sk);try{history.pushState(null,'',u)}catch(e){}show(k,de,g,sk)}
 function route(){const s=new URL(location.href).searchParams;show(s.get('k'),s.get('de'),s.get('g'),s.get('s'))}
 let secure=false,leaves=0,lastLeave=0;
@@ -844,14 +855,36 @@ const unlocked=E=>!E.req||E.req.every(id=>best['w'+id]!=null&&best['w'+id]<=2);
 ['copy','cut','contextmenu','dragstart','selectstart'].forEach(t=>document.addEventListener(t,e=>{if(secure&&!(t=='selectstart'&&e.target.tagName=='INPUT'))e.preventDefault()}));
 document.addEventListener('paste',e=>{if(secure)e.preventDefault()});
 document.addEventListener('keydown',e=>{if(secure&&(e.ctrlKey||e.metaKey)&&['c','x','a','p','s','u','v'].includes((e.key||'').toLowerCase()))e.preventDefault()});
-const leave=()=>{if(!secure||Date.now()-lastLeave<1500)return;lastLeave=Date.now();leaves++;const b=document.getElementById('lv');if(b){b.style.display='block';b.textContent='⚠ Bạn đã rời khỏi bài thi '+leaves+' lần. Số lần rời khỏi được ghi vào kết quả.'}};
-document.addEventListener('visibilitychange',()=>{if(document.hidden)leave()});window.addEventListener('blur',leave);
+let exVoid=null,exT0=0,exFs=false,awayAt=0,wTimer=null;const MAXW=2,AWAY_MAX=20;
+const exOn=()=>secure&&EXAM_ACTIVE&&Date.now()-exT0>1500;
+const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+const fsEnter=async()=>{const el=document.documentElement,rq=el.requestFullscreen||el.webkitRequestFullscreen;if(!rq)return false;try{await rq.call(el);exT0=Math.max(exT0,Date.now()-1500+1200);try{navigator.keyboard&&navigator.keyboard.lock&&navigator.keyboard.lock(['Escape'])}catch(e){}return true}catch(e){return false}};
+function warnBox(html,btns,count,onTimeout){let M=document.getElementById('lvm');if(M)M.remove();clearInterval(wTimer);M=document.createElement('div');M.id='lvm';
+ M.innerHTML=`<div class="lvbox" role="alertdialog" aria-modal="true">${html}${count?`<p class="wcd">Tự hủy bài sau <b id="wcn">${count}</b> giây nếu không quay lại.</p>`:''}<div class="acts">${btns.map((b,i)=>`<button class="btn${i?' ghost':''}" data-w="${i}">${b[0]}</button>`).join('')}</div></div>`;
+ document.body.appendChild(M);document.body.classList.add('expause');
+ const close=()=>{clearInterval(wTimer);M.remove();document.body.classList.remove('expause')};
+ M.querySelectorAll('[data-w]').forEach(b=>b.onclick=async()=>{const r=await btns[+b.dataset.w][1]();if(r!==false)close()});
+ if(count){let c=count;wTimer=setInterval(()=>{c--;const n=document.getElementById('wcn');if(n)n.textContent=c;if(c<=0){close();onTimeout()}},1000)}
+ const f=M.querySelector('[data-w="0"]');if(f)f.focus()}
+function violation(why,force){if(!exOn())return;leaves++;
+ if(force||leaves>MAXW){document.body.classList.remove('expause');const M=document.getElementById('lvm');if(M)M.remove();clearInterval(wTimer);if(exVoid)exVoid(why+(force?'':' (quá '+MAXW+' lần cảnh báo)'));return}
+ const needFs=exFs&&!isFs();
+ warnBox(`<h3>⚠ Cảnh báo ${leaves}/${MAXW}</h3><p>Bạn vừa <b>${why}</b>. Đây là lần cảnh báo thứ ${leaves}. ${leaves<MAXW?'Lần vi phạm tiếp theo vẫn được cảnh báo, nhưng':'Lần vi phạm tiếp theo'} <b>${leaves<MAXW?'lần thứ '+(MAXW+1)+' sẽ hủy bài thi':'sẽ hủy bài thi'}</b>.</p>${needFs?'<p>Bấm nút bên dưới để quay lại toàn màn hình và làm tiếp.</p>':''}`,
+  [[needFs?'⛶ Quay lại toàn màn hình':'Tiếp tục làm bài',async()=>{if(needFs){const ok=await fsEnter();if(!ok)return false}return true}]],needFs?15:0,()=>{if(exVoid)exVoid('không quay lại toàn màn hình')})}
+const goneAway=()=>{if(exOn()&&!awayAt)awayAt=Date.now()};
+const backAgain=()=>{if(!awayAt)return;const sec=Math.round((Date.now()-awayAt)/1000);awayAt=0;if(!exOn())return;violation(sec>=2?`rời khỏi bài thi ${sec} giây`:'rời khỏi cửa sổ bài thi',sec>AWAY_MAX)};
+const leave=()=>{};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)goneAway();else setTimeout(backAgain,50)});window.addEventListener('blur',goneAway);window.addEventListener('focus',()=>setTimeout(backAgain,50));
+['fullscreenchange','webkitfullscreenchange'].forEach(t=>document.addEventListener(t,()=>{if(!isFs()&&exFs&&exOn()&&!document.hidden&&!awayAt)violation('thoát chế độ toàn màn hình')}));
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&exOn()&&isFs()&&!document.getElementById('lvm')){e.preventDefault();
+ warnBox(`<h3>Thoát toàn màn hình?</h3><p>Bài thi đang tính giờ. Nếu thoát toàn màn hình, bạn sẽ bị tính <b>1 lần cảnh báo</b> (tối đa ${MAXW} lần; lần thứ ${MAXW+1} hủy bài). Bạn chưa bị trừ gì.</p>`,[['Tiếp tục làm bài',()=>true],['Vẫn thoát',()=>{fsExit();return true}]])}},true);
+const fsExit=()=>{try{navigator.keyboard&&navigator.keyboard.unlock&&navigator.keyboard.unlock()}catch(e){}try{if(document.fullscreenElement)document.exitFullscreen();else if(document.webkitFullscreenElement)document.webkitExitFullscreen()}catch(e){}};
 function lockPage(id){const E=EXAMS[id];
  let rows=E.req.map(r=>{const w=best['w'+r];return `<tr><td>${EXAMS[r].title}</td><td>${w==null?'chưa làm':w+' câu'}</td><td>${w!=null&&w<=2?'<span class="pass-ok">Đạt</span>':'<span class="pass-no">Chưa đạt</span>'}</td><td><button class="btn ghost" data-de="${r}">Làm đề</button></td></tr>`}).join('');
  app.innerHTML=`<a class="back">← Trang chính</a><h1>🔒 ${E.title}</h1><p class="sub">${E.sub}</p><div class="card rule"><p>Bài kiểm tra mở khóa khi <b>tất cả</b> đề ôn dưới đây có lần làm sai <b>không quá 2 câu</b>.</p><table><tr><th>Đề</th><th>Số câu sai ít nhất</th><th>Trạng thái</th><th></th></tr>${rows}</table></div>`;
  app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>go(null,b.dataset.de))}
-function show(k,de,g,sk){clearInterval(tm);stopAudio();curMod=null;SHT++;secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(g&&GAMES[g])game(g);else if(sk&&/^lv(A1|A2|B1|B2|C1|C2)$/.test(sk))levelPage(sk.slice(2));else if(sk=='rules')rulesPage();else if(sk&&/^h-/.test(sk)&&HUBS[sk.slice(2)])hubPage(sk.slice(2));else if(sk&&SKILLS[sk]){curMod=sk;SKILLS[sk].run()}else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
-onpopstate=()=>route();
+function show(k,de,g,sk){clearInterval(tm);stopAudio();EXAM_ACTIVE=false;curMod=null;SHT++;secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(g&&GAMES[g])game(g);else if(sk&&/^lv(A1|A2|B1|B2|C1|C2)$/.test(sk))levelPage(sk.slice(2));else if(sk=='rules')rulesPage();else if(sk&&/^h-/.test(sk)&&HUBS[sk.slice(2)])hubPage(sk.slice(2));else if(sk&&SKILLS[sk]){curMod=sk;SKILLS[sk].run()}else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
+onpopstate=()=>{if(EXAM_ACTIVE){history.forward();setTimeout(()=>leaveModal(leaveMsg(),()=>history.back()),80);return}route()};
 
 function home(){
  let h='<h1>Deutsch Grammatik Quiz</h1><p class="sub">Luyện theo thứ tự chương của Grammatik aktiv A1–B1. Câu hỏi soạn mới, không trùng với sách.</p>';
@@ -1017,10 +1050,42 @@ const EXAMS={
 };
 const fmt=s=>s.replace(/\{([A-D])\|([^}]*)\}/g,'<u>$2</u><sub><b>$1</b></sub>');
 const norm2=s=>s.toLowerCase().replace(/ß/g,'ss').replace(/[.,!?;:„“"”]/g,' ').replace(/\s+/g,' ').trim();
-function exam(id){
+let EXAM_ACTIVE=false;
+function exam(id){const E=EXAMS[id],n=exCount(E);setP('de'+id,null);addRecent('de'+id);
+ app.innerHTML=`<a class="back">← Trang chính</a><div class="card exintro"><h1>${E.title}</h1><p class="sub">${E.sub}${E.code?' · Mã đề '+E.code:''}</p>
+ <div class="exg"><div><b>${n}</b><span>câu hỏi</span></div><div><b>${E.time}</b><span>phút</span></div><div><b>10</b><span>thang điểm</span></div>${E.test?`<div><b>${E.pass}</b><span>điểm để đạt</span></div>`:''}</div>
+ <h3>Cấu trúc đề</h3><ul>${E.secs.map(s=>`<li><b>${s.name}</b>: ${s.items.map(it=>`${it.s||it.h} (${it.pts} đ)`).join(' · ')}</li>`).join('')}</ul>
+ <h3>Lưu ý trước khi bắt đầu</h3><ul>
+  <li>Đồng hồ <b>${E.time} phút</b> bắt đầu chạy ngay khi bạn bấm „Bắt đầu làm bài“.</li>
+  <li>Bài thi mở ở <b>chế độ toàn màn hình</b>. Hết giờ bài <b>tự nộp</b>; câu bỏ trống tính là sai.</li>
+  <li>Không chọn (quét) chữ, sao chép, dán, chuột phải hay dịch trang.</li>
+  <li>Chuyển tab, chuyển sang ứng dụng khác hoặc thoát toàn màn hình: lần 1 và lần 2 chỉ <b>cảnh báo</b>; <b>lần thứ 3 bài thi bị hủy</b>, điểm không tính.</li>
+  <li>Nhấn <b>Esc</b> sẽ hiện hộp hỏi trước (Chrome/Edge). Nếu đã thoát toàn màn hình, bạn có 15 giây để bấm quay lại.</li>
+  <li>Rời khỏi bài thi <b>quá ${AWAY_MAX} giây</b> một lần thì bài thi bị hủy ngay. Bấm ra trang khác trong web cũng hủy bài (có hỏi xác nhận).</li>
+  <li>Tắt thông báo trên máy trước khi bắt đầu, vì bấm vào thông báo cũng bị tính là rời bài.</li>
+  <li>Phải trả lời <b>tất cả ${n} câu</b> thì lần nộp mới được tính là 1 lần hoàn thành.</li>
+  <li>Chuẩn bị chỗ yên tĩnh, tắt thông báo điện thoại.</li></ul>
+ <p class="recst" id="fsm"></p>
+ <div class="acts"><button class="btn" id="go">▶ Bắt đầu làm bài</button><button class="btn ghost" id="bk">Để lúc khác</button></div></div>`;
+ app.querySelector('.back').onclick=app.querySelector('#bk').onclick=()=>go(null);
+ app.querySelector('#go').onclick=async()=>{const m=app.querySelector('#fsm');
+  if(window.self!==window.top){m.innerHTML=`Trang đang nằm trong khung nhúng (ví dụ Notion), không bật được toàn màn hình. <a href="${location.href}" target="_blank" rel="noopener">Mở trang riêng để làm bài ↗</a>`;return}
+  const el=document.documentElement,can=!!(el.requestFullscreen||el.webkitRequestFullscreen);
+  if(can){const ok=await fsEnter();if(!ok){m.textContent='Trình duyệt không cho bật toàn màn hình. Hãy cho phép rồi bấm lại.';return}}
+  exFs=can;examRun(id);scrollTo(0,0)}}
+function leaveModal(msg,onLeave){let M=document.getElementById('lvm');if(M)M.remove();M=document.createElement('div');M.id='lvm';
+ M.innerHTML=`<div class="lvbox" role="dialog" aria-modal="true"><h3>⚠ Rời khỏi bài thi?</h3><p>${msg}</p><div class="acts"><button class="btn" id="lvs">Ở lại làm bài</button><button class="btn ghost" id="lvx">Thoát</button></div></div>`;
+ document.body.appendChild(M);M.querySelector('#lvs').focus();
+ M.querySelector('#lvs').onclick=()=>M.remove();M.onclick=e=>{if(e.target===M)M.remove()};
+ M.querySelector('#lvx').onclick=()=>{M.remove();if(exVoid)exVoid('thoát khỏi bài thi',true);EXAM_ACTIVE=false;secure=false;clearInterval(tm);onLeave()}}
+const leaveMsg=()=>'Bài thi đang tính giờ. Nếu thoát bây giờ, <b>bài thi sẽ bị hủy</b> và điểm không được tính.';
+document.addEventListener('click',e=>{if(!EXAM_ACTIVE)return;const t=e.target.closest('#topnav .dd button,#topnav .dd a:not([target]),#topnav .home,#topnav #nx,#side #swp,#side #syd,#foot [data-f="home"],a.back');if(!t||t.closest('#lvm'))return;
+ e.preventDefault();e.stopImmediatePropagation();leaveModal(leaveMsg(),()=>t.click())},true);
+window.addEventListener('beforeunload',e=>{if(EXAM_ACTIVE){e.preventDefault();e.returnValue=''}});
+function examRun(id){
  const E=EXAMS[id],all=[];addRecent('de'+id);let ci=0,no=0;
- if(E.test){secure=true;leaves=0}
- let h=`<a class="back">← Trang chính</a><div class="paper${E.test?' secure notranslate':''}"${E.test?' translate="no"':''}><div class="ph"><b>${E.title}</b><br>${E.sub}${E.code?' · Mã đề '+E.code:''}<br><span class="lv">Thời gian làm bài: ${E.time} phút · Thang điểm 10</span></div><div class="timer" id="tm"></div><div class="leave" id="lv" style="display:none"></div><div id="res"></div>${E.test?`<div class="card rule"><b>Quy chế:</b> không sao chép, không dán, không dịch trang; rời khỏi bài thi sẽ bị ghi lại. Hết ${E.time} phút bài tự nộp. Đạt khi được từ ${E.pass}/10.</div>`:''}`;
+ secure=true;leaves=0;
+ let h=`<a class="back">← Trang chính</a><div class="paper secure notranslate" translate="no"><div class="ph"><b>${E.title}</b><br>${E.sub}${E.code?' · Mã đề '+E.code:''}<br><span class="lv">Thời gian làm bài: ${E.time} phút · Thang điểm 10</span></div><div class="timer" id="tm"></div><div class="leave" id="lv" style="display:none"></div><div id="res"></div><div class="card rule"><b>Quy chế:</b> không chọn chữ, sao chép, dán hay dịch trang. Chuyển tab, rời cửa sổ hoặc thoát toàn màn hình: <b>cảnh báo 2 lần, lần thứ 3 hủy bài</b>; rời bài quá 20 giây cũng hủy bài. Hết ${E.time} phút bài tự nộp.${E.test?` Đạt khi được từ ${E.pass}/10.`:''}</div>`;
  E.secs.forEach(s=>{h+=`<h2>${s.name}</h2>`;s.items.forEach(it=>{it.n=0;it.ci=ci++;
   h+=`<p class="ins"><b>${it.h}</b> (${it.pts} điểm)</p>`;
   if(it.text)h+=`<div class="pass">${it.text.replace(/\{(\d+)\}/g,(m,i)=>{if(!it.a)return `<b>(${no+ +i})</b> _____`;no++;all.push({it,a:it.a[i-1],type:'fill',lab:'('+no+')'});it.n++;return `<b>(${no})</b> <input type="text" class="s" data-i="${all.length-1}" autocomplete="off" autocapitalize="off" spellcheck="false">`})}</div><div class="fbx" id="c${it.ci}"></div>`;
@@ -1039,14 +1104,14 @@ function exam(id){
  const isAns=i=>{const q=all[i];if(q.type=='mc'||q.type=='err')return !!app.querySelector(`input[name=q${i}]:checked`);const el=app.querySelector(`[data-i="${i}"]`);const v=el?el.value.trim():'';return !!v&&v!=(q.start||'').trim()};
  const nAns=()=>all.reduce((a,q,i)=>a+(isAns(i)?1:0),0);
  const upd=()=>{const d=nAns();app.querySelector('#ep i').style.width=Math.round(d/all.length*100)+'%';app.querySelector('#ept').textContent=`Đã làm ${d}/${all.length} câu · Hoàn thành ${cnt(PK)} lần`;return d};
- const saveP=()=>{if(E.test)return;const d=upd(),a={};all.forEach((q,i)=>{if(q.type=='mc'||q.type=='err'){const c=app.querySelector(`input[name=q${i}]:checked`);if(c)a[i]=+c.value}else{const el=app.querySelector(`[data-i="${i}"]`);if(el&&el.value!=(q.start?q.start+' ':''))a[i]=el.value}});setP(PK,d?{n:d,a}:null)};
- if(!E.test){const P=getP(PK);if(P&&P.a)for(const i in P.a){const q=all[i];if(!q)continue;if(q.type=='mc'||q.type=='err'){const r=app.querySelector(`input[name=q${i}][value="${P.a[i]}"]`);if(r)r.checked=true}else{const el=app.querySelector(`[data-i="${i}"]`);if(el)el.value=P.a[i]}}}
+ const saveP=()=>{upd();return;const d=upd(),a={};all.forEach((q,i)=>{if(q.type=='mc'||q.type=='err'){const c=app.querySelector(`input[name=q${i}]:checked`);if(c)a[i]=+c.value}else{const el=app.querySelector(`[data-i="${i}"]`);if(el&&el.value!=(q.start?q.start+' ':''))a[i]=el.value}});setP(PK,d?{n:d,a}:null)};
+ setP(PK,null);if(false){const P=getP(PK);if(P&&P.a)for(const i in P.a){const q=all[i];if(!q)continue;if(q.type=='mc'||q.type=='err'){const r=app.querySelector(`input[name=q${i}][value="${P.a[i]}"]`);if(r)r.checked=true}else{const el=app.querySelector(`[data-i="${i}"]`);if(el)el.value=P.a[i]}}}
  paper.addEventListener('input',()=>E.test?upd():saveP());paper.addEventListener('change',()=>E.test?upd():saveP());upd();
  app.querySelector('.back').onclick=()=>go(null);
  let left=E.time*60;const T=app.querySelector('#tm');
  let done=false;
- const tick=()=>{T.textContent=left>0?'Còn lại '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0'):'Hết giờ';if(left<=0&&E.test&&!done)sub();left--};
- const sub=()=>{if(done)return;done=true;
+ const tick=()=>{T.textContent=left>0?'Còn lại '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0'):'Hết giờ';if(left<=0&&!done)sub();left--};
+ const sub=()=>{if(done)return;done=true;EXAM_ACTIVE=false;exVoid=null;awayAt=0;clearInterval(wTimer);document.body.classList.remove('expause');{const M=document.getElementById('lvm');if(M)M.remove()}setTimeout(fsExit,0);
   const answered=nAns(),blank=all.length-answered;setP(PK,null);const cN=blank?cnt(PK):addC(PK);
   app.querySelector('#ep i').style.width=Math.round(answered/all.length*100)+'%';app.querySelector('#ept').textContent=`Đã làm ${answered}/${all.length} câu · Hoàn thành ${cN} lần`;
   clearInterval(tm);secure=false;T.textContent='';E.secs.forEach(s=>s.items.forEach(it=>it.ok=0));
@@ -1067,11 +1132,16 @@ function exam(id){
   store.set(best);logAct({type:'exam',id,score:total,wrong,n:all.length,test:!!E.test,pass:E.test?total>=E.pass:null,leaves:E.test?leaves:0,secs:E.secs.flatMap(s=>s.items.map(it=>({s:it.s,ok:it.ok,n:it.n})))});
   rows+=`<tr><td><b>Số câu sai</b></td><td colspan="2"><b>${wrong} / ${all.length}</b>${E.test?'':(wrong<=2?' · <span class="pass-ok">đạt điều kiện mở khóa</span>':' · cần sai ≤ 2 câu để tính vào điều kiện mở khóa')}</td></tr>`;
   if(E.test)rows+=`<tr><td><b>Kết quả</b></td><td colspan="2">${total>=E.pass?'<span class="pass-ok">ĐẠT</span>':'<span class="pass-no">CHƯA ĐẠT</span>'} (ngưỡng ${E.pass}/10) · rời khỏi bài thi ${leaves} lần</td></tr>`;
-  app.querySelector('#res').innerHTML=`<div class="card rule">${praise(wrong,all.length)}<p class="score">Điểm: ${total} / 10</p><p class="done-note">${blank?`⚠️ Còn ${blank} câu bỏ trống nên lần nộp này <b>chưa</b> được tính là 1 lần hoàn thành. Số lần hoàn thành: <b>${cN}</b>.`:`✅ Đã làm hết ${all.length}/${all.length} câu — tính thêm 1 lần hoàn thành. Tổng: <b>${cN} lần</b>.`}</p><table><tr><th>Phần</th><th>Số câu đúng</th><th>Điểm</th></tr>${rows}</table><p class="lv">Đáp án và giải thích hiện dưới từng câu.</p><div class="acts"><button class="btn ghost" id="re">Làm lại đề</button></div></div>`;
+  app.querySelector('#res').innerHTML=`<div class="card rule">${praiseExam(wrong,all.length)}<p class="score">Điểm: ${total} / 10</p><p class="done-note">${blank?`⚠️ Còn ${blank} câu bỏ trống nên lần nộp này <b>chưa</b> được tính là 1 lần hoàn thành. Số lần hoàn thành: <b>${cN}</b>.`:`✅ Đã làm hết ${all.length}/${all.length} câu — tính thêm 1 lần hoàn thành. Tổng: <b>${cN} lần</b>.`}</p><table><tr><th>Phần</th><th>Số câu đúng</th><th>Điểm</th></tr>${rows}</table><p class="lv">Đáp án và giải thích hiện dưới từng câu.</p><div class="acts"><button class="btn ghost" id="re">Làm lại đề</button></div></div>`;
   app.querySelector('#re').onclick=()=>show(null,id);
   app.querySelector('#sub').remove();scrollTo(0,0)};
  app.querySelector('#sub').onclick=sub;
- tick();tm=setInterval(tick,1000);
+ exVoid=(why,silent)=>{if(done)return;done=true;awayAt=0;clearInterval(wTimer);document.body.classList.remove('expause');{const M=document.getElementById('lvm');if(M&&!silent)M.remove()}EXAM_ACTIVE=false;exVoid=null;clearInterval(tm);secure=false;fsExit();setP(PK,null);
+  logAct({type:'exam',id,void:true,reason:why,test:!!E.test});if(silent)return;
+  app.querySelectorAll('.paper input').forEach(x=>x.disabled=true);T.textContent='';const sb=app.querySelector('#sub');if(sb)sb.remove();
+  app.querySelector('#res').innerHTML=`<div class="card rule"><div class="praise p3">⛔ Bài thi đã bị hủy</div><p>Lý do: <b>${esc(why)}</b>. Lần làm này <b>không được tính điểm</b> và không tính là hoàn thành.</p><div class="acts"><button class="btn" id="re">Làm lại từ đầu</button><button class="btn ghost" id="hm">Trang chính</button></div></div>`;
+  app.querySelector('#re').onclick=()=>show(null,id);app.querySelector('#hm').onclick=()=>go(null);side();scrollTo(0,0)};
+ exT0=Date.now();EXAM_ACTIVE={test:!!E.test,id};side();tick();tm=setInterval(tick,1000);
 }
 
 /* ===================== LỊCH VÀ NHẬT KÝ HỌC ===================== */
@@ -1100,7 +1170,7 @@ function desc(e){const t=e.k?`${lab(e.k)}. ${esc(title(e.k))}`:'';
  if(e.type=='pomo')return `🍅 Pomodoro: ${e.min} phút tập trung`;
  if(e.type=='game')return `Trò chơi ${GAMES[e.g].name} (${DIFF[e.diff]}, lượt ${e.n}): ${e.won?'<b>hoàn thành</b>':'chưa giải được'} · ${mmss(e.time)}${e.hints?' · '+e.hints+' gợi ý':''}`;
  if(e.type=='quiz')return `${e.full?'Làm bài tập':'Làm lại câu sai'} · ${t}: <b>${e.score}/${e.total}</b>`;
- const E=EXAMS[e.id];return `${E?E.title+(E.test?'':' ('+E.sub.split(' · ')[0]+')'):'Đề '+e.id}: <b>${e.score}/10</b> · sai ${e.wrong}/${e.n}${e.test?' · '+(e.pass?'ĐẠT':'CHƯA ĐẠT')+(e.leaves?' · rời bài '+e.leaves+' lần':''):''}`}
+ const E=EXAMS[e.id];if(e.void)return `${E?E.title:'Đề '+e.id}: <b>bị hủy</b> (${esc(e.reason||'')}) · không tính điểm`;return `${E?E.title+(E.test?'':' ('+E.sub.split(' · ')[0]+')'):'Đề '+e.id}: <b>${e.score}/10</b> · sai ${e.wrong}/${e.n}${e.test?' · '+(e.pass?'ĐẠT':'CHƯA ĐẠT')+(e.leaves?' · rời bài '+e.leaves+' lần':''):''}`}
 function side(){topnav();footer();const S=document.getElementById('side');if(!S)return;S.style.display=secure||!PID?'none':'';document.querySelector('.wrap').classList.toggle('solo',!!(secure||!PID));if(secure||!PID)return;const P=PROFILES[PID];
  const y=calM.getFullYear(),m=calM.getMonth(),today=dkey(new Date());
  const days=new Set(LOG.map(e=>e.d));for(const k in NOTES)if(NOTES[k])days.add(k);
@@ -1147,7 +1217,7 @@ function analytics(){
  const cards=units.map(u=>{const pct=u.r==null?0:Math.round(u.r*100),t=u.k!=null?`${lab(u.k)}. ${esc(title(u.k))}`:EXAMS[u.id].title.replace('ĐỀ ÔN TẬP SỐ','Đề ôn');
   return `<button class="uc" ${u.k!=null?`data-k="${u.k}"`:`data-de="${u.id}"`} title="${t}"><b>${t}</b><span class="ubar"><i style="width:${pct}%"></i></span><span class="pc">${u.r==null?'chưa làm':pct+'%'}</span></button>`}).join('');
  // skills
- const agg={};LOG.filter(e=>e.type=='exam'&&e.secs).forEach(e=>e.secs.forEach(x=>{const a=agg[x.s]||(agg[x.s]={ok:0,n:0});a.ok+=x.ok;a.n+=x.n}));
+ const agg={};LOG.filter(e=>e.type=='exam'&&e.secs&&!e.void).forEach(e=>e.secs.forEach(x=>{const a=agg[x.s]||(agg[x.s]={ok:0,n:0});a.ok+=x.ok;a.n+=x.n}));
  const sk=Object.entries(agg).map(([s,a])=>({s,ok:a.ok,n:a.n,p:Math.round(a.ok/a.n*100)})).sort((a,b)=>a.p-b.p);
  const skHtml=sk.length?sk.map(x=>`<div class="sk${x.p<70?' weak':''}"><span>${x.s}</span><span class="pc">${x.p}%</span><span class="ubar"><i style="width:${x.p}%"></i></span></div>`).join('')+'<p class="lv">Tính trên tất cả các lần nộp đề ôn và đề kiểm tra. Màu đỏ: dưới 70%.</p>':'<p class="lv">Làm ít nhất một đề ôn để xem phân tích theo dạng bài.</p>';
  // to-do
@@ -1584,14 +1654,16 @@ new MutationObserver(()=>{if(!curMod)return;const b=app.querySelector('a.back');
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 /* ---------- SHADOWING ---------- */
 const shMat=()=>[...TALK.map(c=>({key:'t'+c.id,kind:'Hội thoại',lv:c.lv,title:c.de,vi:c.vi,s:c.dl.map(l=>({who:l[0],de:l[1],vi:l[2]}))})),...STORIES.map(x=>({key:'s'+x.id,kind:'Truyện',lv:x.lv,title:x.t,vi:x.vi,s:x.s.map(y=>({de:y[0],vi:viFull(y[1])}))}))];
-let SHT=0;
+let SHT=0;const shKeys={on:false,fn:null};
+document.addEventListener('keydown',e=>{if(!shKeys.fn||!app.querySelector('.shs .no')||/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||'')))return;
+ const k=e.key;const map={' ':'pp',ArrowLeft:'prev',ArrowRight:'next',r:'rep',R:'rep'};if(map[k]){e.preventDefault();shKeys.fn(map[k])}});
 function shadowPage(key){const M=shMat();
  if(key==null){app.innerHTML=`<a class="back">← Trang chính</a><h1>Shadowing</h1><p class="sub">Nghe giọng mẫu và nói đuổi theo ngay, chậm hơn khoảng nửa giây, như cái bóng. Chọn một bài bạn đã hiểu hoặc đủ dễ; lặp cùng một bài nhiều lần trong vài ngày.</p>${voiceNote()}
   <div class="card rule meth"><b>Quy trình 5 bước mỗi buổi</b> (theo Hamada, 2021):<ol><li><b>Nhẩm theo</b> – không nhìn chữ, lẩm nhẩm nhỏ theo giọng mẫu, chú ý âm.</li><li><b>Đọc song song</b> – nhìn chữ, đọc to cùng lúc với giọng mẫu.</li><li><b>Hiểu nghĩa</b> – xem bản dịch, nghe lại câu chưa rõ.</li><li><b>Shadow</b> – che chữ, nói đuổi theo 2–3 lượt.</li><li><b>Ghi âm & tự nghe lại</b> – ghi một lượt shadow, so với giọng mẫu.</li></ol><p class="lv">Nên đeo tai nghe để micro không thu lại giọng máy.</p></div>`+
   ['A1','A2'].map(lv=>`<h2>${lv}</h2>`+M.filter(m=>m.lv==lv).map(m=>`<button class="row" data-sh="${m.key}"><span class="num">${m.kind=='Truyện'?'📖':'💬'}</span><span class="t">${esc(m.title)}<br><span class="lv">${m.kind} · ${esc(m.vi)} · ${m.s.length} câu${cnt('sh'+m.key)?` · <b>đã làm ${cnt('sh'+m.key)} buổi</b>`:''}</span></span></button>`).join('')).join('');
   app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>{shadowPage(b.dataset.sh);scrollTo(0,0)});return}
  const m=M.find(x=>x.key==key);if(!m)return shadowPage();
- let step=1,rate=.85,reps=2;const done=new Set();const rated={};
+ let step=1,rate=.85,reps=2,gap='1.5';const done=new Set();const rated={};const P={i:0,r:0,n:1,mode:'flow',state:'idle'};let resumeFn=null;
  const STEPS=['','Nhẩm theo','Đọc song song','Hiểu nghĩa','Shadow','Ghi âm & tự nghe'];
  const HELP=['','Không nhìn chữ. Bấm phát và lẩm nhẩm thật nhỏ theo giọng mẫu, chỉ chú ý âm thanh. Nghe 1–2 lượt.','Nhìn chữ, đọc to cùng lúc với giọng mẫu. Câu đang đọc được tô màu.','Đọc bản dịch, bấm 🔊 để nghe lại câu nào chưa rõ. Khoảng 2–3 phút.','Chữ đã được che. Nói đuổi theo giọng mẫu, chậm hơn khoảng nửa giây. Chế độ „có khoảng lặng“ dễ hơn: máy dừng sau mỗi câu để bạn nói lại.','Bấm ghi âm: máy vừa phát giọng mẫu vừa thu giọng bạn đang shadow. Nghe lại và tự đánh giá.'];
  const draw=()=>{const hide=step==1||step==4,showVi=step==3;
@@ -1599,36 +1671,56 @@ function shadowPage(key){const M=shMat();
   <div class="stepn">${[1,2,3,4,5].map(i=>`<button data-st="${i}" class="${i==step?'on':''}${done.has(i)?' dn':''}">${i}. ${STEPS[i]}</button>`).join('')}</div>
   <div class="card"><p>${HELP[step]}</p><div class="shbar">
    <label>Tốc độ <select id="rt">${[[.7,'0.7 · chậm'],[.85,'0.85'],[1,'1.0 · thường']].map(o=>`<option value="${o[0]}"${o[0]==rate?' selected':''}>${o[1]}</option>`).join('')}</select></label>
-   ${step==4?`<label>Số lượt <select id="rp">${[1,2,3,5].map(n=>`<option${n==reps?' selected':''}>${n}</option>`).join('')}</select></label><button class="btn" data-play="flow">▶ Shadow liền mạch</button><button class="btn ghost" data-play="echo">▶ Có khoảng lặng</button>`:step==5?`<button class="btn" id="rec">🎙 Ghi âm một lượt shadow</button>`:`<button class="btn" data-play="flow">▶ Phát cả bài</button>`}
-   <button class="btn ghost" id="stp">⏹ Dừng</button>${hide?'<button class="btn ghost" id="peek">👁 Hiện chữ</button>':''}</div><p class="recst" id="st"></p><div id="au"></div></div>
-  <div class="card shs${hide?' hide':''}" translate="no">${m.s.map((x,i)=>`<p data-i="${i}">${x.who?`<span class="who">${x.who}</span>`:''}<span class="de">${esc(x.de)}</span> ${step==3?sayBtn(x.de,rate):''}${showVi?`<span class="vi">${esc(x.vi)}</span>`:''}</p>`).join('')}</div>
+   ${step==4?`<label>Số lượt <select id="rp">${[1,2,3,5].map(n=>`<option${n==reps?' selected':''}>${n}</option>`).join('')}</select></label><label>Khoảng lặng <select id="gp">${[['1','Ngắn'],['1.5','Vừa'],['2.2','Dài'],['m','Chờ mình bấm „Câu sau“']].map(o=>`<option value="${o[0]}"${o[0]==gap?' selected':''}>${o[1]}</option>`).join('')}</select></label></div><div class="shbar"><button class="btn" data-play="flow">▶ Shadow liền mạch</button><button class="btn ghost" data-play="echo">▶ Có khoảng lặng</button>`:step==5?`<button class="btn" id="rec">🎙 Ghi âm một lượt shadow</button>`:`<button class="btn" data-play="flow">▶ Phát cả bài</button>`}
+   ${hide?'<button class="btn ghost" id="peek">👁 Hiện chữ</button>':''}</div>
+   <div class="ctl" role="group" aria-label="Điều khiển"><button data-c2="prev" title="Câu trước (←)">⏮</button><button data-c2="rep" title="Nghe lại câu này (R)">🔁</button><button data-c2="pp" class="pp" title="Tạm dừng / tiếp tục (Space)">⏸</button><button data-c2="next" title="Câu sau (→)">⏭</button><button data-c2="stop" title="Dừng hẳn">⏹</button><span class="lv" id="pos"></span></div>
+   <p class="lv">Bấm vào một câu bên dưới để nghe từ câu đó. Phím tắt: Space tạm dừng/tiếp tục · ← câu trước · → câu sau · R nghe lại.</p><p class="recst" id="st"></p><div id="au"></div></div>
+  <div class="card shs${hide?' hide':''}" translate="no">${m.s.map((x,i)=>`<p data-i="${i}"><span class="no">${i+1}.</span>${x.who?`<span class="who">${x.who}</span>`:''}<span class="de">${esc(x.de)}</span> ${step==3?sayBtn(x.de,rate):''}${showVi?`<span class="vi">${esc(x.vi)}</span>`:''}</p>`).join('')}</div>
   ${step==5?`<div class="card chk"><b>Tự đánh giá lượt vừa ghi</b>${[['am','Phát âm rõ các âm khó (ü, ö, ch, r…)'],['nhip','Theo kịp nhịp, không bỏ đoạn'],['ngu','Ngữ điệu lên xuống giống giọng mẫu'],['nghia','Vừa nói vừa hiểu mình đang nói gì']].map(c=>`<label><input type="checkbox" data-c="${c[0]}"${rated[c[0]]?' checked':''}> ${c[1]}</label>`).join('')}
    ${SR?`<p class="lv">Kiểm tra từng câu bằng nhận dạng giọng nói (nói một mình, không phát giọng mẫu):</p>${m.s.map((x,i)=>`<div><button class="btn ghost sm" data-sr="${i}">🎙 Câu ${i+1}</button> <span class="lv" id="sr${i}"></span></div>`).join('')}`:''}
    <div class="acts"><button class="btn" id="fin">Xong buổi shadowing</button></div></div>`:`<div class="acts"><button class="btn" id="shnx">${step<5?'Xong bước này → bước '+(step+1):''}</button></div>`}`;
   const $=q=>app.querySelector(q),st=$('#st');
   app.querySelector('.back').onclick=()=>{SHT++;stopAudio();shadowPage()};
   app.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{SHT++;stopAudio();step=+b.dataset.st;draw()});
-  $('#rt').onchange=e=>rate=+e.target.value;if($('#rp'))$('#rp').onchange=e=>reps=+e.target.value;
-  $('#stp').onclick=()=>{SHT++;stopAudio();mark(-1);st.textContent='Đã dừng.'};
+  $('#rt').onchange=e=>rate=+e.target.value;if($('#rp'))$('#rp').onchange=e=>{reps=+e.target.value;P.n=reps;ui()};if($('#gp'))$('#gp').onchange=e=>gap=e.target.value;
+  app.querySelectorAll('[data-c2]').forEach(b=>b.onclick=()=>ctl(b.dataset.c2));
+  app.querySelectorAll('.shs p').forEach(pp=>pp.onclick=e=>{if(e.target.closest('button'))return;P.i=+pp.dataset.i;if(P.state=='idle'){P.mode=step==4?P.mode:'flow';P.n=step==4?reps:1;P.r=0}runFrom()});
+  P.state='idle';P.i=0;P.r=0;ui();
   if($('#peek'))$('#peek').onclick=()=>app.querySelector('.shs').classList.toggle('hide');
   if($('#shnx'))$('#shnx').onclick=()=>{SHT++;stopAudio();done.add(step);step++;draw();scrollTo(0,0)};
   app.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>play(b.dataset.play,step==4?reps:1));
+  shKeys.on=true;
   if($('#rec'))$('#rec').onclick=rec;
   app.querySelectorAll('[data-c]').forEach(c=>c.onchange=()=>rated[c.dataset.c]=c.checked);
   app.querySelectorAll('[data-sr]').forEach(b=>b.onclick=()=>srCheck(+b.dataset.sr));
   if($('#fin'))$('#fin').onclick=()=>{done.add(5);const n=addC('sh'+key);logAct({type:'shadow',title:m.title,steps:done.size,rate,self:Object.values(rated).filter(Boolean).length});
    $('#fin').outerHTML=`<p class="pass-ok">✅ Đã ghi buổi shadowing thứ ${n} cho bài này (${done.size}/5 bước). Lặp lại bài này vài lần trong những ngày tới trước khi đổi bài.</p>`}};
  const mark=i=>app.querySelectorAll('.shs p').forEach(p=>p.classList.toggle('cur',+p.dataset.i==i));
- async function play(mode,n){SHT++;const T=SHT;stopAudio();const st=app.querySelector('#st');
-  for(let r=0;r<n;r++){for(let i=0;i<m.s.length;i++){if(T!=SHT)return;mark(i);const x=m.s[i];st.textContent=`Lượt ${r+1}/${n} · câu ${i+1}/${m.s.length}`;
-   await say(x.de,{rate,v:x.who=='B'?1:0});if(T!=SHT)return;await wait(mode=='echo'?Math.round(x.de.split(/\s+/).length*420/rate+700):250)}
-   if(r<n-1)await wait(1200)}
-  if(T==SHT){mark(-1);st.textContent='Xong. Lặp lại hoặc sang bước tiếp theo.'}}
+ function ui(){const pp=app.querySelector('.ctl .pp'),pos=app.querySelector('#pos');if(!pp)return;
+  pp.textContent=P.state=='play'?'⏸':'▶';pp.title=P.state=='play'?'Tạm dừng (Space)':'Tiếp tục (Space)';
+  pos.textContent=P.state=='idle'?'':`Câu ${P.i+1}/${m.s.length}${P.n>1?' · lượt '+(P.r+1)+'/'+P.n:''}${P.state=='pause'?' · đang tạm dừng':P.state=='wait'?' · đến lượt bạn nói — bấm ⏭ khi xong':''}`}
+ function play(mode,n){P.mode=mode;P.n=n;P.i=0;P.r=0;return runFrom()}
+ async function runFrom(){SHT++;const T=SHT;stopAudio();resumeFn=null;P.state='play';ui();const st=app.querySelector('#st');if(st)st.textContent='';
+  while(P.r<P.n){while(P.i<m.s.length){if(T!=SHT)return;mark(P.i);ui();const x=m.s[P.i];
+    await say(x.de,{rate,v:x.who=='B'?1:0});if(T!=SHT)return;
+    if(P.mode=='echo'){if(gap=='m'){P.state='wait';ui();await new Promise(r=>resumeFn=r);resumeFn=null;if(T!=SHT)return;P.state='play';ui()}
+     else{await wait(Math.round((x.de.split(/\s+/).length*420/rate+600)*+gap));}}
+    else await wait(250);
+    if(T!=SHT)return;P.i++}
+   P.i=0;P.r++;if(P.r<P.n){ui();await wait(1200)}}
+  if(T==SHT){P.state='idle';P.i=0;P.r=0;mark(-1);ui();const s2=app.querySelector('#st');if(s2)s2.textContent='Xong. Lặp lại hoặc sang bước tiếp theo.'}}
+ function ctl(c){const L=m.s.length;
+  if(c=='pp'){if(P.state=='play'){SHT++;stopAudio();P.state='pause';ui()}else if(P.state=='wait'){resumeFn&&resumeFn()}else{if(P.state=='idle'){P.mode=step==4?P.mode:'flow';P.n=step==4?reps:1;P.r=0}runFrom()}return}
+  if(c=='stop'){SHT++;stopAudio();P.state='idle';P.i=0;P.r=0;mark(-1);ui();const st=app.querySelector('#st');if(st)st.textContent='Đã dừng.';return}
+  if(c=='rep'){if(P.state=='idle'){P.n=step==4?reps:1;P.r=0}runFrom();return}
+  if(c=='prev'){P.i=Math.max(0,P.i-1);if(P.state=='play'||P.state=='wait')runFrom();else{mark(P.i);if(P.state=='idle')P.state='pause';ui()}return}
+  if(c=='next'){if(P.state=='wait'){resumeFn&&resumeFn();return}P.i=Math.min(L-1,P.i+1);if(P.state=='play')runFrom();else{mark(P.i);if(P.state=='idle')P.state='pause';ui()}}}
+ shKeys.fn=ctl;
  let mr=null;
  async function rec(){const b=app.querySelector('#rec'),st=app.querySelector('#st');if(mr&&mr.state=='recording'){SHT++;stopAudio();mr.stop();return}
   try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});const ch=[];mr=new MediaRecorder(stream);mr.ondataavailable=e=>ch.push(e.data);
    mr.onstop=()=>{stream.getTracks().forEach(t=>t.stop());mark(-1);const url=URL.createObjectURL(new Blob(ch,{type:mr.mimeType||'audio/webm'}));app.querySelector('#au').innerHTML=`<audio controls src="${url}"></audio>`;b.textContent='🎙 Ghi âm lại';st.textContent='Nghe lại bản ghi, so với giọng mẫu (bấm câu 🔊 ở bước 3), rồi tự đánh giá bên dưới.'};
-   mr.start();b.textContent='⏹ Dừng ghi';st.textContent='Đang ghi… shadow theo giọng mẫu.';await wait(400);await play('flow',1);if(mr.state=='recording')mr.stop()}catch(e){st.textContent='Không mở được micro (chưa cho phép, hoặc trang đang nằm trong khung nhúng Notion — mở link trực tiếp).'}}
+   mr.start();b.textContent='⏹ Dừng ghi';st.textContent='Đang ghi… shadow theo giọng mẫu.';await wait(400);await play('flow',1);if(mr&&mr.state=='recording'&&P.state=='idle')mr.stop()}catch(e){st.textContent='Không mở được micro (chưa cho phép, hoặc trang đang nằm trong khung nhúng Notion — mở link trực tiếp).'}}
  function srCheck(i){const o=app.querySelector('#sr'+i),t=m.s[i].de;try{const r=new SR();r.lang='de-DE';r.maxAlternatives=3;o.textContent='Đang nghe… đọc câu '+(i+1);
   r.onresult=e=>{const T=tok(t);let best=0,bt='';[...e.results[0]].forEach(a=>{const k=lcs(T,tok(a.transcript)).len;if(k>=best){best=k;bt=a.transcript}});const sc=Math.round(best/T.length*100);o.innerHTML=`„${esc(bt)}“ · khớp <b>${sc}%</b>`};
   r.onerror=e=>o.textContent='Không nhận dạng được ('+e.error+')';r.start()}catch(e){o.textContent='Trình duyệt không hỗ trợ.'}}
@@ -1832,6 +1924,8 @@ const STORIES=[{"id": 1, "t": "Ein Tag von Mai", "vi": "Một ngày của Mai", 
 const viChunks=v=>v.split(' / ').map(c=>({t:c.replace(/[{}]/g,''),blank:/\{.*\}/.test(c)}));
 const viFull=v=>viChunks(v).map(c=>c.t).join(' ');
 const syl=s=>nrm(s).split(' ').filter(Boolean);
+const trMode=()=>ls.get('gaq_trmode','auto');
+function trSim(ref,u){const A=syl(ref),B=syl(u),w=lcs(A,B).len/Math.max(A.length,B.length);const a=[...A.join('')],b=[...B.join('')],c=lcs(a,b).len/Math.max(a.length,b.length);return Math.round(Math.max(w,c)*100)}
 function storyPage(id){if(id==null){app.innerHTML=`<a class="back">← Trang chính</a><h1>Đọc & dịch truyện ngắn</h1><p class="sub">Đọc từng câu tiếng Đức rồi dịch sang tiếng Việt. Mỗi câu có ba mức: <b>✍ viết cả câu</b> (3 điểm) → bí thì <b>🧩 điền từ còn thiếu</b> (2 điểm) → bí nữa thì <b>🔀 xếp từ</b> (1 điểm). Đã chuyển xuống mức dễ hơn thì không quay lại mức khó được.</p><p class="lv">Truyện và bản dịch do mình soạn ở mức A1–A2, dùng từ vựng và ngữ pháp của chương 1–8 và các chủ đề Wortschatz.</p>`+
   `<a class="row doc" href="https://german.todaiinews.com/?hl=de" target="_blank" rel="noopener"><span class="num">↗</span><span class="t">Todaii German<br><span class="lv">Tin tức và truyện tiếng Đức theo trình độ A1–C1, có từ điển Đức–Việt · mở trong tab mới. Chép đoạn bạn đang đọc vào mục „Truyện của bạn“ bên dưới để tự dịch.</span></span></a>`+
   `<a class="row doc" href="https://www.lenguia.com/stories/german" target="_blank" rel="noopener"><span class="num">↗</span><span class="t">Thư viện truyện Lenguia<br><span class="lv">Hơn 300 truyện tiếng Đức theo trình độ · mở trong tab mới. Đọc ở đó rồi dán vào mục „Truyện của bạn“ bên dưới để tự dịch.</span></span></a>`+
@@ -1845,10 +1939,10 @@ function storyPage(id){if(id==null){app.innerHTML=`<a class="back">← Trang ch�
  const S=STORIES.find(x=>x.id==id),SP=getP('st'+id),st=S.s.map((x,i)=>{const o=SP&&SP.s&&SP.s[i];return o&&o.pts!=null?{mode:'full',max:3,pts:o.pts,cls:o.cls,msg:o.msg,ord:[]}:{mode:'full',max:3,pts:null,ord:[]}});
  const saveSP=()=>{const d=st.filter(x=>x.pts!=null).length;setP('st'+id,d&&d<st.length?{n:d,s:st.map(x=>x.pts!=null?{pts:x.pts,cls:x.cls,msg:x.msg}:null)}:null);const pb=app.querySelector('#spg');if(pb)pb.innerHTML=progBar('st'+id,st.length)};
  app.innerHTML=`<a class="back">← Danh sách truyện</a><h1>${S.t} <span class="badge">${S.lv}</span></h1><p class="sub">${S.vi}</p>
- <div class="acts"><button class="btn ghost" id="pa">🔊 Nghe cả truyện</button></div>
+ <div class="acts"><button class="btn ghost" id="pa">🔊 Nghe cả truyện</button><label class="lv" style="display:flex;align-items:center;gap:6px">Chấm câu dịch: <select id="trm" style="font:inherit;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)"><option value="auto"${trMode()=='auto'?' selected':''}>Tự động gợi ý</option><option value="self"${trMode()=='self'?' selected':''}>Tự đánh giá</option></select></label></div>
  <details class="card"><summary>Từ cần biết</summary>${S.gl.map(g=>`<div class="dl">${esc(g[0])} ${sayBtn(g[0].replace(/^(der|die|das) /,'$& '))}<span class="lv">${esc(g[1])}</span></div>`).join('')}</details>
  <div class="card" id="spg">${progBar('st'+id,S.s.length)}</div><div id="sbs">${S.s.map((x,i)=>`<div class="sb" id="sb${i}"></div>`).join('')}</div><div id="sum"></div>`;
- app.querySelector('.back').onclick=()=>{stopAudio();storyPage()};
+ app.querySelector('.back').onclick=()=>{stopAudio();storyPage()};app.querySelector('#trm').onchange=e=>ls.set('gaq_trmode',e.target.value);
  app.querySelector('#pa').onclick=async e=>{stopAudio();e.target.disabled=true;for(const x of S.s)await say(x[0]);e.target.disabled=false};
  const done=()=>st.every(x=>x.pts!=null);
  const finish=()=>{const pts=st.reduce((a,x)=>a+x.pts,0),mx=3*st.length,pct=Math.round(pts/mx*100);if(best['st'+id]==null||pct>best['st'+id]){best['st'+id]=pct;store.set(best)}
@@ -1870,9 +1964,9 @@ function storyPage(id){if(id==null){app.innerHTML=`<a class="back">← Trang ch�
   B.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=b.dataset.m;if(m=='show')return setPts(i,0,'no','Đã xem đáp án.');o.mode=m;o.max=Math.min(o.max,m=='full'?3:m=='fill'?2:1);draw(i);const f=B.querySelector('textarea,input');if(f)f.focus()});
   B.querySelectorAll('[data-ad]').forEach(b=>b.onclick=()=>{o.ord.push(+b.dataset.ad);draw(i)});B.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{o.ord.splice(+b.dataset.rm,1);draw(i)});
   const ck=B.querySelector('[data-ck]');if(!ck)return;ck.onclick=()=>{const fb=B.querySelector('.fbx');
-   if(o.mode=='full'){const u=B.querySelector('textarea').value.trim();if(!u)return;const R=syl(full),U=syl(u),m=lcs(R,U).len,sc=Math.round(m/Math.max(R.length,U.length)*100);
-    if(sc>=80)return setPts(i,3,'ok',`✓ Rất sát bản tham khảo (${sc}%). Bạn viết: „${esc(u)}“`);
-    fb.innerHTML=`<p>${sc>=50?'Gần đúng':'Khác khá nhiều'} so với bản tham khảo (${sc}% trùng chữ). Bản tham khảo: <b>${esc(full)}</b></p><p class="lv">Dịch có nhiều cách đúng. Nếu ý của bạn đúng thì tự xác nhận.</p><div class="acts"><button class="btn sm" data-ok>Ý mình đúng (3 điểm)</button><button class="btn ghost sm" data-fill>Chưa đúng, thử điền từ</button></div>`;
+   if(o.mode=='full'){const u=B.querySelector('textarea').value.trim();if(!u)return;const sc=trSim(full,u),selfM=trMode()=='self';
+    if(!selfM&&sc>=70)return setPts(i,3,'ok',`✓ Đúng ý. Bạn viết: „${esc(u)}“`);
+    fb.innerHTML=`<p>${selfM?'So với bản tham khảo:':sc>=45?'Bản của bạn diễn đạt khác bản tham khảo một chút:':'Bản của bạn khác khá nhiều so với bản tham khảo:'} <b>${esc(full)}</b></p><p class="lv">Dịch có nhiều cách đúng — nếu cùng ý thì bấm „Ý mình đúng“.</p><div class="acts"><button class="btn sm" data-ok>Ý mình đúng (3 điểm)</button><button class="btn ghost sm" data-fill>Chưa đúng, thử điền từ</button></div>`;
     fb.querySelector('[data-ok]').onclick=()=>setPts(i,3,'ok',`✓ Tự xác nhận đúng ý. Bạn viết: „${esc(u)}“`);fb.querySelector('[data-fill]').onclick=()=>{o.mode='fill';o.max=2;draw(i)}}
    else if(o.mode=='fill'){let all=true;B.querySelectorAll('.fill input').forEach(inp=>{const g=nrm(inp.value)==nrm(ch[+inp.dataset.j].t);inp.classList.toggle('ok',g);inp.classList.toggle('no',!g);if(!g)all=false});
     if(all)setPts(i,2,'part','✓ Điền đúng.');else fb.innerHTML='<p class="pass-no">Còn ô chưa đúng (viền đỏ). Sửa lại, hoặc chuyển sang 🔀 Xếp từ.</p>'}
