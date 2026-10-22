@@ -253,6 +253,9 @@ body.expause .paper{filter:blur(8px);pointer-events:none;user-select:none}.wcd{c
 .ctl{display:flex;align-items:center;justify-content:flex-start;gap:6px;flex-wrap:wrap;margin:6px 0 2px}.ctl button{flex:none;margin:0;font:inherit;font-size:1.05rem;width:44px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer}.ctl button:hover{border-color:var(--acc)}.ctl .pp{background:var(--acc);color:#fff;border-color:var(--acc);width:52px}
 .shs p{cursor:pointer}.shs p:hover{background:color-mix(in srgb,var(--acc) 8%,transparent)}.shs .no{color:var(--mute);font-size:.8rem;margin-right:6px;font-variant-numeric:tabular-nums}
 .ctx p{line-height:2.2}.ctx input{font:inherit;padding:0 3px;border:none;border-bottom:2px solid var(--acc);background:color-mix(in srgb,var(--acc) 6%,transparent);color:var(--ink);width:auto}.ctx input.ok{border-color:var(--ok)}.ctx input.no{border-color:var(--no);color:var(--no)}.ctx sup{margin-left:2px}
+.tbar{display:flex;height:8px;border-radius:9px;overflow:hidden;background:var(--line);margin:4px 0}.tbar i{display:block;height:100%}.tleg{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:.78rem;color:var(--mute)}
+.lvline{position:relative;height:26px;background:var(--line);border-radius:6px;margin:10px 0 0}.lvline .seg{position:absolute;top:0;height:100%;border-left:2px solid var(--card);background:color-mix(in srgb,var(--acc) 22%,transparent)}.lvline .seg:nth-child(odd){background:color-mix(in srgb,var(--acc2) 24%,transparent)}.lvline .seg span{position:absolute;left:4px;top:4px;font-size:.75rem;font-weight:700}.lvline .me{position:absolute;top:-6px;bottom:-6px;width:3px;background:var(--no);transform:translateX(-1px)}.lvline .me b{position:absolute;top:34px;left:-14px;font-size:.75rem;color:var(--no);white-space:nowrap}
+.sk.tsk{grid-template-columns:minmax(0,1fr) 130px}.sk.tsk>span:nth-child(2){text-align:right}
 /* ===== chân trang ===== */
 #foot{background:color-mix(in srgb,var(--line) 45%,var(--bg));border-top:1px solid var(--line);color:var(--mute);font-size:.88rem;margin-top:20px}
 #foot[hidden]{display:none}
@@ -896,7 +899,8 @@ function lockPage(id){const E=EXAMS[id];
  let rows=E.req.map(r=>{const w=best['w'+r];return `<tr><td>${EXAMS[r].title}</td><td>${w==null?'chưa làm':w+' câu'}</td><td>${w!=null&&w<=2?'<span class="pass-ok">Đạt</span>':'<span class="pass-no">Chưa đạt</span>'}</td><td><button class="btn ghost" data-de="${r}">Làm đề</button></td></tr>`}).join('');
  app.innerHTML=`<a class="back">← Trang chính</a><h1>🔒 ${E.title}</h1><p class="sub">${E.sub}</p><div class="card rule"><p>Bài kiểm tra mở khóa khi <b>tất cả</b> đề ôn dưới đây có lần làm sai <b>không quá 2 câu</b>.</p><table><tr><th>Đề</th><th>Số câu sai ít nhất</th><th>Trạng thái</th><th></th></tr>${rows}</table></div>`;
  app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>go(null,b.dataset.de))}
-function show(k,de,g,sk){clearInterval(tm);stopAudio();EXAM_ACTIVE=false;curMod=null;SHT++;secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(g&&GAMES[g])game(g);else if(sk&&/^lv(A1|A2|B1|B2|C1|C2)$/.test(sk))levelPage(sk.slice(2));else if(sk=='rules')rulesPage();else if(sk&&/^h-/.test(sk)&&HUBS[sk.slice(2)])hubPage(sk.slice(2));else if(sk&&SKILLS[sk]){curMod=sk;SKILLS[sk].run()}else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
+let CUR_ACT=null,CUR_LV=null;
+function show(k,de,g,sk){clearInterval(tm);stopAudio();EXAM_ACTIVE=false;CUR_LV=de&&EXAMS[de]?exLv(de):(k&&QUIZ[k])?lvOf(+k):null;CUR_ACT=de&&EXAMS[de]?'exam':g&&GAMES[g]?'game':sk=='rules'?'rules':(sk&&SKILLS[sk])?sk:(k&&QUIZ[k])?'k':null;curMod=null;SHT++;secure=false;if(!PID){pick();return}if(de&&EXAMS[de]){if(unlocked(EXAMS[de]))exam(de);else lockPage(de)}else if(g&&GAMES[g])game(g);else if(sk&&/^lv(A1|A2|B1|B2|C1|C2)$/.test(sk))levelPage(sk.slice(2));else if(sk=='rules')rulesPage();else if(sk=='tstat')tstatPage();else if(sk&&/^h-/.test(sk)&&HUBS[sk.slice(2)])hubPage(sk.slice(2));else if(sk&&SKILLS[sk]){curMod=sk;SKILLS[sk].run()}else if(k&&QUIZ[k])chapter(+k);else home();scrollTo(0,0);side()}
 onpopstate=()=>{if(EXAM_ACTIVE){history.forward();setTimeout(()=>leaveModal(leaveMsg(),()=>history.back()),80);return}route()};
 
 function home(){
@@ -904,7 +908,7 @@ function home(){
  h+=`<a class="row doc" href="https://drive.google.com/drive/folders/1AXXCBCfNUnJg6VMvDhZSGgbQZEqkgZ08?usp=sharing" target="_blank" rel="noopener"><span class="num"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="t">Kho tài liệu<br><span class="lv">Thư mục Google Drive · mở trong tab mới</span></span><span class="lv">↗</span></a>`;
  h+=`<a class="row doc" href="https://german.todaiinews.com/?hl=de" target="_blank" rel="noopener"><span class="num">📰</span><span class="t">Todaii German · đọc báo song ngữ<br><span class="lv">Tin và truyện A1–C1, từ điển Đức–Việt · mở trong tab mới</span></span><span class="lv">↗</span></a>`;
  h+='<h2>Học theo trình độ</h2>'+levelGrid()+'<button class="row" data-rules><span class="num">📘</span><span class="t">Tổng hợp quy tắc ngữ pháp<br><span class="lv">Tóm tắt tất cả các chương, tìm kiếm và in được</span></span></button><button class="row" data-sk="review"><span class="num">🔀</span><span class="t">Ôn tập xen kẽ ngữ pháp<br><span class="lv">Trộn câu hỏi các chương đã học, câu hay sai quay lại theo lịch</span></span></button><button class="row" data-sk="kasus"><span class="num">🕵</span><span class="t">Ai làm gì với ai? (Kasus)<br><span class="lv">Đọc mạo từ der/den/dem để hiểu câu, kể cả khi đảo ngữ</span></span></button><button class="row" data-sk="konj"><span class="num">⏩</span><span class="t">Chia động từ nhanh<br><span class="lv">Gõ dạng chia đúng thật nhanh, câu sai quay lại theo lịch</span></span></button>';
- h+=planBox()+analytics()+recentBox()+skillsBox();
+ h+=planBox()+tstatCard()+analytics()+recentBox()+skillsBox();
  h+=gamesBox();
  app.innerHTML=h;
  app.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>go(b.dataset.k));
@@ -1205,7 +1209,7 @@ function side(){topnav();footer();const S=document.getElementById('side');if(!S)
  S.innerHTML=pomoHtml()+`<div class="card pchip ${P.g}"><img class="avs" src="${avSrc(PID)}" alt=""><b>${P.name}</b><button class="lnk" id="swp">Đổi người</button></div>${syncChip()}<div class="card cal"><div class="ch"><button class="nav" data-m="-1" aria-label="Tháng trước">◄</button><b>${MON[m]} ${y}</b><button class="nav" data-m="1" aria-label="Tháng sau">►</button></div>
  <div class="cg">${['Mo','Di','Mi','Do','Fr','Sa','So'].map(x=>`<span class="wd">${x}</span>`).join('')}${c}</div>
  <div class="cf"><button class="lnk" id="tdy">Hôm nay</button></div></div>
- <div class="card day"><h3>${VN[sd.getDay()]}, ${sd.toLocaleDateString('de-DE')}</h3><p class="lv">⏱ Thời gian học: <b>${fmtMin(studySec(selD))}</b> · 🍅 ${LOG.filter(e=>e.type=='pomo'&&e.d==selD).length} pomodoro</p>
+ <div class="card day"><h3>${VN[sd.getDay()]}, ${sd.toLocaleDateString('de-DE')}</h3><p class="lv">⏱ Thời gian học: <b id="stT">${fmtSec(studySec(selD))}</b> · 🍅 ${LOG.filter(e=>e.type=='pomo'&&e.d==selD).length} pomodoro</p><div id="stB">${actBreak(selD)}</div>${selD==dkey(new Date())?'<p class="lv" id="stNow"></p>':''}
  ${items.length?'<ul class="act">'+items.map(e=>`<li><span class="tm">${new Date(e.t).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</span> ${desc(e)}</li>`).join('')+'</ul>':'<p class="lv">Chưa có hoạt động nào trong ngày này.</p>'}
  <label class="lv" for="note">Ghi chú</label><textarea id="note" rows="4" placeholder="Hôm nay học gì, chỗ nào còn chưa hiểu…">${esc(NOTES[selD]||'')}</textarea>
  ${last?`<p class="lv">Gần nhất (${new Date(last.t).toLocaleDateString('de-DE')}): ${desc(last)}</p>`:''}
@@ -1999,6 +2003,33 @@ function konjPage(){const A=kjGet(),now=Date.now(),all=[];KJV.forEach((v,vi)=>KJ
     app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'Đúng.':'Chưa đúng.'}</b> ${it.p} <b>${esc(it.form)}</b> <span class="lv">· ${KJP.map((pp,k)=>pp.split('/')[0]+' '+it.v[2].split(' ')[k]).join(' · ')}</span></div><div class="acts"><button class="btn" type="button" id="nx6">Tiếp (Enter)</button></div>`;
     const nb=app.querySelector('#nx6');nb.onclick=next;nb.focus()}};
   next()}}
+
+/* ===================== THỐNG KÊ THỜI GIAN THEO TRÌNH ĐỘ ===================== */
+/* Goethe-Institut London (FAQ): số giờ học ước tính tính từ đầu để đạt mỗi trình độ */
+const LVH=[['A1',60,150],['A2',150,260],['B1',260,490],['B2',450,600],['C1',600,750],['C2',750,null]];
+function tStats(){const T=ls.get('gaq_time_'+PID,{}),days=Object.keys(T).sort(),tot=days.reduce((a,d)=>a+T[d],0);
+ const avg=n=>{let s=0;for(let i=0;i<n;i++)s+=T[dkey(new Date(Date.now()-i*864e5))]||0;return s/n};
+ return {T,tot,h:tot/3600,a14:avg(14),a30:avg(30),days:days.filter(d=>T[d]>=60).length,first:days[0]}}
+function lvNow(h){let cur=null;for(const L of LVH)if(h>=L[1])cur=L[0];return cur}
+function tstatCard(){const S=tStats(),nx=LVH.find(L=>S.h<L[1])||LVH[LVH.length-1],prev=LVH[LVH.indexOf(nx)-1],from=prev?prev[1]:0,pct=Math.min(100,Math.round((S.h-from)/(nx[1]-from)*100));
+ return `<div class="card"><div class="rh"><h2 class="lah">⏳ Giờ học theo trình độ</h2><span class="badge">${S.h.toFixed(1)} giờ</span></div><p class="lv">Mốc tối thiểu tiếp theo: <b>${nx[0]}</b> ≈ ${nx[1]} giờ (Goethe-Institut). Bạn đã đi được ${pct}% chặng ${prev?prev[0]:'0'} → ${nx[0]}.</p><span class="ubar"><i style="width:${pct}%"></i></span><div class="acts"><button class="btn ghost sm" data-sk="tstat">Xem thống kê chi tiết</button></div></div>`}
+function tstatPage(){const S=tStats(),V=ls.get('gaq_tlv_'+PID,{}),A=ls.get('gaq_tact_'+PID,{}),fmtH=h=>h<1?Math.round(h*60)+' phút':h.toFixed(1)+' giờ';
+ const max=900,X=h=>Math.min(100,h/max*100);
+ const eta=need=>{const sec=need*3600-S.tot;if(sec<=0)return 'đã đạt';const per=S.a14||S.a30;if(!per)return 'chưa đủ dữ liệu';const d=Math.ceil(sec/per);const dt=new Date(Date.now()+d*864e5);return `~${d} ngày (≈ ${dt.toLocaleDateString('de-DE',{month:'2-digit',year:'numeric'})})`};
+ const cats={};for(const d in A)for(const k in A[d])cats[k]=(cats[k]||0)+A[d][k];const ctot=Object.values(cats).reduce((a,b)=>a+b,0);
+ const wk=[];for(let w=7;w>=0;w--){let s2=0;for(let i=0;i<7;i++)s2+=S.T[dkey(new Date(Date.now()-(w*7+i)*864e5))]||0;wk.push({l:w?`-${w} tuần`:'tuần này',v:s2})}const wmx=Math.max(3600,...wk.map(x=>x.v));
+ const A1ch=Object.keys(QUIZ).map(Number).filter(k=>k<100&&lvOf(k)=='A1'),A1done=A1ch.filter(k=>cnt('k'+k)).length,A1tot=GROUPS.flatMap(g=>g[1]).filter(c=>c[0]<100&&lvOf(c[0])=='A1').length;
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>⏳ Thống kê giờ học theo trình độ</h1><p class="sub">${PROFILES[PID].name} · tính từ ${S.first?new Date(S.first).toLocaleDateString('de-DE'):'hôm nay'} · ${S.days} ngày có học (≥ 1 phút)</p>
+ <div class="card"><div class="exg"><div><b>${fmtH(S.h)}</b><span>tổng giờ học trên trang</span></div><div><b>${Math.round(S.a14/60)}</b><span>phút/ngày (14 ngày qua)</span></div><div><b>${Math.round(S.a30/60)}</b><span>phút/ngày (30 ngày qua)</span></div><div><b>${lvNow(S.h)||'–'}</b><span>mốc giờ tối thiểu đã qua</span></div></div></div>
+ <h2>Lộ trình A1 → C2</h2><div class="card"><div class="lvline">${LVH.map(L=>`<div class="seg" style="left:${X(L[1])}%;width:${X(L[2]||max)-X(L[1])}%" title="${L[0]}: ${L[1]}–${L[2]||'…'} giờ"><span>${L[0]}</span></div>`).join('')}<div class="me" style="left:${X(S.h)}%"><b>Bạn</b></div></div>
+  <p class="lv" style="margin-top:34px">Vạch màu = khoảng giờ học Goethe-Institut ước tính để đạt mỗi trình độ (tính từ đầu). Kim „Bạn“ = tổng giờ đã học trên trang.</p>
+  <table><tr><th>Trình độ</th><th>Giờ cần (ước tính)</th><th>Bạn đã có</th><th>Còn thiếu (mốc thấp)</th><th>Dự kiến theo nhịp hiện tại</th></tr>${LVH.map(L=>`<tr><td><b>${L[0]}</b></td><td>${L[1]}–${L[2]||'…'} giờ</td><td><span class="ubar" style="display:block;min-width:80px"><i style="width:${Math.min(100,S.h/L[1]*100)}%"></i></span>${Math.min(100,Math.round(S.h/L[1]*100))}%</td><td>${S.h>=L[1]?'✓ đã đủ':fmtH(L[1]-S.h)}</td><td>${eta(L[1])}</td></tr>`).join('')}</table></div>
+ <h2>Tiến độ nội dung A1 trên trang</h2><div class="card"><p>Đã hoàn thành <b>${A1done}/${A1ch.length}</b> chương A1 đã soạn (sách có ${A1tot} chương A1). Giờ học đủ chưa chắc đã đủ trình độ — nên đối chiếu cả hai: giờ học <b>và</b> chương/đề đã làm, rồi thử đề mẫu Goethe-Zertifikat A1 („Start Deutsch 1“) để kiểm tra thật.</p><span class="ubar"><i style="width:${A1ch.length?Math.round(A1done/A1ch.length*100):0}%"></i></span></div>
+ <h2>Giờ học theo cấp nội dung</h2><div class="card">${Object.keys(V).length?Object.entries(V).sort().map(([k,v])=>`<div class="sk tsk"><span>${k=='chung'?'Kỹ năng, truyện, trò chơi (không gắn cấp)':'Bài ngữ pháp và đề '+k}</span><span>${fmtH(v/3600)}</span><span class="ubar"><i style="width:${Math.round(v/Math.max(...Object.values(V))*100)}%"></i></span></div>`).join(''):'<p class="lv">Chưa có dữ liệu — bắt đầu được ghi từ bản này.</p>'}</div>
+ <h2>Giờ học theo loại bài</h2><div class="card">${ctot?Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="sk tsk"><span><b style="color:${ACTCOL[k]||'#999'}">●</b> ${k}</span><span>${fmtH(v/3600)} · ${Math.round(v/ctot*100)}%</span><span class="ubar"><i style="width:${Math.round(v/ctot*100)}%;background:${ACTCOL[k]||'#999'}"></i></span></div>`).join(''):'<p class="lv">Chưa có dữ liệu.</p>'}</div>
+ <h2>8 tuần gần đây</h2><div class="card"><div style="display:flex;align-items:flex-end;gap:6px;height:130px">${wk.map(x=>`<div style="flex:1;text-align:center;font-size:.72rem;color:var(--mute)"><div title="${fmtMin(x.v)}" style="background:var(--acc);opacity:.85;height:${Math.round(x.v/wmx*100)}px;border-radius:4px 4px 0 0;min-height:2px"></div>${x.l}<br><b>${Math.round(x.v/60)}′</b></div>`).join('')}</div></div>
+ <details class="card"><summary>Nguồn và cách hiểu số liệu</summary><ul class="srcs"><li>Số giờ theo trình độ: <a href="https://goethe.de/ins/gb/en/sta/lon/kur/faq.html" target="_blank" rel="noopener">Goethe-Institut London – Frequently Asked Questions</a> (A1 60–150 giờ · A2 150–260 · B1 260–490 · B2 450–600 · C1 600–750 · C2 750+). Goethe-Institut ghi rõ đây là ước tính thô, phụ thuộc vào mức độ chăm chỉ, kinh nghiệm học ngoại ngữ và việc có đang sống ở Đức hay không.</li><li>Đó là giờ <b>học có hướng dẫn</b> (lớp học). Trang chỉ đếm thời gian bạn luyện trên trang; thời gian đi lớp, xem phim, nói chuyện với người Đức không được tính, nên con số thực của bạn thường cao hơn.</li><li>Dự kiến ngày đạt mốc = giờ còn thiếu ÷ số phút học trung bình mỗi ngày trong 14 ngày gần nhất.</li></ul></details>`;
+ app.querySelector('.back').onclick=()=>go(null)}
 /* ---------- so sánh bài viết với bản gốc ---------- */
 function cmpHtml(ref,user){const W=ref.split(/\s+/).filter(Boolean),K=W.map(w=>tok(w).join('')),idx=K.map((k,i)=>k?i:-1).filter(i=>i>=0);
  const R=lcs(idx.map(i=>K[i]),tok(user)),hit=new Set(idx.filter((i,j)=>R.hit[j]));const pct=idx.length?Math.round(R.len/idx.length*100):0;
@@ -2054,6 +2085,11 @@ function planBox(){const t=dkey(new Date()),L=LOG.filter(e=>e.d==t),has=f=>L.som
 /* ===================== THỜI GIAN HỌC & POMODORO ===================== */
 let lastAct=Date.now();['pointerdown','keydown','scroll','touchstart','input'].forEach(t=>document.addEventListener(t,()=>lastAct=Date.now(),{passive:true,capture:true}));
 const studySec=d=>(ls.get('gaq_time_'+PID,{})[d]||0);
+const actCat=a=>a=='exam'?'Đề thi':a=='game'?'Trò chơi':['k','rules','review','kasus','konj'].includes(a)?'Ngữ pháp':a=='shadow'?'Nói':(()=>{const h=Object.keys(HUBS).find(h=>HUBS[h].mods.includes(a));return h?HUBS[h].name:'Khác'})();
+const ACTCOL={'Ngữ pháp':'#7b4fd1','Đề thi':'#c4552d','Nghe':'#2d7fd3','Nói':'#e0a100','Đọc':'#1f8a63','Viết':'#8a3b5c','Trò chơi':'#6f6a62','Khác':'#999'};
+function actBreak(d){const A=(ls.get('gaq_tact_'+PID,{})[d])||{},tot=Object.values(A).reduce((a,b)=>a+b,0);if(!tot)return '';
+ return '<div class="tbar">'+Object.entries(A).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<i style="width:${v/tot*100}%;background:${ACTCOL[k]||'#999'}" title="${k}: ${fmtMin(v)}"></i>`).join('')+'</div><div class="tleg">'+Object.entries(A).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<span><b style="color:${ACTCOL[k]||'#999'}">●</b> ${k} ${v<60?v+' giây':fmtMin(v)}</span>`).join('')+'</div>'}
+const fmtSec=sec=>sec<60?sec+' giây':fmtMin(sec);
 const fmtMin=sec=>{const m=Math.round(sec/60);return m<60?m+' phút':Math.floor(m/60)+' giờ '+(m%60)+' phút'};
 function weekTime(){const T=ls.get('gaq_time_'+PID,{}),days=[];for(let i=6;i>=0;i--){const dt=new Date(Date.now()-i*864e5);days.push({k:dkey(dt),l:['CN','T2','T3','T4','T5','T6','T7'][dt.getDay()],v:T[dkey(dt)]||0})}
  const mx=Math.max(2400,...days.map(d=>d.v)),tot=days.reduce((a,d)=>a+d.v,0);
@@ -2082,7 +2118,11 @@ function pomoNext(P,completed){if(completed&&P.mode=='focus'){P.done++;logAct({t
 const BASE_TITLE=document.title;
 setInterval(()=>{if(!PID)return;
  const P=pomoGet(),running=!!P.end,focusRun=running&&P.mode=='focus';
- if(document.visibilityState=='visible'&&(Date.now()-lastAct<60000||focusRun)||focusRun){const T=ls.get('gaq_time_'+PID,{}),d=dkey(new Date());T[d]=(T[d]||0)+1;ls.set('gaq_time_'+PID,T)}
+ if(CUR_ACT&&document.visibilityState=='visible'&&(Date.now()-lastAct<180000||EXAM_ACTIVE||(window.speechSynthesis&&speechSynthesis.speaking))){const d=dkey(new Date()),T=ls.get('gaq_time_'+PID,{});T[d]=(T[d]||0)+1;ls.set('gaq_time_'+PID,T);
+  const A=ls.get('gaq_tact_'+PID,{}),c=actCat(CUR_ACT);A[d]=A[d]||{};A[d][c]=(A[d][c]||0)+1;ls.set('gaq_tact_'+PID,A);
+  {const V=ls.get('gaq_tlv_'+PID,{}),l=CUR_LV||'chung';V[l]=(V[l]||0)+1;ls.set('gaq_tlv_'+PID,V)}
+  if(selD==d){const a=document.getElementById('stT');if(a)a.textContent=fmtSec(T[d]);const b=document.getElementById('stB');if(b)b.innerHTML=actBreak(d)}}
+ {const ind=document.getElementById('stNow');if(ind)ind.innerHTML=CUR_ACT?(document.visibilityState=='visible'&&Date.now()-lastAct>=180000&&!EXAM_ACTIVE&&!(window.speechSynthesis&&speechSynthesis.speaking)?'⏸ tạm dừng (không thao tác 3 phút)':'● đang tính · '+actCat(CUR_ACT)):'○ không tính (đang ở trang điều hướng)'}
  if(running){const L=pomoLeft(P),el=document.getElementById('pomoT');if(el)el.textContent=mmss(L*1000);document.title=(P.mode=='focus'?'🍅 ':'☕ ')+mmss(L*1000)+' · '+BASE_TITLE;if(L<=0)pomoNext(P,true)}
  else if(document.title!=BASE_TITLE)document.title=BASE_TITLE},1000);
 
@@ -2277,7 +2317,7 @@ document.addEventListener('keydown',e=>{if(e.key=='Escape'){const N=document.get
 /* ===================== ĐỒNG BỘ GIỮA CÁC THIẾT BỊ ===================== */
 /* Dán link Web app của Google Apps Script (kết thúc bằng /exec) vào giữa hai dấu nháy: */
 const SYNC_URL='https://script.google.com/macros/s/AKfycbyw9MjbTQrpTJAzUqNTyn3l3mmSp8xXS2BhEMYiKwxJrpyRAj6YHcFZQiA0i9_Spo3Fsw/exec';
-const SKEYS=['','log_','notes_','time_','prog_','srs_','write_','own_','av_','recent_','games_','deck_','qs_','fw_','art_','kj_'];
+const SKEYS=['','log_','notes_','time_','prog_','srs_','write_','own_','av_','recent_','games_','deck_','qs_','fw_','art_','kj_','tact_','tlv_'];
 const skey=(k,pid)=>'gaq_'+k+pid;
 const devId=()=>{let d=null;try{d=localStorage.getItem('gaq_dev')}catch(e){}if(!d){d='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{localStorage.setItem('gaq_dev',d)}catch(e){}}return d};
 const devGuess=()=>{const u=navigator.userAgent;return /iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?(/Mobile/.test(u)?'Điện thoại Android':'Máy tính bảng Android'):/Windows/.test(u)?'Máy tính Windows':/Mac/.test(u)?'MacBook':'Thiết bị'};
@@ -2302,7 +2342,7 @@ function mergeAll(L,R){L=L||{};R=R||{};const O={};
  {const m=new Map();[...(L.recent_||[]),...(R.recent_||[])].forEach(x=>{const k=x.key||JSON.stringify(x),p=m.get(k);if(!p||(x.t||0)>(p.t||0))m.set(k,x)});O.recent_=[...m.values()].sort((a,b)=>(b.t||0)-(a.t||0)).slice(0,20)}
  O.games_=objU(L.games_,R.games_,(x,y)=>objU(x,y,(p,q)=>Array.isArray(p)&&Array.isArray(q)?(p.filter(z=>z.done).length>=q.filter(z=>z.done).length&&p.length>=q.length?p:q):longer(p,q)));
  O.deck_=L.deck_!=null?L.deck_:R.deck_;
- O.qs_=objU(L.qs_,R.qs_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.art_=objU(L.art_,R.art_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.kj_=objU(L.kj_,R.kj_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);
+ O.qs_=objU(L.qs_,R.qs_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.art_=objU(L.art_,R.art_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.kj_=objU(L.kj_,R.kj_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.tlv_=objU(L.tlv_,R.tlv_,(x,y)=>Math.max(x,y));O.tact_=objU(L.tact_,R.tact_,(x,y)=>objU(x,y,(p,q)=>Math.max(p,q)));
  {const m=new Map();[...(L.fw_||[]),...(R.fw_||[])].forEach(x=>m.set(x.t,x));O.fw_=[...m.values()].sort((a,b)=>a.t-b.t).slice(-300)}
  for(const k in O)if(O[k]==null||(L[k]==null&&R[k]==null))delete O[k];
  return O}
