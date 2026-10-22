@@ -252,6 +252,7 @@ h3.gh{font-size:.95rem;margin:1.2em 0 .4em;color:var(--mute);text-transform:uppe
 body.expause .paper{filter:blur(8px);pointer-events:none;user-select:none}.wcd{color:var(--no)}
 .ctl{display:flex;align-items:center;justify-content:flex-start;gap:6px;flex-wrap:wrap;margin:6px 0 2px}.ctl button{flex:none;margin:0;font:inherit;font-size:1.05rem;width:44px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer}.ctl button:hover{border-color:var(--acc)}.ctl .pp{background:var(--acc);color:#fff;border-color:var(--acc);width:52px}
 .shs p{cursor:pointer}.shs p:hover{background:color-mix(in srgb,var(--acc) 8%,transparent)}.shs .no{color:var(--mute);font-size:.8rem;margin-right:6px;font-variant-numeric:tabular-nums}
+.ctx p{line-height:2.2}.ctx input{font:inherit;padding:0 3px;border:none;border-bottom:2px solid var(--acc);background:color-mix(in srgb,var(--acc) 6%,transparent);color:var(--ink);width:auto}.ctx input.ok{border-color:var(--ok)}.ctx input.no{border-color:var(--no);color:var(--no)}.ctx sup{margin-left:2px}
 /* ===== chân trang ===== */
 #foot{background:color-mix(in srgb,var(--line) 45%,var(--bg));border-top:1px solid var(--line);color:var(--mute);font-size:.88rem;margin-top:20px}
 #foot[hidden]{display:none}
@@ -902,7 +903,7 @@ function home(){
  let h='<h1>Deutsch Grammatik Quiz</h1><p class="sub">Luyện theo thứ tự chương của Grammatik aktiv A1–B1. Câu hỏi soạn mới, không trùng với sách.</p>';
  h+=`<a class="row doc" href="https://drive.google.com/drive/folders/1AXXCBCfNUnJg6VMvDhZSGgbQZEqkgZ08?usp=sharing" target="_blank" rel="noopener"><span class="num"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="t">Kho tài liệu<br><span class="lv">Thư mục Google Drive · mở trong tab mới</span></span><span class="lv">↗</span></a>`;
  h+=`<a class="row doc" href="https://german.todaiinews.com/?hl=de" target="_blank" rel="noopener"><span class="num">📰</span><span class="t">Todaii German · đọc báo song ngữ<br><span class="lv">Tin và truyện A1–C1, từ điển Đức–Việt · mở trong tab mới</span></span><span class="lv">↗</span></a>`;
- h+='<h2>Học theo trình độ</h2>'+levelGrid()+'<button class="row" data-rules><span class="num">📘</span><span class="t">Tổng hợp quy tắc ngữ pháp<br><span class="lv">Tóm tắt tất cả các chương, tìm kiếm và in được</span></span></button><button class="row" data-sk="review"><span class="num">🔀</span><span class="t">Ôn tập xen kẽ ngữ pháp<br><span class="lv">Trộn câu hỏi các chương đã học, câu hay sai quay lại theo lịch</span></span></button>';
+ h+='<h2>Học theo trình độ</h2>'+levelGrid()+'<button class="row" data-rules><span class="num">📘</span><span class="t">Tổng hợp quy tắc ngữ pháp<br><span class="lv">Tóm tắt tất cả các chương, tìm kiếm và in được</span></span></button><button class="row" data-sk="review"><span class="num">🔀</span><span class="t">Ôn tập xen kẽ ngữ pháp<br><span class="lv">Trộn câu hỏi các chương đã học, câu hay sai quay lại theo lịch</span></span></button><button class="row" data-sk="kasus"><span class="num">🕵</span><span class="t">Ai làm gì với ai? (Kasus)<br><span class="lv">Đọc mạo từ der/den/dem để hiểu câu, kể cả khi đảo ngữ</span></span></button><button class="row" data-sk="konj"><span class="num">⏩</span><span class="t">Chia động từ nhanh<br><span class="lv">Gõ dạng chia đúng thật nhanh, câu sai quay lại theo lịch</span></span></button>';
  h+=planBox()+analytics()+recentBox()+skillsBox();
  h+=gamesBox();
  app.innerHTML=h;
@@ -1178,6 +1179,7 @@ function desc(e){const t=e.k?`${lab(e.k)}. ${esc(title(e.k))}`:'';
  if(e.type=='lesson')return `Đọc bài giảng · ${t}`;
  if(e.type=='shadow')return `Shadowing „${esc(e.title)}“ · ${e.steps}/5 bước · tốc độ ${e.rate}`;
  if(e.type=='backtr')return `Dịch ngược „${esc(e.title)}“: khớp <b>${e.pct}%</b>`;
+ if(['hvpt','ctest','artikel','satz','kasus','konj'].includes(e.type))return `${SKILLS[e.type].name}${e.title?' „'+esc(e.title)+'“':''}: <b>${e.score}/${e.total}</b>`;
  if(e.type=='review')return `Ôn tập xen kẽ: <b>${e.score}/${e.total}</b>`;
  if(e.type=='f432')return `Nói 4/3/2 „${esc(e.title)}“ (${e.preset})`;
  if(e.type=='speed')return `Đọc nhanh „${esc(e.title)}“: <b>${e.wpm} từ/phút</b> · hiểu ${e.ok}/3`;
@@ -1639,11 +1641,17 @@ const SKILLS={
  speed:{name:'Đọc nhanh có bấm giờ',vi:'Đo tốc độ đọc (từ/phút) + câu hỏi hiểu nội dung',ic:'⚡',run:()=>speedPage()},
  fwrite:{name:'Viết nhanh',vi:'Viết liên tục 5–10 phút, đếm số từ',ic:'🖊',run:()=>fwritePage()},
  review:{name:'Ôn tập xen kẽ ngữ pháp',vi:'Trộn câu hỏi các chương đã học, ưu tiên câu hay sai',ic:'🔀',run:()=>reviewPage()},
+ hvpt:{name:'Luyện tai phân biệt âm',vi:'Nghe nhiều giọng, chọn đúng từ (ü/u, ö/o, ch…)',ic:'👂',run:()=>hvptPage()},
+ ctest:{name:'C-Test (điền nửa từ)',vi:'Khôi phục nửa sau của từ trong đoạn văn',ic:'🧩',run:()=>ctestPage()},
+ artikel:{name:'der – die – das nhanh',vi:'Nhớ giống danh từ, ôn theo lịch',ic:'⚡',run:()=>artikelPage()},
+ satz:{name:'Xếp câu',vi:'Sắp xếp từ thành câu đúng trật tự',ic:'🔤',run:()=>satzPage()},
+ kasus:{name:'Ai làm gì với ai? (Kasus)',vi:'Đọc mạo từ để hiểu câu đảo ngữ',ic:'🕵',run:()=>kasusPage()},
+ konj:{name:'Chia động từ nhanh',vi:'Gọi lại dạng chia, câu sai quay lại theo lịch',ic:'⏩',run:()=>konjPage()},
  listen:{name:'Nghe',vi:'',ic:'🎧',hidden:true,run:()=>listenPage()}};
 const HUBS={
- nghe:{name:'Nghe',de:'Hören',ic:'🎧',mods:['dict','hv','shadow'],
+ nghe:{name:'Nghe',de:'Hören',ic:'🎧',mods:['dict','hv','hvpt','shadow'],
   m:`<p><b>Nguyên tắc:</b> nghe đi nghe lại cùng một đoạn vừa sức (hiểu được phần lớn), đi từ <b>nhận ra âm và từ</b> (bottom-up) tới <b>hiểu ý</b> (top-down). Người mới học thường hỏng ở khâu đầu: biết chữ nhưng không nhận ra khi nghe.</p>
-  <ol><li><b>Nghe hiểu ý chính</b> một đoạn hội thoại, chưa nhìn chữ.</li><li><b>Chép chính tả</b> vài câu trong đoạn: chỗ chép sai chính là chỗ tai chưa nhận ra.</li><li><b>Shadowing</b> đúng đoạn đó (bước 1–2: nhẩm theo, đọc song song) để luyện tai bắt âm.</li><li>Hôm sau nghe lại đoạn cũ trước khi sang đoạn mới.</li></ol>
+  <ol><li><b>Nghe hiểu ý chính</b> một đoạn hội thoại, chưa nhìn chữ.</li><li><b>Chép chính tả</b> vài câu trong đoạn: chỗ chép sai chính là chỗ tai chưa nhận ra.</li><li><b>Shadowing</b> đúng đoạn đó (bước 1–2: nhẩm theo, đọc song song) để luyện tai bắt âm.</li><li><b>Luyện tai phân biệt âm</b> (HVPT): nghe cùng một cặp từ bằng nhiều giọng, nhiều tốc độ và chọn đúng từ. Nghe được nhiều giọng khác nhau giúp tai „khái quát hóa“ âm mới (Thomson, 2018).</li><li>Hôm sau nghe lại đoạn cũ trước khi sang đoạn mới.</li></ol>
   <p class="lv">Shadowing được nghiên cứu chủ yếu như kỹ thuật luyện nghe: sự tập trung vào âm thanh giúp nhận ra nhiều từ hơn (Hamada, 2012, 2021). Kết hợp shadowing với chép chính tả cho kết quả tốt (Onaha, 2004, trích trong Hamada, 2012).</p>`,
   src:[['Hamada, Y. (2012). An effective way to improve listening skills through shadowing. The Language Teacher, 36(1).','https://jalt-publications.org/sites/default/files/pdf-article/36.1-art1.pdf'],['Hamada, Y. (2021). Shadowing procedures in teaching and their future. The Language Teacher, 45(6).','https://jalt-publications.org/sites/default/files/pdf-article/45.6tlt-art3.pdf']]},
  noi:{name:'Nói',de:'Sprechen',ic:'🗣',mods:['shadow','f432','talk','speak'],
@@ -1651,14 +1659,14 @@ const HUBS={
   <ol><li><b>Shadowing 5 bước</b> trên một bài đã hiểu: nhẩm theo → đọc song song → hiểu nghĩa → shadow không nhìn chữ → ghi âm và tự nghe lại. Lặp cùng một bài khoảng 5 lần trong vài ngày.</li><li><b>Phát âm:</b> luyện riêng các cặp âm hay nhầm (ü/u, ö/o, ch, r) và ghi âm để so.</li><li><b>Nói 4/3/2:</b> nói về cùng một chủ đề ba lần, mỗi lần ít thời gian hơn (4–3–2 phút; A1 có thể 2–1,5–1 phút). Nội dung quen nên não dồn sức cho tốc độ và độ trôi chảy (Nation, 1989).</li><li><b>Hội thoại hai người:</b> dùng các câu vừa shadow vào tình huống thật với người cùng học.</li></ol>
   <p class="lv">Nghiên cứu cho thấy shadowing kết hợp đọc to cải thiện ngữ điệu (Mori, 2011) và shadowing với tài liệu thật cải thiện độ trôi chảy, dễ hiểu (Foote &amp; McDonough, 2017) — cả hai trích trong Hamada (2021). Lưu ý: không cần nói đúng 100% khi shadow.</p>`,
   src:[['Nation, P. (1989). Improving speaking fluency. System, 17(3), 377–384.',''],['Hamada, Y. (2021). Shadowing procedures in teaching and their future. The Language Teacher, 45(6).','https://jalt-publications.org/sites/default/files/pdf-article/45.6tlt-art3.pdf'],['Swain, M. (1985). Communicative competence: Some roles of comprehensible input and comprehensible output in its development. In S. Gass & C. Madden (Eds.), Input in second language acquisition. Newbury House.','']]},
- doc:{name:'Đọc',de:'Lesen',ic:'📖',mods:['read','speed','srs'],
+ doc:{name:'Đọc',de:'Lesen',ic:'📖',mods:['read','ctest','speed','srs','artikel'],
   m:`<p><b>Nguyên tắc:</b> kết hợp <b>đọc rộng</b> (đọc nhiều bài dễ, đọc trôi, ít tra từ) với <b>đọc sâu</b> (một đoạn ngắn, hiểu từng câu).</p>
-  <ol><li><b>Đọc rộng:</b> mỗi ngày một bài dễ (truyện A1–A2, bài Todaii đúng trình độ), đọc hết rồi mới tra từ.</li><li><b>Đọc sâu:</b> dịch từng câu trong truyện; dùng gợi ý điền từ / xếp từ khi bí.</li><li><b>Đọc nhanh có bấm giờ:</b> đọc lại bài dễ, quen thuộc với áp lực thời gian, ghi tốc độ (từ/phút) và kiểm tra hiểu ≥ 70%. Khóa đọc nhanh giúp đọc nhanh hơn cả ở văn bản khác (Macalister, 2010).</li><li><b>Từ vựng:</b> từ gặp nhiều lần đưa vào thẻ từ, ôn theo lịch giãn cách thay vì học dồn.</li></ol>
+  <ol><li><b>Đọc rộng:</b> mỗi ngày một bài dễ (truyện A1–A2, bài Todaii đúng trình độ), đọc hết rồi mới tra từ.</li><li><b>Đọc sâu:</b> dịch từng câu trong truyện; dùng gợi ý điền từ / xếp từ khi bí.</li><li><b>C-Test:</b> điền nửa sau của từ trong đoạn văn — buộc phải hiểu cả câu, từ vựng và đuôi ngữ pháp cùng lúc. Đây là dạng bài kiểm tra tổng hợp được dùng nhiều trong nghiên cứu (Klein-Braley &amp; Raatz, 1984).</li><li><b>der–die–das nhanh:</b> tự gọi lại giống của danh từ (không nhìn) rồi mới xem đáp án — tự kiểm tra giúp nhớ lâu hơn đọc lại (Roediger &amp; Karpicke, 2006).</li><li><b>Đọc nhanh có bấm giờ:</b> đọc lại bài dễ, quen thuộc với áp lực thời gian, ghi tốc độ (từ/phút) và kiểm tra hiểu ≥ 70%. Khóa đọc nhanh giúp đọc nhanh hơn cả ở văn bản khác (Macalister, 2010).</li><li><b>Từ vựng:</b> từ gặp nhiều lần đưa vào thẻ từ, ôn theo lịch giãn cách thay vì học dồn.</li></ol>
   <p class="lv">Tổng hợp 49 nghiên cứu cho thấy đọc rộng có tác dụng nhỏ đến trung bình lên năng lực đọc, người lớn hưởng lợi nhiều hơn trẻ em, và đọc truyện trên web có tác dụng lớn hơn sách giấy (Jeon &amp; Day, 2016). Ôn giãn cách giúp nhớ lâu hơn học dồn (Cepeda và cộng sự, 2006).</p>`,
   src:[['Jeon, E.-Y., & Day, R. R. (2016). The effectiveness of ER on reading proficiency: A meta-analysis. Reading in a Foreign Language, 28(2), 246–265.','https://scholarspace.manoa.hawaii.edu/items/b52a5591-ec04-4026-816f-434361a4e899'],['Macalister, J. (2010). Speed reading courses and their effect on reading authentic texts: A preliminary investigation. Reading in a Foreign Language, 22(1), 104–116.','https://scholarspace.manoa.hawaii.edu/items/5e8ccae9-2c47-4614-9877-3dae5c7810ad'],['Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354–380.','']]},
- viet:{name:'Viết',de:'Schreiben',ic:'✍',mods:['write','fwrite','backtr','gloss'],
+ viet:{name:'Viết',de:'Schreiben',ic:'✍',mods:['write','satz','fwrite','backtr','gloss'],
   m:`<p><b>Nguyên tắc:</b> viết ngắn nhưng đều, tự so với bản mẫu để <b>nhận ra chỗ khác</b>, và nhờ người khác sửa lỗi có trọng tâm.</p>
-  <ol><li><b>Dịch ngược Việt → Đức:</b> nhìn câu tiếng Việt, tự viết câu tiếng Đức, rồi so với câu gốc trong truyện. Buộc phải tự dựng câu (trật tự từ, đuôi động từ, mạo từ).</li><li><b>Dictogloss:</b> nghe một đoạn ngắn hai lần, ghi vài từ khóa, rồi viết lại cả đoạn. Luyện cùng lúc nghe, ngữ pháp và viết.</li><li><b>Nhật ký:</b> mỗi ngày 3–6 câu theo đề, sao chép để nhờ sửa, rồi chép lại bản đã sửa.</li><li><b>Viết nhanh:</b> viết liên tục 5–10 phút về chủ đề quen, không dừng để sửa; theo dõi số từ/phút tăng dần. Đây là nhánh „luyện trôi chảy“ của kỹ năng viết (Nation &amp; Yamamoto, 2012).</li></ol>
+  <ol><li><b>Dịch ngược Việt → Đức:</b> nhìn câu tiếng Việt, tự viết câu tiếng Đức, rồi so với câu gốc trong truyện. Buộc phải tự dựng câu (trật tự từ, đuôi động từ, mạo từ).</li><li><b>Xếp câu:</b> nhìn nghĩa tiếng Việt, xếp các từ tiếng Đức thành câu đúng trật tự (động từ vị trí 2, khung câu). Luyện trật tự từ có phản hồi ngay.</li><li><b>Dictogloss:</b> nghe một đoạn ngắn hai lần, ghi vài từ khóa, rồi viết lại cả đoạn. Luyện cùng lúc nghe, ngữ pháp và viết.</li><li><b>Nhật ký:</b> mỗi ngày 3–6 câu theo đề, sao chép để nhờ sửa, rồi chép lại bản đã sửa.</li><li><b>Viết nhanh:</b> viết liên tục 5–10 phút về chủ đề quen, không dừng để sửa; theo dõi số từ/phút tăng dần. Đây là nhánh „luyện trôi chảy“ của kỹ năng viết (Nation &amp; Yamamoto, 2012).</li></ol>
   <p class="lv">Tổng hợp nghiên cứu cho thấy phản hồi sửa lỗi bằng văn bản giúp tăng độ chính xác khi viết (Kang &amp; Han, 2015). Dictogloss là kỹ thuật do Wajnryb (1990) đề xuất.</p>`,
   src:[['Kang, E., & Han, Z. (2015). The efficacy of written corrective feedback in improving L2 written accuracy: A meta-analysis. The Modern Language Journal, 99(1), 1–18.',''],['Wajnryb, R. (1990). Grammar dictation. Oxford University Press.',''],['Nation, P., & Yamamoto, A. (2012). Applying the four strands to language learning. International Journal of Innovation in English Language Teaching, 1(2).','https://vuw-web.matrix.squiz.cloud/lals/resources/paul-nations-resources/paul-nations-publications/publications/documents/yamamoto-four-strands.pdf']]}};
 let curMod=null,lastHub=null;
@@ -1853,6 +1861,144 @@ function fwritePage(){const PR=PROMPTS,H=ls.get('gaq_fw_'+PID,[]);let pi=Math.fl
     const rec={t:Date.now(),min:mins,words:w,topic:PR[pi][0],text:tx.value};const L2=ls.get('gaq_fw_'+PID,[]);L2.push(rec);ls.set('gaq_fw_'+PID,L2.slice(-300));H.push(rec);logAct({type:'fwrite',title:PR[pi][0],words:w,min:mins});
     $('#st').innerHTML=`<span class="pass-ok">⏰ Hết giờ: <b>${w} từ</b> (${(w/mins).toFixed(1)} từ/phút).</span> Đọc lại, gạch chân 2–3 lỗi bạn tự thấy, hoặc chép sang Nhật ký viết để nhờ sửa.`}},1000)}};
  draw()}
+
+/* ===================== 6 DẠNG BÀI THEO NGHIÊN CỨU ===================== */
+const drillEnd=(type,title,score,total,again)=>{logAct({type,title,score,total});return `<div class="card rule">${praise(total-score,total)}<p class="q">${score} / ${total}</p><div class="acts"><button class="btn" id="dag">Làm lượt mới</button><button class="btn ghost" id="dbk">Quay lại</button></div></div>`};
+const bindEnd=(again,back)=>{app.querySelector('#dag').onclick=again;app.querySelector('#dbk').onclick=back};
+const srcBox=list=>`<details class="card"><summary>Cơ sở nghiên cứu</summary><ul class="srcs">${list.map(x=>`<li>${x[1]?`<a href="${x[1]}" target="_blank" rel="noopener">${esc(x[0])}</a>`:esc(x[0])}</li>`).join('')}</ul></details>`;
+/* ---- 1. HVPT ---- */
+const EXTRA_PAIRS=[[["Hute","Hüte"],["Kuchen","Küchen"],["Mull","Müll"],["Tur","Tür"]],[["Bogen","Bögen"],["Tochter","Töchter"],["Wort","Wörter"],["los","lös"]],[["Dach","Dächer"],["Nacht","nicht"],["Bauch","Bäuche"],["Loch","Löcher"]],[["Bett","Beet"],["Saat","satt"],["Kamm","kam"],["Rose","Rosse"]],[["Rad","Rat"],["Bund","bunt"],["Weg","weg"],["Lied","Lid"]],[["Stein","Stahl"],["spät","Spaß"],["Stück","Stock"],["Spiel","Spule"]],[["Zahl","Saal"],["Zoo","so"],["Leid","Lied"],["Zeit","Seite"]]];
+function hvptPage(){const sets=SOUNDS.map((S,i)=>({t:S[0],tip:S[1],pairs:[...S[2],...(EXTRA_PAIRS[i]||[])]}));
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Luyện tai phân biệt âm</h1><p class="sub">Máy đọc <b>một</b> trong hai từ của một cặp gần giống nhau, mỗi lần bằng giọng và tốc độ khác nhau. Bạn chọn từ vừa nghe. Nên đeo tai nghe.</p>${voiceNote()}
+ <div class="card rule meth"><p>Đây là kỹ thuật <b>HVPT</b> (High Variability Phonetic Training): nghe nhiều người nói cùng một âm giúp tai học được „khung“ của âm đó thay vì nhớ một giọng cụ thể; kết quả thường chuyển sang cả phát âm. ${VOICES.length<2?'<b>Lưu ý:</b> trình duyệt này chỉ có '+VOICES.length+' giọng tiếng Đức, nên trang thay đổi thêm tốc độ và cao độ. Dùng Edge (có nhiều giọng Natural) để hiệu quả hơn.':'Trình duyệt có '+VOICES.length+' giọng tiếng Đức.'}</p></div>
+ <h2>Chọn nhóm âm</h2><button class="row" data-hs="-1"><span class="num">🔀</span><span class="t">Trộn tất cả<br><span class="lv">20 lượt nghe</span></span></button>${sets.map((x,i)=>`<button class="row" data-hs="${i}"><span class="num">${i+1}</span><span class="t">${x.t}<br><span class="lv">${esc(x.tip)}</span></span></button>`).join('')}
+ ${srcBox([['Thomson, R. I. (2018). High variability [pronunciation] training (HVPT): A proven technique about which every language teacher and learner ought to know. Journal of Second Language Pronunciation, 4(2), 208–231.','https://www.jbe-platform.com/content/journals/2215194x/4/2'],['High variability phonetic training (HVPT): A meta-analysis of L2 perceptual training studies. Studies in Second Language Acquisition (2025).','https://resolve.cambridge.org/core/journals/studies-in-second-language-acquisition/article/high-variability-phonetic-training-hvpt-a-metaanalysis-of-l2-perceptual-training-studies/6ABB8C1F32D88D53EA8D05A4565E76F6/core-reader']])}`;
+ app.querySelector('.back').onclick=()=>go(null);
+ app.querySelectorAll('[data-hs]').forEach(b=>b.onclick=()=>{const k=+b.dataset.hs;const pool=(k<0?sets:[sets[k]]).flatMap(x=>x.pairs.map(p=>({p,t:x.t})));run(shuffle(pool).concat(shuffle(pool)).slice(0,20),k<0?'Trộn':sets[k].t)});
+ function run(items,title){let i=0,ok=0,cur=null;
+  const play=()=>say(cur.w,{v:cur.v,rate:cur.r,pitch:cur.pi});
+  const next=()=>{if(i>=items.length){app.innerHTML=`<a class="back">← Luyện tai</a><h1>Kết quả</h1>`+drillEnd('hvpt',title,ok,items.length);app.querySelector('.back').onclick=hvptPage;bindEnd(()=>run(shuffle(items),title),hvptPage);return}
+   const it=items[i],w=it.p[Math.random()<.5?0:1];cur={w,v:Math.floor(Math.random()*Math.max(1,VOICES.length)),r:.8+Math.random()*.35,pi:.85+Math.random()*.3};
+   app.innerHTML=`<div class="top"><a class="back">← Luyện tai</a><span>${i+1} / ${items.length}</span></div><div class="bar"><i style="width:${i/items.length*100}%"></i></div>
+   <div class="card" style="text-align:center"><p class="lv">${esc(it.t)}</p><button class="btn" id="pl" style="font-size:1.3rem">🔊 Nghe</button><p class="lv">Nghe lại bao nhiêu lần cũng được.</p>
+   <div class="shbar" style="justify-content:center">${shuffle(it.p).map(x=>`<button class="opt" style="min-width:140px;font-size:1.2rem" data-w="${esc(x)}">${esc(x)}</button>`).join('')}</div><div id="fb"></div></div>`;
+   app.querySelector('.back').onclick=()=>{stopAudio();hvptPage()};app.querySelector('#pl').onclick=play;setTimeout(play,250);
+   app.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const good=b.dataset.w===w;if(good)ok++;app.querySelectorAll('[data-w]').forEach(x=>{x.disabled=true;if(x.dataset.w===w)x.classList.add('ok')});if(!good)b.classList.add('no');
+    app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'Đúng.':'Chưa đúng.'}</b> Máy đọc: <b>${esc(w)}</b>. Nghe lại để so: ${it.p.map(x=>`${esc(x)} ${sayBtn(x,.85)}`).join(' · ')}</div><div class="acts"><button class="btn" id="nx2">${i+1<items.length?'Tiếp':'Xem kết quả'}</button></div>`;
+    app.querySelector('#nx2').onclick=()=>{i++;next()};app.querySelector('#nx2').focus()})};
+  next()}}
+/* ---- 2. C-TEST ---- */
+function ctestMake(S){const sents=S.s.map(x=>x[0]);let n=0;const out=[];
+ sents.forEach((se,si)=>{const toks=se.split(' ');if(si==0||si==sents.length-1){out.push(toks.map(t=>({t})));return}
+  out.push(toks.map(t=>{const m=t.match(/^([„"]?)([A-Za-zÄÖÜäöüß]+)([.,!?;:“"]*)$/);if(!m||m[2].length<2){return {t}}n++;if(n%2)return {t};const w=m[2],keep=Math.floor(w.length/2);return {pre:m[1],a:w.slice(0,keep),gap:w.slice(keep),post:m[3]}}))});return out}
+function ctestPage(id){if(id==null){app.innerHTML=`<a class="back">← Trang chính</a><h1>C-Test</h1><p class="sub">Câu đầu và câu cuối giữ nguyên. Từ câu thứ hai, cứ mỗi từ thứ hai bị xóa <b>nửa sau</b>. Bạn điền phần còn thiếu. Bài buộc bạn phải hiểu ngữ cảnh, nhận ra từ và chia đúng đuôi cùng một lúc.</p>
+  <div class="card rule meth"><p>C-Test là dạng bài kiểm tra ngôn ngữ tổng hợp (Klein-Braley &amp; Raatz, 1984), được dùng rộng rãi trong nghiên cứu vì đo cùng lúc đọc hiểu, từ vựng và ngữ pháp. Ở đây dùng như bài luyện tự kiểm tra; nên làm với truyện bạn đã đọc qua.</p></div>`+
+  ['A1','A2'].map(lv=>`<h2>${lv}</h2>`+STORIES.filter(x=>x.lv==lv).map(x=>`<button class="row" data-ct="${x.id}"><span class="num">🧩</span><span class="t">${x.t}<br><span class="lv">${esc(x.vi)}${cnt('ct'+x.id)?` · <b>đã làm ${cnt('ct'+x.id)} lần</b>`:''}</span></span></button>`).join('')).join('')+
+  srcBox([['Klein-Braley, C., & Raatz, U. (1984). A survey of research on the C-Test. Language Testing, 1(2), 134–146.','']]);
+  app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{ctestPage(+b.dataset.ct);scrollTo(0,0)});return}
+ const S=STORIES.find(x=>x.id==id),C=ctestMake(S);let gi=0;
+ app.innerHTML=`<a class="back">← Danh sách</a><h1>${S.t} <span class="badge">${S.lv}</span></h1><p class="sub">Điền nửa sau của mỗi từ. Bàn phím: ä ö ü ß.</p>
+ <div class="card ctx" translate="no">${C.map(se=>'<p>'+se.map(w=>w.gap?`${esc(w.pre)}${esc(w.a)}<input data-g="${gi++}" size="${Math.max(2,w.gap.length)}" maxlength="${w.gap.length+2}" autocomplete="off" spellcheck="false">${esc(w.post)}`:esc(w.t)).join(' ')+'</p>').join('')}</div>
+ <div class="keys">${['ä','ö','ü','ß'].map(c=>`<button type="button">${c}</button>`).join('')}</div><div class="acts"><button class="btn" id="ck">Kiểm tra</button></div><div id="res"></div>`;
+ const gaps=C.flat().filter(w=>w.gap);let last=null;app.querySelectorAll('.ctx input').forEach(x=>x.onfocus=()=>last=x);
+ app.querySelectorAll('.keys button').forEach(k=>k.onclick=()=>{if(last){last.value+=k.textContent;last.focus()}});
+ app.querySelector('.back').onclick=()=>ctestPage();
+ app.querySelector('#ck').onclick=e=>{let ok=0;app.querySelectorAll('.ctx input').forEach(x=>{const g=gaps[+x.dataset.g],good=nrm(x.value.trim())===nrm(g.gap)||x.value.trim()===g.gap;if(good)ok++;x.classList.add(good?'ok':'no');x.disabled=true;if(!good)x.insertAdjacentHTML('afterend',`<sup class="pass-ok">${esc(g.gap)}</sup>`)});
+  e.target.remove();const n=addC('ct'+id);app.querySelector('#res').innerHTML=drillEnd('ctest',S.t,ok,gaps.length)+`<p class="lv">Đã làm bài này ${n} lần. Ô đỏ có đáp án nhỏ màu xanh phía sau.</p>`;bindEnd(()=>{ctestPage(id);scrollTo(0,0)},()=>ctestPage())}}
+/* ---- 3. der-die-das nhanh ---- */
+const artGet=()=>ls.get('gaq_art_'+PID,{});
+const ARTRULE=[[/(ung|heit|keit|schaft|ion|tät|ie|ei|ik|in)$/i,'die','Đuôi -ung, -heit, -keit, -schaft, -ion, -tät, -ie, -ei, -ik, -in thường là die.'],[/(chen|lein|um|ment)$/i,'das','Đuôi -chen, -lein, -um, -ment thường là das.'],[/(ling|ismus|ich|ig|or)$/i,'der','Đuôi -ling, -ismus, -ich, -ig, -or thường là der.']];
+function artikelPage(){const V=vocab().filter(c=>['der','die','das'].includes(c.art));const A=artGet(),now=Date.now();
+ const due=V.filter(c=>A[c.id]&&A[c.id].due<=now),fresh=V.filter(c=>!A[c.id]);
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>der – die – das nhanh</h1><p class="sub">Nhìn danh từ, chọn giống thật nhanh. Từ chọn sai sẽ xuất hiện lại trong lượt và quay lại vào những ngày sau (1 → 2 → 4 → 8 → 16 ngày).</p>
+ <div class="card rule meth"><p>Tự gọi lại đáp án trước khi xem giúp nhớ lâu hơn đọc lại nhiều lần (hiệu ứng kiểm tra – Roediger &amp; Karpicke, 2006). Giống của danh từ phải nhớ cùng từ; trang nhắc thêm quy tắc đuôi từ khi có.</p></div>
+ <div class="card"><p>${V.length} danh từ có mạo từ · <b>${due.length}</b> từ đến hạn ôn · ${fresh.length} từ chưa học.</p><div class="acts"><button class="btn" id="go">Bắt đầu 20 từ</button></div></div>
+ ${srcBox([['Roediger, H. L., & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.','']])}`;
+ app.querySelector('.back').onclick=()=>go(null);
+ app.querySelector('#go').onclick=()=>{const pick=[...shuffle(due),...shuffle(fresh),...shuffle(V.filter(c=>A[c.id]&&A[c.id].due>now))].slice(0,20);run(pick)};
+ function run(items){let q=items.slice(),ok=0,first=new Set(),n=items.length,t0=0,times=[];
+  const next=()=>{if(!q.length){const avg=times.length?(times.reduce((a,b)=>a+b,0)/times.length/1000).toFixed(1):'–';app.innerHTML=`<a class="back">← der–die–das</a><h1>Kết quả</h1>`+drillEnd('artikel','',ok,n)+`<p class="lv">Thời gian trả lời trung bình: <b>${avg} giây</b>/từ.</p>`;app.querySelector('.back').onclick=artikelPage;bindEnd(artikelPage,()=>go(null));return}
+   const c=q.shift();t0=performance.now();
+   app.innerHTML=`<div class="top"><a class="back">← der–die–das</a><span>còn ${q.length+1} từ</span></div><div class="card" style="text-align:center"><p style="font-size:2rem;font-weight:700;margin:.4em 0">${esc(c.word)}</p><p class="lv">${esc(c.vi)}</p>
+   <div class="shbar" style="justify-content:center">${['der','die','das'].map(a=>`<button class="opt" style="min-width:90px;font-size:1.3rem" data-a="${a}">${a}</button>`).join('')}</div><p class="lv">Phím tắt: 1 = der · 2 = die · 3 = das</p><div id="fb"></div></div>`;
+   app.querySelector('.back').onclick=artikelPage;
+   const pickA=a=>{if(app.querySelector('#fb').innerHTML)return;const good=a===c.art,ms=performance.now()-t0;if(good){times.push(ms);if(!first.has(c.id))ok++}else{first.add(c.id);q.splice(Math.min(3,q.length),0,c)}
+    const S=artGet(),x=S[c.id]||{b:0};x.t=Date.now();x.b=good&&!first.has(c.id)?Math.min(5,x.b+1):1;x.due=today0()+QIV[x.b]*864e5;S[c.id]=x;ls.set('gaq_art_'+PID,S);
+    app.querySelectorAll('[data-a]').forEach(b=>{b.disabled=true;if(b.dataset.a===c.art)b.classList.add('ok');else if(b.dataset.a===a)b.classList.add('no')});
+    const r=ARTRULE.find(R=>R[0].test(c.word));say(c.art+' '+c.word);
+    app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${esc(c.art)} ${esc(c.word)}</b>${r&&r[1]==c.art?' — '+r[2]:''}</div><div class="acts"><button class="btn" id="nx3">Tiếp</button></div>`;
+    const nb=app.querySelector('#nx3');nb.onclick=next;nb.focus()};
+   app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>pickA(b.dataset.a))};
+  artKey=e=>{if(!app.querySelector('[data-a]'))return;const m={'1':'der','2':'die','3':'das'}[e.key];if(m){const b=app.querySelector(`[data-a="${m}"]`);if(b&&!b.disabled)b.click()}};
+  next()}}
+let artKey=null;document.addEventListener('keydown',e=>{if(artKey&&!/INPUT|TEXTAREA/.test(e.target.tagName||''))artKey(e)});
+/* ---- 4. Xếp câu ---- */
+function satzPool(lv){const out=[];STORIES.filter(x=>!lv||x.lv==lv).forEach(x=>x.s.forEach(y=>out.push({de:y[0],vi:viFull(y[1]),lv:x.lv})));TALK.filter(c=>!lv||c.lv==lv).forEach(c=>c.dl.forEach(l=>out.push({de:l[1],vi:l[2],lv:c.lv})));
+ return out.filter(x=>{const n=x.de.split(' ').length;return n>=4&&n<=11&&!/[?!].+[.?!]/.test(x.de.slice(0,-1))})}
+function satzPage(){app.innerHTML=`<a class="back">← Trang chính</a><h1>Xếp câu</h1><p class="sub">Nhìn nghĩa tiếng Việt, bấm các từ tiếng Đức theo đúng thứ tự. Bấm vào từ đã chọn để bỏ ra.</p>
+ <div class="card rule meth"><p>Tập trung vào <b>trật tự từ</b>: động từ chia ở vị trí 2, đảo ngữ, khung câu với động từ khiếm khuyết và động từ tách. Bài có phản hồi ngay, và luôn gắn với nghĩa của câu — chú ý đến hình thức trong ngữ cảnh có nghĩa hiệu quả hơn học quy tắc rời rạc.</p></div>
+ <div class="acts"><button class="btn" data-l="A1">10 câu A1</button><button class="btn ghost" data-l="A2">10 câu A2</button><button class="btn ghost" data-l="">10 câu trộn</button></div>`;
+ app.querySelector('.back').onclick=()=>go(null);app.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>run(shuffle(satzPool(b.dataset.l)).slice(0,10)));
+ function run(items){let i=0,ok=0;
+  const next=()=>{if(i>=items.length){app.innerHTML=`<a class="back">← Xếp câu</a><h1>Kết quả</h1>`+drillEnd('satz','',ok,items.length);app.querySelector('.back').onclick=satzPage;bindEnd(()=>run(shuffle(satzPool('')).slice(0,10)),satzPage);return}
+   const it=items[i],words=it.de.replace(/[.,!?]+$/,'').split(' '),end=(it.de.match(/[.,!?]+$/)||[''])[0];let pool=shuffle(words.map((w,k)=>k));if(pool.join()==words.map((w,k)=>k).join())pool.reverse();const ord=[];let tries=0;
+   const draw=()=>{app.innerHTML=`<div class="top"><a class="back">← Xếp câu</a><span>${i+1} / ${items.length}</span></div><div class="bar"><i style="width:${i/items.length*100}%"></i></div>
+    <div class="card"><p class="q">${esc(it.vi)}</p><div class="chips ans">${ord.map((k,j)=>`<button data-rm="${j}">${esc(words[k])}</button>`).join('')}<span class="lv">${esc(end)}</span></div><div class="chips">${pool.filter(k=>!ord.includes(k)).map(k=>`<button data-ad="${k}">${esc(words[k])}</button>`).join('')}</div>
+    <div class="acts"><button class="btn" id="ck" ${ord.length<words.length?'disabled':''}>Kiểm tra</button><button class="btn ghost" id="sh">Xem đáp án</button></div><div id="fb"></div></div>`;
+    app.querySelector('.back').onclick=satzPage;
+    app.querySelectorAll('[data-ad]').forEach(b=>b.onclick=()=>{ord.push(+b.dataset.ad);draw()});app.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ord.splice(+b.dataset.rm,1);draw()});
+    const fin=(good,msg)=>{app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}">${msg} <b>${esc(it.de)}</b> ${sayBtn(it.de)}</div><div class="acts"><button class="btn" id="nx4">${i+1<items.length?'Câu tiếp':'Xem kết quả'}</button></div>`;app.querySelectorAll('.chips button,#ck,#sh').forEach(x=>x.disabled=true);app.querySelector('#nx4').onclick=()=>{i++;next()};app.querySelector('#nx4').focus()};
+    app.querySelector('#sh').onclick=()=>fin(false,'Đáp án:');
+    app.querySelector('#ck').onclick=()=>{const got=ord.map(k=>words[k]).join(' ');tries++;if(got===words.join(' ')){if(tries==1)ok++;fin(true,tries==1?'✓ Đúng ngay lần đầu!':'✓ Đúng rồi.')}
+     else app.querySelector('#fb').innerHTML=`<p class="pass-no">Chưa đúng thứ tự (lần ${tries}). Kiểm tra vị trí động từ và phần cuối câu, rồi bấm vào từ để sửa. Nếu bạn chắc câu của mình cũng đúng: <button class="lnk" id="mine">Câu mình cũng đúng</button></p>`,app.querySelector('#mine').onclick=()=>{if(tries==1)ok++;fin(true,'Câu gốc là:')}}};
+   draw()};
+  next()}}
+/* ---- 5. Kasus: ai làm gì với ai? (Processing Instruction) ---- */
+const KM=[['der Lehrer','den Lehrer','dem Lehrer','thầy giáo'],['der Student','den Studenten','dem Studenten','sinh viên'],['der Mann','den Mann','dem Mann','người đàn ông'],['der Arzt','den Arzt','dem Arzt','bác sĩ'],['der Vater','den Vater','dem Vater','người bố'],['der Chef','den Chef','dem Chef','ông sếp'],['der Kellner','den Kellner','dem Kellner','anh phục vụ'],['der Nachbar','den Nachbarn','dem Nachbarn','người hàng xóm'],['der Junge','den Jungen','dem Jungen','cậu bé'],['der Hund','den Hund','dem Hund','con chó']];
+const KF=[['die Frau','der Frau','người phụ nữ'],['die Lehrerin','der Lehrerin','cô giáo'],['die Ärztin','der Ärztin','bác sĩ (nữ)'],['die Mutter','der Mutter','người mẹ'],['das Kind','dem Kind','đứa trẻ'],['das Mädchen','dem Mädchen','cô bé']];
+const KV=[['fragt','hỏi'],['sieht','nhìn thấy'],['sucht','tìm'],['besucht','thăm'],['kennt','quen biết'],['ruft','gọi'],['grüßt','chào'],['findet','tìm thấy']];
+const KD=[['hilft','giúp'],['dankt','cảm ơn'],['antwortet','trả lời'],['gratuliert','chúc mừng']];
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function kasusItem(){const r=Math.random();
+ if(r<.6){let [a,b]=shuffle(KM).slice(0,2);const v=KV[Math.floor(Math.random()*KV.length)],ovs=Math.random()<.6;
+  const de=ovs?`${cap(b[1])} ${v[0]} ${a[0]}.`:`${cap(a[0])} ${v[0]} ${b[1]}.`;return {de,q:`Ai ${v[1]} ai?`,o:[`${a[3]} → ${b[3]}`,`${b[3]} → ${a[3]}`],a:0,e:`<b>${a[0]}</b> (Nominativ) là người ${v[1]}; <b>${b[1]}</b> (Akkusativ, đuôi -en) là người bị ${v[1]} — dù đứng ở đâu trong câu.`}}
+ const m=KM[Math.floor(Math.random()*KM.length)],f=KF[Math.floor(Math.random()*KF.length)],v=KD[Math.floor(Math.random()*KD.length)],subjM=Math.random()<.5,ovs=Math.random()<.6;
+ const S=subjM?[m[0],m[3]]:[f[0],f[2]],O=subjM?[f[1],f[2]]:[m[2],m[3]];
+ const de=ovs?`${cap(O[0])} ${v[0]} ${S[0]}.`:`${cap(S[0])} ${v[0]} ${O[0]}.`;return {de,q:`Ai ${v[1]} ai?`,o:[`${S[1]} → ${O[1]}`,`${O[1]} → ${S[1]}`],a:0,e:`<b>${O[0]}</b> là Dativ (${v[0].replace(/t$/,'')}… + Dativ) → người nhận; <b>${S[0]}</b> là Nominativ → người làm.`}}
+function kasusPage(){app.innerHTML=`<a class="back">← Trang chính</a><h1>Ai làm gì với ai?</h1><p class="sub">Đọc (và nghe) câu, rồi chọn ai là người làm hành động. Nhiều câu bị <b>đảo ngữ</b> — từ đứng đầu chưa chắc là chủ ngữ. Hãy nhìn mạo từ: <b>der</b> (chủ ngữ) – <b>den</b> (Akkusativ) – <b>dem / der</b> (Dativ).</p>
+ <div class="card rule meth"><p>Người học thường mặc định „danh từ đầu câu là người làm“ — chiến lược này đúng trong tiếng Việt nhưng sai trong tiếng Đức. Dạng bài <b>Processing Instruction</b> (VanPatten &amp; Cadierno, 1993) đưa ra những câu chỉ hiểu đúng được khi đọc vào đuôi cách, để bỏ thói quen đó.</p></div>
+ <div class="acts"><button class="btn" id="go">Bắt đầu 15 câu</button></div>${srcBox([['VanPatten, B., & Cadierno, T. (1993). Explicit instruction and input processing. Studies in Second Language Acquisition, 15(2), 225–243.','']])}`;
+ app.querySelector('.back').onclick=()=>go(null);app.querySelector('#go').onclick=()=>run(Array.from({length:15},kasusItem));
+ function run(items){let i=0,ok=0;const next=()=>{if(i>=items.length){app.innerHTML=`<a class="back">← Kasus</a><h1>Kết quả</h1>`+drillEnd('kasus','',ok,items.length);app.querySelector('.back').onclick=kasusPage;bindEnd(()=>run(Array.from({length:15},kasusItem)),kasusPage);return}
+  const it=items[i],ord=shuffle([0,1]);
+  app.innerHTML=`<div class="top"><a class="back">← Kasus</a><span>${i+1} / ${items.length}</span></div><div class="bar"><i style="width:${i/items.length*100}%"></i></div><div class="card"><p class="q" style="font-size:1.35rem">${esc(it.de)} ${sayBtn(it.de)}</p><p>${it.q}</p>${ord.map(k=>`<button class="opt" data-k="${k}">${esc(it.o[k])}</button>`).join('')}<div id="fb"></div></div>`;
+  app.querySelector('.back').onclick=kasusPage;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const good=+b.dataset.k===it.a;if(good)ok++;app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===it.a)x.classList.add('ok')});if(!good)b.classList.add('no');
+   app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'Đúng.':'Chưa đúng.'}</b> ${it.e}</div><div class="acts"><button class="btn" id="nx5">${i+1<items.length?'Câu tiếp':'Xem kết quả'}</button></div>`;const nb=app.querySelector('#nx5');nb.onclick=()=>{i++;next()};nb.focus()})};next()}}
+/* ---- 6. Chia động từ nhanh ---- */
+const KJP=['ich','du','er/sie/es','wir','ihr','sie/Sie'];
+const KJV=[['sein','là, thì','bin bist ist sind seid sind'],['haben','có','habe hast hat haben habt haben'],['werden','trở thành','werde wirst wird werden werdet werden'],['machen','làm','mache machst macht machen macht machen'],['wohnen','sống','wohne wohnst wohnt wohnen wohnt wohnen'],['lernen','học','lerne lernst lernt lernen lernt lernen'],['arbeiten','làm việc','arbeite arbeitest arbeitet arbeiten arbeitet arbeiten'],['finden','tìm thấy','finde findest findet finden findet finden'],['warten','chờ','warte wartest wartet warten wartet warten'],['heißen','tên là','heiße heißt heißt heißen heißt heißen'],['tanzen','nhảy','tanze tanzt tanzt tanzen tanzt tanzen'],['fahren','đi (xe)','fahre fährst fährt fahren fahrt fahren'],['schlafen','ngủ','schlafe schläfst schläft schlafen schlaft schlafen'],['laufen','chạy','laufe läufst läuft laufen lauft laufen'],['tragen','mang, mặc','trage trägst trägt tragen tragt tragen'],['essen','ăn','esse isst isst essen esst essen'],['geben','đưa','gebe gibst gibt geben gebt geben'],['nehmen','lấy','nehme nimmst nimmt nehmen nehmt nehmen'],['sprechen','nói','spreche sprichst spricht sprechen sprecht sprechen'],['helfen','giúp','helfe hilfst hilft helfen helft helfen'],['lesen','đọc','lese liest liest lesen lest lesen'],['sehen','nhìn','sehe siehst sieht sehen seht sehen'],['treffen','gặp','treffe triffst trifft treffen trefft treffen'],['wissen','biết','weiß weißt weiß wissen wisst wissen'],['mögen','thích','mag magst mag mögen mögt mögen'],['können','có thể','kann kannst kann können könnt können'],['müssen','phải','muss musst muss müssen müsst müssen'],['dürfen','được phép','darf darfst darf dürfen dürft dürfen'],['wollen','muốn','will willst will wollen wollt wollen'],['sollen','nên','soll sollst soll sollen sollt sollen'],['möchten','muốn (lịch sự)','möchte möchtest möchte möchten möchtet möchten']];
+const kjGet=()=>ls.get('gaq_kj_'+PID,{});
+function konjPage(){const A=kjGet(),now=Date.now(),all=[];KJV.forEach((v,vi)=>KJP.forEach((p,pi)=>all.push({id:vi+':'+pi,v,p,pi,form:v[2].split(' ')[pi]})));
+ const due=all.filter(x=>A[x.id]&&A[x.id].due<=now),fresh=all.filter(x=>!A[x.id]);
+ app.innerHTML=`<a class="back">← Trang chính</a><h1>Chia động từ nhanh</h1><p class="sub">Gõ dạng chia ở thì hiện tại thật nhanh. Câu sai lặp lại ngay trong lượt và quay lại vào những ngày sau. Mục tiêu: chia đúng mà không cần nghĩ.</p>
+ <div class="card rule meth"><p>Tự gọi lại (không nhìn bảng) và ôn giãn cách giúp nhớ lâu hơn; luyện nhanh nhiều lần giúp việc chia động từ trở thành tự động, để khi nói bạn dồn sức vào nội dung (Roediger &amp; Karpicke, 2006; Cepeda và cộng sự, 2006).</p></div>
+ <div class="card"><p>${KJV.length} động từ · ${all.length} dạng · <b>${due.length}</b> dạng đến hạn · ${fresh.length} dạng chưa luyện.</p><div class="acts"><button class="btn" id="go">Bắt đầu 20 câu</button></div></div>`;
+ app.querySelector('.back').onclick=()=>go(null);
+ app.querySelector('#go').onclick=()=>{const freshV=shuffle(fresh).sort((a,b)=>a.v[0]<b.v[0]?-1:1);run([...shuffle(due),...shuffle(freshV.slice(0,40)),...shuffle(all)].filter((x,i,arr)=>arr.findIndex(y=>y.id==x.id)==i).slice(0,20))};
+ function run(items){let q=items.slice(),ok=0,n=items.length;const bad=new Set();let t0=0,times=[];
+  const next=()=>{if(!q.length){const avg=times.length?(times.reduce((a,b)=>a+b,0)/times.length/1000).toFixed(1):'–';app.innerHTML=`<a class="back">← Chia động từ</a><h1>Kết quả</h1>`+drillEnd('konj','',ok,n)+`<p class="lv">Thời gian trung bình mỗi câu đúng: <b>${avg} giây</b>.</p>`;app.querySelector('.back').onclick=konjPage;bindEnd(konjPage,()=>go(null));return}
+   const it=q.shift();t0=performance.now();
+   app.innerHTML=`<div class="top"><a class="back">← Chia động từ</a><span>còn ${q.length+1}</span></div><div class="card" style="text-align:center"><p class="lv">${esc(it.v[0])} — ${esc(it.v[1])}</p><form><p style="font-size:1.5rem;margin:.4em 0"><b>${it.p}</b> <input id="ki" autocomplete="off" autocapitalize="off" spellcheck="false" style="font:inherit;font-size:1.4rem;width:9em;text-align:center"></p><div class="keys">${['ä','ö','ü','ß'].map(c=>`<button type="button">${c}</button>`).join('')}</div><button class="btn">Kiểm tra</button></form><div id="fb"></div></div>`;
+   app.querySelector('.back').onclick=konjPage;const f=app.querySelector('form'),inp=app.querySelector('#ki');inp.focus();
+   f.querySelectorAll('.keys button').forEach(b=>b.onclick=()=>{inp.value+=b.textContent;inp.focus()});
+   f.onsubmit=e=>{e.preventDefault();if(app.querySelector('#fb').innerHTML){app.querySelector('#nx6').click();return}const v=inp.value.trim().toLowerCase();if(!v)return;const good=v===it.form.toLowerCase(),ms=performance.now()-t0;
+    if(good){times.push(ms);if(!bad.has(it.id))ok++}else{bad.add(it.id);q.splice(Math.min(3,q.length),0,it)}
+    const S=kjGet(),x=S[it.id]||{b:0};x.t=Date.now();x.b=good&&!bad.has(it.id)?Math.min(5,x.b+1):1;x.due=today0()+QIV[x.b]*864e5;S[it.id]=x;ls.set('gaq_kj_'+PID,S);
+    inp.disabled=true;inp.classList.add(good?'ok':'no');
+    app.querySelector('#fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'Đúng.':'Chưa đúng.'}</b> ${it.p} <b>${esc(it.form)}</b> <span class="lv">· ${KJP.map((pp,k)=>pp.split('/')[0]+' '+it.v[2].split(' ')[k]).join(' · ')}</span></div><div class="acts"><button class="btn" type="button" id="nx6">Tiếp (Enter)</button></div>`;
+    const nb=app.querySelector('#nx6');nb.onclick=next;nb.focus()}};
+  next()}}
 /* ---------- so sánh bài viết với bản gốc ---------- */
 function cmpHtml(ref,user){const W=ref.split(/\s+/).filter(Boolean),K=W.map(w=>tok(w).join('')),idx=K.map((k,i)=>k?i:-1).filter(i=>i>=0);
  const R=lcs(idx.map(i=>K[i]),tok(user)),hit=new Set(idx.filter((i,j)=>R.hit[j]));const pct=idx.length?Math.round(R.len/idx.length*100):0;
@@ -1888,7 +2034,7 @@ function glossPage(key){const P=[];STORIES.forEach(x=>{for(let i=0;i<x.s.length;
  app.querySelector('#ck').onclick=()=>{const u=tx.value.trim();if(!u)return;const r=cmpHtml(x.de,u),n=addC('dg'+key);logAct({type:'gloss',title:x.t+' · đoạn '+x.part,pct:r.pct});
   app.querySelector('#fb').innerHTML=`<div class="card rule">${praise(100-r.pct,100)}<p><b>Bản gốc</b> (khớp ${r.pct}% số từ) ${sayBtn(x.de)}</p>${r.html}<p class="lv">Nghĩa: ${esc(x.vi)}</p><p class="done-note">Hoàn thành ${n} lần. Dictogloss không cần viết y hệt: đúng ý và đúng ngữ pháp là đạt.</p></div>`}}
 function skillsBox(){return '<h2>Luyện 4 kỹ năng</h2><div class="hubg">'+Object.keys(HUBS).map(h=>{const H=HUBS[h];return `<button class="hubc" data-hub4="${h}"><span class="hi">${H.ic}</span><span><b>${H.name}</b> <span class="lv" style="display:inline">· ${H.de}</span><span class="lv">${H.mods.map(m=>SKILLS[m].name).join(' · ')}</span></span></button>`}).join('')+'</div>'}
-const STRANDS={inp:['Nghe & đọc hiểu','#2d7fd3',['listen','story','shadow']],out:['Nói & viết','#c4552d',['talk','write','f432','backtr','gloss']],lang:['Học có chủ đích','#7b4fd1',['quiz','exam','srs','review','speak','lesson']],flu:['Luyện trôi chảy','#1f8a63',['speed','fwrite','f432','shadow']]};
+const STRANDS={inp:['Nghe & đọc hiểu','#2d7fd3',['listen','story','shadow','ctest','kasus']],out:['Nói & viết','#c4552d',['talk','write','f432','backtr','gloss']],lang:['Học có chủ đích','#7b4fd1',['quiz','exam','srs','review','speak','lesson','hvpt','artikel','satz','konj']],flu:['Luyện trôi chảy','#1f8a63',['speed','fwrite','f432','shadow']]};
 function strandStats(days){const from=Date.now()-days*864e5,L=LOG.filter(e=>e.t>=from),o={};for(const k in STRANDS)o[k]=L.filter(e=>STRANDS[k][2].includes(e.type)).length;return o}
 function planBox(){const t=dkey(new Date()),L=LOG.filter(e=>e.d==t),has=f=>L.some(f);const d=srsDue();
  const r=rngFrom('day|'+t),st=STORIES[Math.floor(r()*STORIES.length)];
@@ -2101,7 +2247,7 @@ function topnav(){const N=document.getElementById('topnav');if(!N)return;
  const sub=(L,inner,n)=>`<div class="sub${n?'':' empty'}"><button class="sbt"><span>Trình độ ${L}</span><span class="x">${n?n:'chưa có'}</span><span class="ar">›</span></button><div class="fly"><button class="all" data-nlv="${L}"><span class="k">↗</span><span>Mở trang ${L}</span></button>${inner||'<div class="h">Chưa có bài ở trình độ này</div>'}</div></div>`;
  const chA=(k,t)=>QUIZ[k]?a(`data-nk="${k}"`,lab(k),esc(t),cnt('k'+k)?'✓ '+cnt('k'+k):''):`<button disabled><span class="k">${lab(k)}</span><span>${esc(t)}</span><span class="x">chưa soạn</span></button>`;
  const LD={};LVS.forEach(L=>LD[L]=lvData(L));
- const gram=a('data-nrules class="rl"','📘','Tổng hợp quy tắc ngữ pháp')+a('data-nsk="review" class="rl"','🔀','Ôn tập xen kẽ')+LVS.map(L=>sub(L,LD[L].gram.map(([g,cs])=>`<div class="h">${esc(g)}</div>`+cs.map(c=>chA(c[0],c[1])).join('')).join(''),LD[L].onGram?LD[L].onGram+' chương':'')).join('');
+ const gram=a('data-nrules class="rl"','📘','Tổng hợp quy tắc ngữ pháp')+a('data-nsk="review" class="rl"','🔀','Ôn tập xen kẽ')+a('data-nsk="kasus" class="rl"','🕵','Ai làm gì với ai? (Kasus)')+a('data-nsk="konj" class="rl"','⏩','Chia động từ nhanh')+LVS.map(L=>sub(L,LD[L].gram.map(([g,cs])=>`<div class="h">${esc(g)}</div>`+cs.map(c=>chA(c[0],c[1])).join('')).join(''),LD[L].onGram?LD[L].onGram+' chương':'')).join('');
  const voc=LVS.map(L=>sub(L,LD[L].voc.map(c=>chA(c[0],c[1])).join(''),LD[L].voc.filter(c=>QUIZ[c[0]]).length?LD[L].voc.filter(c=>QUIZ[c[0]]).length+' chủ đề':'')).join('');
  const exs=LVS.map(L=>sub(L,LD[L].ex.map(id=>{const E=EXAMS[id],u=unlocked(E);return a(`data-nde="${id}"`,E.test?(u?'KT':'🔒'):'Đ'+id,E.title.charAt(0)+E.title.slice(1).toLowerCase(),cnt('de'+id)?'✓ '+cnt('de'+id):(best['de'+id]!=null?best['de'+id]+'/10':''))}).join(''),LD[L].ex.length?LD[L].ex.length+' đề':'')).join('');
  const sk=Object.keys(HUBS).map(h=>{const H=HUBS[h];return `<div class="sub"><button class="sbt"><span>${H.ic} ${H.name}</span><span class="x">${H.de}</span><span class="ar">›</span></button><div class="fly"><button class="all" data-nhub="${h}"><span class="k">↗</span><span>Trang ${H.name} · cách luyện</span></button>${H.mods.map(m=>a(`data-nsk="${m}"`,SKILLS[m].ic,SKILLS[m].name)).join('')}</div></div>`}).join('');
@@ -2131,7 +2277,7 @@ document.addEventListener('keydown',e=>{if(e.key=='Escape'){const N=document.get
 /* ===================== ĐỒNG BỘ GIỮA CÁC THIẾT BỊ ===================== */
 /* Dán link Web app của Google Apps Script (kết thúc bằng /exec) vào giữa hai dấu nháy: */
 const SYNC_URL='https://script.google.com/macros/s/AKfycbyw9MjbTQrpTJAzUqNTyn3l3mmSp8xXS2BhEMYiKwxJrpyRAj6YHcFZQiA0i9_Spo3Fsw/exec';
-const SKEYS=['','log_','notes_','time_','prog_','srs_','write_','own_','av_','recent_','games_','deck_','qs_','fw_'];
+const SKEYS=['','log_','notes_','time_','prog_','srs_','write_','own_','av_','recent_','games_','deck_','qs_','fw_','art_','kj_'];
 const skey=(k,pid)=>'gaq_'+k+pid;
 const devId=()=>{let d=null;try{d=localStorage.getItem('gaq_dev')}catch(e){}if(!d){d='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);try{localStorage.setItem('gaq_dev',d)}catch(e){}}return d};
 const devGuess=()=>{const u=navigator.userAgent;return /iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?(/Mobile/.test(u)?'Điện thoại Android':'Máy tính bảng Android'):/Windows/.test(u)?'Máy tính Windows':/Mac/.test(u)?'MacBook':'Thiết bị'};
@@ -2156,7 +2302,7 @@ function mergeAll(L,R){L=L||{};R=R||{};const O={};
  {const m=new Map();[...(L.recent_||[]),...(R.recent_||[])].forEach(x=>{const k=x.key||JSON.stringify(x),p=m.get(k);if(!p||(x.t||0)>(p.t||0))m.set(k,x)});O.recent_=[...m.values()].sort((a,b)=>(b.t||0)-(a.t||0)).slice(0,20)}
  O.games_=objU(L.games_,R.games_,(x,y)=>objU(x,y,(p,q)=>Array.isArray(p)&&Array.isArray(q)?(p.filter(z=>z.done).length>=q.filter(z=>z.done).length&&p.length>=q.length?p:q):longer(p,q)));
  O.deck_=L.deck_!=null?L.deck_:R.deck_;
- O.qs_=objU(L.qs_,R.qs_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);
+ O.qs_=objU(L.qs_,R.qs_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.art_=objU(L.art_,R.art_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);O.kj_=objU(L.kj_,R.kj_,(x,y)=>(x.t||0)>=(y.t||0)?x:y);
  {const m=new Map();[...(L.fw_||[]),...(R.fw_||[])].forEach(x=>m.set(x.t,x));O.fw_=[...m.values()].sort((a,b)=>a.t-b.t).slice(-300)}
  for(const k in O)if(O[k]==null||(L[k]==null&&R[k]==null))delete O[k];
  return O}
